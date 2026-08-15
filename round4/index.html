@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Round 4 — Cryptic Quest: The Signal Incident. Official investigation round. Strictly one attempt per team.">
+  <title>Round 04 — Cryptic Quest // The Signal Incident</title>
+
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="r4-body">
+  <!-- Subtle Ambient Background Canvas & Digital Scanlines -->
+  <canvas id="r4-bg-canvas" class="r4-bg-canvas" aria-hidden="true"></canvas>
+  <div class="r4-scanline-overlay" aria-hidden="true"></div>
+
+  <!-- ======================================================================
+       SCREEN 01: CINEMATIC CASE BRIEFING & SETUP (NO LOGIN/IDENTITY FORM)
+       ====================================================================== -->
+  <section id="r4-briefing" class="r4-screen r4-screen-active" aria-labelledby="r4-briefing-hero-title">
+    <div class="r4-container r4-briefing-container">
+      <div class="r4-glass-card r4-briefing-master-card">
+
+        <!-- Case Top Header -->
+        <div class="r4-briefing-header">
+          <div class="r4-badge-row">
+            <div class="r4-badge-pill r4-badge-cyan">
+              <span class="r4-pulse-dot"></span>
+              <span>ROUND 04 // CASE DOSSIER #2140</span>
+            </div>
+            <div class="r4-badge-pill r4-badge-purple">
+              <span>STATUS: ACTIVE INVESTIGATION</span>
+            </div>
+            <div class="r4-badge-pill r4-badge-mono">
+              <span>SECURITY LEVEL: RESTRICTED</span>
+            </div>
+          </div>
+
+          <h1 id="r4-briefing-hero-title" class="r4-hero-title">CRYPTIC QUEST</h1>
+          <div class="r4-case-banner">THE SIGNAL INCIDENT</div>
+          <p class="r4-hero-tagline">DECODE THE EVIDENCE. FOLLOW THE TRAIL. RECONSTRUCT THE TRUTH.</p>
+        </div>
+
+        <!-- Interactive Stepper / Section Navigator for Case Briefing -->
+        <div class="r4-briefing-tabs" role="tablist" aria-label="Case Briefing Sections">
+          <button type="button" class="r4-briefing-tab r4-tab-active" data-briefing-step="1" role="tab"
+            aria-selected="true">
+            <span class="r4-tab-idx">01</span>
+            <span class="r4-tab-txt">THE INCIDENT</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="2" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">02</span>
+            <span class="r4-tab-txt">UNKNOWN USER</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="3" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">03</span>
+            <span class="r4-tab-txt">TIMELINE</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="4" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">04</span>
+            <span class="r4-tab-txt">THE SIGNAL</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="5" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">05</span>
+            <span class="r4-tab-txt">THE PROBLEM</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="6" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">06</span>
+            <span class="r4-tab-txt">YOUR MISSION</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="7" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">07</span>
+            <span class="r4-tab-txt">RULES</span>
+          </button>
+          <button type="button" class="r4-briefing-tab" data-briefing-step="8" role="tab" aria-selected="false">
+            <span class="r4-tab-idx">08</span>
+            <span class="r4-tab-txt">KNOWN VS UNKNOWN</span>
+          </button>
+        </div>
+
+        <!-- Section 1: The Incident -->
+        <div class="r4-briefing-pane r4-pane-active" data-pane="1">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">🚨</span>
+              <h3>01 // THE INCIDENT</h3>
+            </div>
+            <div class="r4-story-paragraphs">
+              <p>At approximately <strong>21:40</strong>, a restricted computer system inside the control room
+                transmitted a short encrypted message to an unknown destination.</p>
+              <div class="r4-intel-callout">
+                <span class="r4-callout-label">INVESTIGATION NOTE:</span>
+                <p>In this investigation, the term <strong>SIGNAL</strong> refers to an encrypted digital transmission
+                  sent by the control system.</p>
+              </div>
+              <p>The transmission was not a voice recording, radio message, or physical alarm.</p>
+              <p>It was a <strong>digital message</strong> sent through the system.</p>
+              <p>At the time of the transmission, the control room was believed to be empty.</p>
+              <p>However, system records show that the terminal became active shortly before the transmission.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: The Unknown User -->
+        <div class="r4-briefing-pane" data-pane="2">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">👤</span>
+              <h3>02 // UNKNOWN USER</h3>
+            </div>
+            <div class="r4-story-paragraphs">
+              <p>The identity of the person responsible for the system activity is <strong>unknown</strong>.</p>
+              <p>At <strong>21:39</strong>, an unknown user successfully accessed the system through an external network
+                gateway.</p>
+              <p>Because the access occurred through the network, there is no evidence that the person physically
+                entered the control room.</p>
+              <p>At <strong>21:40</strong>, the encrypted transmission was sent.</p>
+              <p>Shortly afterward, the remote connection ended.</p>
+              <div class="r4-intel-callout r4-callout-warning">
+                <span class="r4-callout-label">CORE INVESTIGATION SCOPE:</span>
+                <p>The investigation must determine what actually happened from the evidence. Do not make unverified
+                  assumptions about the identity of the user.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Large Incident Timeline -->
+        <div class="r4-briefing-pane" data-pane="3">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">⏱️</span>
+              <h3>03 // INCIDENT TIMELINE</h3>
+            </div>
+            <div class="r4-timeline-interactive">
+              <div class="r4-timeline-item">
+                <div class="r4-time-badge">21:30</div>
+                <div class="r4-time-content">
+                  <div class="r4-time-event">CONTROL ROOM BELIEVED EMPTY</div>
+                  <div class="r4-time-desc">"The room was reported as empty."</div>
+                </div>
+              </div>
+              <div class="r4-timeline-connector">↓</div>
+              <div class="r4-timeline-item">
+                <div class="r4-time-badge">21:37</div>
+                <div class="r4-time-content">
+                  <div class="r4-time-event">TERMINAL BECAME ACTIVE</div>
+                  <div class="r4-time-desc">"The control system recorded new activity."</div>
+                </div>
+              </div>
+              <div class="r4-timeline-connector">↓</div>
+              <div class="r4-timeline-item">
+                <div class="r4-time-badge">21:39</div>
+                <div class="r4-time-content">
+                  <div class="r4-time-event">REMOTE ACCESS CONFIRMED</div>
+                  <div class="r4-time-desc">"An unknown user authenticated through an external network gateway."</div>
+                </div>
+              </div>
+              <div class="r4-timeline-connector">↓</div>
+              <div class="r4-timeline-item r4-time-signal">
+                <div class="r4-time-badge r4-badge-pulse">21:40</div>
+                <div class="r4-time-content">
+                  <div class="r4-time-event"><strong>ENCRYPTED SIGNAL TRANSMITTED</strong></div>
+                  <div class="r4-time-desc">"The control system sent a short encrypted digital message to an unknown
+                    destination."</div>
+                </div>
+              </div>
+              <div class="r4-timeline-connector">↓</div>
+              <div class="r4-timeline-item">
+                <div class="r4-time-badge">21:41</div>
+                <div class="r4-time-content">
+                  <div class="r4-time-event">REMOTE CONNECTION ENDED</div>
+                  <div class="r4-time-desc">"The external connection was terminated."</div>
+                </div>
+              </div>
+              <div class="r4-timeline-connector">↓</div>
+              <div class="r4-timeline-item">
+                <div class="r4-time-badge">21:42</div>
+                <div class="r4-time-content">
+                  <div class="r4-time-event">INVESTIGATOR ENTERED THE ROOM</div>
+                  <div class="r4-time-desc">"The physical room was inspected after the transmission."</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Understanding The Signal -->
+        <div class="r4-briefing-pane" data-pane="4">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">📡</span>
+              <h3>04 // UNDERSTANDING THE SIGNAL</h3>
+            </div>
+            <div class="r4-story-paragraphs">
+              <p>The signal was a <strong>digital transmission</strong>.</p>
+              <p>It was generated by the restricted computer system.</p>
+              <p>It was transmitted at <strong>21:40</strong>.</p>
+              <p>The recovered transmission is damaged and encrypted.</p>
+              <p>Only a corrupted version of the original message has been recovered.</p>
+
+              <div class="r4-signal-visual-card">
+                <div class="r4-signal-card-title">
+                  <span class="r4-pulse-dot"></span>
+                  <span>TRANSMISSION METADATA RECORD</span>
+                </div>
+                <div class="r4-signal-grid">
+                  <div class="r4-signal-field"><span class="r4-sig-label">SOURCE:</span> <span
+                      class="r4-sig-val">UNKNOWN SYSTEM</span></div>
+                  <div class="r4-signal-field"><span class="r4-sig-label">TIME:</span> <span
+                      class="r4-sig-val">21:40</span></div>
+                  <div class="r4-signal-field"><span class="r4-sig-label">TYPE:</span> <span
+                      class="r4-sig-val">ENCRYPTED DIGITAL MESSAGE</span></div>
+                  <div class="r4-signal-field"><span class="r4-sig-label">STATUS:</span> <span
+                      class="r4-sig-val r4-text-warning">CORRUPTED</span></div>
+                  <div class="r4-signal-field" style="grid-column:1/-1;"><span class="r4-sig-label">DESTINATION:</span>
+                    <span class="r4-sig-val">UNKNOWN</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: The Problem -->
+        <div class="r4-briefing-pane" data-pane="5">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">🧩</span>
+              <h3>05 // THE PROBLEM</h3>
+            </div>
+            <div class="r4-story-paragraphs">
+              <p>At first, the incident appears straightforward.</p>
+              <p>However, the recovered evidence does not completely agree.</p>
+              <p>Some records describe what happened <strong>digitally</strong>.</p>
+              <p>Other records describe what happened <strong>physically</strong>.</p>
+              <p>The investigation team must determine whether these records can all be true at the same time.</p>
+              <div class="r4-objective-banner" style="margin-top:1rem;">
+                <div class="r4-obj-title">CORE INVESTIGATIVE CHALLENGE</div>
+                <div class="r4-obj-desc">"Your task is not simply to decode messages. You must connect the evidence."
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: Investigation Objective & 6 Stages -->
+        <div class="r4-briefing-pane" data-pane="6">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">🎯</span>
+              <h3>06 // INVESTIGATION OBJECTIVE</h3>
+            </div>
+            <div class="r4-story-paragraphs">
+              <div class="r4-mission-header">
+                <span class="r4-badge-pill r4-badge-cyan">YOUR MISSION</span>
+                <h4>Reconstruct the Signal Incident</h4>
+              </div>
+              <p>You will investigate six connected stages. Each stage reveals another piece of evidence.</p>
+              <p>Some clues may appear unrelated when first discovered. Later evidence may change the meaning of an
+                earlier clue.</p>
+              <p><strong>Keep track of everything you recover.</strong></p>
+              <p>By the end of Round 04, you should be able to explain what happened during the Signal Incident and
+                identify the inconsistencies hidden within the evidence.</p>
+
+              <h4
+                style="color:var(--r4-cyan); margin:1.25rem 0 0.75rem; font-family:var(--r4-font-mono); font-size:0.85rem;">
+                INVESTIGATION PATH (6 CONNECTED STAGES):</h4>
+              <div class="r4-path-grid">
+                <div class="r4-path-step">
+                  <div class="r4-path-num">STAGE 01</div>
+                  <div class="r4-path-title">TRANSMISSION</div>
+                  <div class="r4-path-desc">&darr; Recover the damaged digital message.</div>
+                </div>
+                <div class="r4-path-step">
+                  <div class="r4-path-num">STAGE 02</div>
+                  <div class="r4-path-title">TESTIMONY</div>
+                  <div class="r4-path-desc">&darr; Compare statements with established evidence.</div>
+                </div>
+                <div class="r4-path-step">
+                  <div class="r4-path-num">STAGE 03</div>
+                  <div class="r4-path-title">TERMINAL</div>
+                  <div class="r4-path-desc">&darr; Investigate corrupted system records.</div>
+                </div>
+                <div class="r4-path-step">
+                  <div class="r4-path-num">STAGE 04</div>
+                  <div class="r4-path-title">SURVEILLANCE</div>
+                  <div class="r4-path-desc">&darr; Compare physical evidence with the incident timeline.</div>
+                </div>
+                <div class="r4-path-step">
+                  <div class="r4-path-num">STAGE 05</div>
+                  <div class="r4-path-title">EVIDENCE</div>
+                  <div class="r4-path-desc">&darr; Connect the recovered clues.</div>
+                </div>
+                <div class="r4-path-step">
+                  <div class="r4-path-num">STAGE 06</div>
+                  <div class="r4-path-title">RECONSTRUCTION</div>
+                  <div class="r4-path-desc">&darr; Use the collected evidence to understand the incident.</div>
+                </div>
+              </div>
+
+              <div class="r4-evidence-preview-section">
+                <div class="r4-ev-prev-header">
+                  <span>EVIDENCE: 0 / 6 RECOVERED</span>
+                  <small>"Every completed stage can unlock a new piece of evidence."</small>
+                </div>
+                <div class="r4-locked-slots-grid">
+                  <div class="r4-locked-slot"><span class="r4-slot-icon">🔒</span><span>EVIDENCE
+                      01<br><small>LOCKED</small></span></div>
+                  <div class="r4-locked-slot"><span class="r4-slot-icon">🔒</span><span>EVIDENCE
+                      02<br><small>LOCKED</small></span></div>
+                  <div class="r4-locked-slot"><span class="r4-slot-icon">🔒</span><span>EVIDENCE
+                      03<br><small>LOCKED</small></span></div>
+                  <div class="r4-locked-slot"><span class="r4-slot-icon">🔒</span><span>EVIDENCE
+                      04<br><small>LOCKED</small></span></div>
+                  <div class="r4-locked-slot"><span class="r4-slot-icon">🔒</span><span>EVIDENCE
+                      05<br><small>LOCKED</small></span></div>
+                  <div class="r4-locked-slot"><span class="r4-slot-icon">🔒</span><span>EVIDENCE
+                      06<br><small>LOCKED</small></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 7: Rules of Investigation -->
+        <div class="r4-briefing-pane" data-pane="7">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">🔒</span>
+              <h3>RULES OF INVESTIGATION</h3>
+            </div>
+            <div class="r4-rules-dossier-grid">
+              <div class="r4-rule-card r4-rule-card-accent">
+                <span class="r4-rule-num">01</span>
+                <strong>🔒 ONE ATTEMPT ONLY</strong>
+                <p>Each challenge can be submitted only once. Choose your answer carefully.</p>
+              </div>
+              <div class="r4-rule-card">
+                <span class="r4-rule-num">02</span>
+                <strong>PERMANENT SUBMISSION</strong>
+                <p>Once an answer is submitted, it cannot be changed.</p>
+              </div>
+              <div class="r4-rule-card">
+                <span class="r4-rule-num">03</span>
+                <strong>STAGE PROGRESSION</strong>
+                <p>If your answer is incorrect, the challenge will be locked and the investigation will continue to the
+                  next stage.</p>
+              </div>
+              <div class="r4-rule-card">
+                <span class="r4-rule-num">04</span>
+                <strong>NO GUESSING</strong>
+                <p>Do not rely on guessing. Read the evidence carefully and connect information from different stages.
+                </p>
+              </div>
+              <div class="r4-rule-card">
+                <span class="r4-rule-num">05</span>
+                <strong>INTEL HINTS (-20 PTS)</strong>
+                <p>Hints, if available, may reduce your score.</p>
+              </div>
+              <div class="r4-rule-card">
+                <span class="r4-rule-num">06</span>
+                <strong>PERSISTENT TIMER</strong>
+                <p>A 30-minute universal countdown applies to the entire investigation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 8: Known vs Unknown -->
+        <div class="r4-briefing-pane" data-pane="8">
+          <div class="r4-briefing-box">
+            <div class="r4-box-title">
+              <span class="r4-box-icon">⚖️</span>
+              <h3>08 // KNOWN VS UNKNOWN</h3>
+            </div>
+
+            <div class="r4-known-unknown-grid">
+              <div class="r4-known-box">
+                <div class="r4-ku-header r4-text-cyan">
+                  <span>✓ KNOWN FACTS</span>
+                </div>
+                <ul class="r4-ku-list">
+                  <li><span class="r4-ku-check">✓</span> An encrypted digital transmission occurred at 21:40.</li>
+                  <li><span class="r4-ku-check">✓</span> The control room was believed to be empty.</li>
+                  <li><span class="r4-ku-check">✓</span> The terminal became active at 21:37.</li>
+                  <li><span class="r4-ku-check">✓</span> An unknown user remotely accessed the system at 21:39.</li>
+                  <li><span class="r4-ku-check">✓</span> The remote connection ended shortly after the transmission.
+                  </li>
+                  <li><span class="r4-ku-check">✓</span> The physical room was inspected afterward.</li>
+                </ul>
+              </div>
+
+              <div class="r4-unknown-box">
+                <div class="r4-ku-header r4-text-warning">
+                  <span>? UNKNOWN ELEMENTS (TO DISCOVER)</span>
+                </div>
+                <ul class="r4-ku-list">
+                  <li><span class="r4-ku-quest">?</span> Who was behind the remote connection?</li>
+                  <li><span class="r4-ku-quest">?</span> Why was the encrypted message sent?</li>
+                  <li><span class="r4-ku-quest">?</span> What did the original message contain?</li>
+                  <li><span class="r4-ku-quest">?</span> Why was the message transmitted?</li>
+                  <li><span class="r4-ku-quest">?</span> Do all recovered records agree?</li>
+                  <li><span class="r4-ku-quest">?</span> What is the connection between the evidence?</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Briefing Bottom Navigation & Start Actions -->
+        <div class="r4-briefing-footer">
+          <div class="r4-briefing-footer-left">
+            <button type="button" id="r4-btn-prev-briefing" class="r4-btn r4-btn-ghost" style="display:none;">
+              &larr; PREVIOUS
+            </button>
+            <button type="button" id="r4-btn-next-briefing" class="r4-btn r4-btn-secondary">
+              CONTINUE &rarr;
+            </button>
+          </div>
+
+          <div class="r4-briefing-footer-right">
+            <div class="r4-briefing-ready-text">
+              <span>CASE BRIEFING COMPLETE</span>
+              <small>"You now understand the incident. But you do not yet know the truth behind it. The investigation
+                begins with the corrupted transmission."</small>
+            </div>
+            <button type="button" id="r4-btn-begin-stage01" class="r4-btn r4-btn-primary r4-btn-glow r4-btn-lg">
+              BEGIN STAGE 01 <span class="r4-btn-arrow">&rarr;</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       SCREEN 02: MAIN INVESTIGATION TERMINAL & GAMEPLAY
+       ====================================================================== -->
+  <section id="r4-game" class="r4-screen" aria-label="Investigation Mission Terminal">
+    <!-- Sticky Top Navigation / Investigation HUD -->
+    <header class="r4-hud-header" role="banner">
+      <div class="r4-hud-inner">
+        <div class="r4-hud-left">
+          <div class="r4-brand-logo">
+            <span class="r4-logo-icon">◈</span>
+            <span class="r4-logo-text">CRYPTIC QUEST</span>
+          </div>
+          <div class="r4-hud-tag">ROUND 04 // THE SIGNAL INCIDENT</div>
+        </div>
+
+        <div class="r4-hud-center">
+          <div class="r4-hud-status-pill">
+            <span class="r4-pulse-dot"></span>
+            <span class="r4-hud-status-text">INVESTIGATION ACTIVE</span>
+          </div>
+          <div class="r4-hud-chal-indicator">
+            <span class="r4-hud-chal-label">STAGE:</span>
+            <span id="r4-hud-chal-count" class="r4-hud-chal-val">01 / 06</span>
+          </div>
+        </div>
+
+        <div class="r4-hud-right">
+          <!-- Case File Reopen Button -->
+          <button id="r4-btn-open-dossier" class="r4-btn-hud-tool" title="View Case Dossier &amp; Incident Timeline">
+            <span>📁 CASE FILE</span>
+          </button>
+
+          <!-- Persistent Evidence Locker Button -->
+          <button id="r4-btn-toggle-evidence" class="r4-btn-evidence-toggle" title="View Recovered Evidence Locker">
+            <span>🗄️ EVIDENCE</span>
+            <span id="r4-evidence-badge-count" class="r4-evidence-badge">0/6</span>
+          </button>
+
+          <!-- 30-Minute Universal Timer -->
+          <div id="r4-timer-container" class="r4-hud-badge r4-hud-timer" title="Investigation Time Remaining">
+            <span class="r4-hud-badge-icon">⏱</span>
+            <span id="r4-timer-display" class="r4-timer-mono">30:00</span>
+          </div>
+
+          <!-- Single Attempt Mode Indicator -->
+          <div class="r4-hud-badge r4-hud-badge-attempt" title="Strict One Final Submission Rule">
+            <span class="r4-hud-badge-icon">🔒</span>
+            <span class="r4-attempt-text">SINGLE ATTEMPT MODE</span>
+          </div>
+
+          <!-- Total Score Display -->
+          <div id="r4-score-container" class="r4-hud-badge r4-hud-score" title="Current Investigation Score">
+            <span class="r4-hud-badge-icon">★</span>
+            <span id="r4-score-display" class="r4-score-val">0</span>
+            <span class="r4-score-unit">PTS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horizontal Progress Timeline Bar -->
+      <nav class="r4-progress-nav" aria-label="Investigation Timeline Stages">
+        <div id="r4-progress-list" class="r4-progress-list" role="list">
+          <!-- Dynamically filled with stages -->
+        </div>
+      </nav>
+    </header>
+
+    <!-- Persistent / Collapsible Recovered Evidence Drawer -->
+    <aside id="r4-evidence-drawer" class="r4-evidence-drawer" aria-label="Recovered Evidence Locker">
+      <div class="r4-evidence-drawer-header">
+        <div class="r4-evidence-drawer-title">
+          <span>🗄️ CASE EVIDENCE LOCKER</span>
+          <span class="r4-evidence-drawer-sub">Recovered Fragments Archive</span>
+        </div>
+        <button id="r4-btn-close-evidence" class="r4-btn-close" aria-label="Close Evidence Locker">&times;</button>
+      </div>
+      <div id="r4-evidence-drawer-grid" class="r4-evidence-drawer-grid">
+        <!-- Dynamically rendered 6 evidence slots -->
+      </div>
+    </aside>
+
+    <!-- Main Challenge Gameplay Area -->
+    <main class="r4-game-main" role="main">
+      <div class="r4-container r4-challenge-container">
+
+        <!-- Dynamically Rendered Challenge Card -->
+        <article id="r4-active-challenge-card" class="r4-challenge-card">
+          <!-- Populated by script.js -->
+        </article>
+
+        <!-- Inline Feedback & Decryption Status -->
+        <div id="r4-game-feedback" class="r4-feedback-area" role="status" aria-live="polite"></div>
+
+        <!-- Post-Challenge Success Transition Card -->
+        <div id="r4-continue-banner" class="r4-continue-card" style="display:none;">
+          <!-- Populated on stage solve -->
+        </div>
+
+      </div>
+    </main>
+  </section>
+
+  <!-- ======================================================================
+       MODAL: CASE FILE & TIMELINE REVIEW DOSSIER
+       ====================================================================== -->
+  <div id="r4-dossier-modal" class="r4-modal" role="dialog" aria-modal="true" aria-labelledby="r4-dossier-title" hidden>
+    <div class="r4-modal-backdrop" id="r4-dossier-backdrop"></div>
+    <div class="r4-modal-dialog r4-modal-dialog-wide">
+      <div class="r4-modal-header">
+        <div class="r4-modal-title-wrap">
+          <span class="r4-modal-icon">📁</span>
+          <h3 id="r4-dossier-title" class="r4-modal-title">CASE FILE #2140 // THE SIGNAL INCIDENT</h3>
+        </div>
+        <button id="r4-btn-close-dossier" class="r4-btn-close" aria-label="Close Case File">&times;</button>
+      </div>
+      <div class="r4-modal-body r4-dossier-modal-body">
+        <div class="r4-dossier-summary">
+          <h4>CASE BACKGROUND</h4>
+          <p>At 21:40, an unknown transmission was sent from the control network. Terminal records show it became active
+            at 21:37. An unknown remote user authenticated at 21:39. No physical entry occurred during the breach.
+            Reconstruct the evidence to deduce what occurred.</p>
+        </div>
+
+        <div class="r4-dossier-timeline-box">
+          <h4>ESTABLISHED INCIDENT TIMELINE</h4>
+          <div class="r4-timeline-mini-grid">
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:30</span> <span>Control room reported
+                empty</span></div>
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:37</span> <span>Terminal became
+                active</span></div>
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:38</span> <span>Unknown user
+                detected</span></div>
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:39</span> <span>Remote authentication
+                via gateway</span></div>
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:40</span> <span><strong>Unknown signal
+                  transmitted</strong></span></div>
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:41</span> <span>Remote connection
+                terminated</span></div>
+            <div class="r4-time-mini-row"><span class="r4-mono r4-text-cyan">21:42</span> <span>Investigator entered
+                control room</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="r4-modal-actions">
+        <button id="r4-btn-dossier-resume" class="r4-btn r4-btn-primary">
+          RESUME INVESTIGATION &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL: HINT CONFIRMATION
+       ====================================================================== -->
+  <div id="r4-hint-modal" class="r4-modal" role="dialog" aria-modal="true" aria-labelledby="r4-hint-modal-title" hidden>
+    <div class="r4-modal-backdrop" id="r4-hint-backdrop"></div>
+    <div class="r4-modal-dialog">
+      <div class="r4-modal-header">
+        <span class="r4-modal-icon">💡</span>
+        <h3 id="r4-hint-modal-title" class="r4-modal-title">REQUEST INTEL HINT</h3>
+      </div>
+      <div class="r4-modal-body">
+        <p class="r4-modal-text">
+          Investigative hints provide strategic deduction guidance without revealing the direct solution.
+        </p>
+        <div class="r4-penalty-warning">
+          <span>PENALTY:</span>
+          <strong>-20 POINTS</strong>
+        </div>
+        <p class="r4-modal-subtext">Are you sure you want to unlock the hint for this stage?</p>
+      </div>
+      <div class="r4-modal-actions">
+        <button id="r4-btn-confirm-hint" class="r4-btn r4-btn-warning">
+          USE HINT ( -20 PTS )
+        </button>
+        <button id="r4-btn-cancel-hint" class="r4-btn r4-btn-ghost">
+          CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       SCREEN 03: TIME'S UP OVERLAY (CLEAN RESULT & HANDOFF)
+       ====================================================================== -->
+  <section id="r4-time-up" class="r4-screen" aria-labelledby="r4-timeup-title">
+    <div class="r4-container r4-center-container">
+      <div class="r4-glass-card r4-timeup-card">
+        <div class="r4-status-icon r4-timeup-icon">⏳</div>
+        <div class="r4-badge-pill r4-badge-warning" style="margin-bottom: 0.75rem;">
+          <span>ROUND 04 // TIME EXPIRED</span>
+        </div>
+        <h2 id="r4-timeup-title" class="r4-card-title r4-text-warning">TIME EXPIRED</h2>
+        <p class="r4-card-subtitle">
+          The allotted 30-minute investigation window for Round 04 has expired. Your progress and final score have been
+          compiled.
+        </p>
+
+        <div class="r4-stats-summary-grid">
+          <div class="r4-summary-item">
+            <span class="r4-summary-label">INVESTIGATION</span>
+            <span class="r4-summary-val">THE SIGNAL INCIDENT</span>
+          </div>
+          <div class="r4-summary-item">
+            <span class="r4-summary-label">FINAL SCORE</span>
+            <span id="r4-timeup-score" class="r4-summary-val r4-text-cyan">0 PTS</span>
+          </div>
+          <div class="r4-summary-item">
+            <span class="r4-summary-label">STAGES COMPLETED</span>
+            <span id="r4-timeup-solved" class="r4-summary-val">0 / 6</span>
+          </div>
+          <div class="r4-summary-item">
+            <span class="r4-summary-label">MISSION STATUS</span>
+            <span class="r4-summary-val r4-text-warning">TIME EXPIRED</span>
+          </div>
+        </div>
+
+        <div class="r4-timeup-footer" style="margin-top: 1.5rem; text-align: center;">
+          <button type="button" id="r4-btn-timeup-continue" class="r4-btn r4-btn-primary r4-btn-lg r4-btn-glow">
+            CONTINUE &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       SCREEN 04: QUEST COMPLETE (CLEAN RESULT & NEXT ROUND HANDOFF)
+       ====================================================================== -->
+  <section id="r4-complete" class="r4-screen" aria-labelledby="r4-complete-title">
+    <div class="r4-container r4-center-container">
+      <div class="r4-glass-card r4-complete-card">
+        <!-- Vault Lock Animation Container -->
+        <div class="r4-vault-anim" aria-hidden="true">
+          <div class="r4-vault-ring"></div>
+          <div class="r4-vault-icon">🔓</div>
+        </div>
+
+        <div class="r4-badge-pill r4-badge-green">
+          <span>✓ ROUND 04 COMPLETE</span>
+        </div>
+
+        <h2 id="r4-complete-title" class="r4-complete-heading">ROUND 04 COMPLETE</h2>
+
+        <p class="r4-congrats-text">
+          <strong class="r4-text-cyan">CASE RESOLVED</strong>
+        </p>
+
+        <p class="r4-complete-desc">
+          All evidence has been reconstructed, contradictions resolved, and the true purpose of the 21:40 transmission
+          uncovered.
+        </p>
+
+        <div class="r4-results-card">
+          <div class="r4-result-header">
+            <span>OFFICIAL ATTEMPT REPORT</span>
+            <span class="r4-verified-badge">COMPLETED ✓</span>
+          </div>
+
+          <div class="r4-results-grid">
+            <div class="r4-result-stat">
+              <span class="r4-stat-label">FINAL SCORE</span>
+              <span id="r4-complete-score" class="r4-stat-val r4-text-green">700 PTS</span>
+            </div>
+            <div class="r4-result-stat">
+              <span class="r4-stat-label">TIME TAKEN</span>
+              <span id="r4-complete-time" class="r4-stat-val r4-text-cyan">18:42</span>
+            </div>
+            <div class="r4-result-stat">
+              <span class="r4-stat-label">STAGES COMPLETED</span>
+              <span id="r4-complete-challenges" class="r4-stat-val">6 / 6</span>
+            </div>
+            <div class="r4-result-stat">
+              <span class="r4-stat-label">MISSION STATUS</span>
+              <span class="r4-stat-val r4-text-green">COMPLETED</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="r4-complete-handoff-banner" style="margin-top: 1.5rem; text-align: center;">
+          <button type="button" id="r4-btn-complete-continue" class="r4-btn r4-btn-primary r4-btn-lg r4-btn-glow">
+            CONTINUE &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Standard Competition Footer -->
+  <footer class="r4-global-footer">
+    <div class="r4-footer-inner">
+      <span class="r4-footer-version">ROUND 04 // THE SIGNAL INCIDENT (ONE ATTEMPT ONLY)</span>
+      <span class="r4-footer-mode">🔒 SINGLE ATTEMPT MODE ACTIVE</span>
+    </div>
+  </footer>
+
+  <!-- Developer Test Mode Floating Bar (Only appears if ?devReset=true) -->
+  <div id="r4-dev-mode-bar" class="r4-dev-mode-bar" style="display:none;">
+    <span class="r4-dev-tag">🛠️ DEVELOPER TEST MODE</span>
+    <button type="button" id="r4-btn-dev-reset" class="r4-btn-dev-reset">
+      RESET TEST PROGRESS
+    </button>
+  </div>
+
+  <!-- Main Game Engine Script -->
+  <script src="script.js"></script>
+</body>
+
+</html>
