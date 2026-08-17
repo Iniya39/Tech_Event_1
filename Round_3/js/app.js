@@ -704,36 +704,49 @@ function triggerViolation(reason) {
   updateHUD();
   renderLeaderboard();
 }
-
 function scheduleNextLightChange() {
   if (state.gameState !== 'PLAYING') return;
 
-  const isCurrentlyGreen = (state.lightState === 'GREEN');
-  const nextState = isCurrentlyGreen ? 'RED' : 'GREEN';
+  const currentState = state.lightState;
 
-  // Random duration: GREEN (4000ms - 9000ms), RED (3000ms - 7000ms)
-  const nextDuration = nextState === 'GREEN'
-    ? Math.floor(Math.random() * 5000) + 4000
-    : Math.floor(Math.random() * 4000) + 3000;
+  // GREEN stays for 7-10 seconds
+  // RED stays for 2-3 seconds
+  const duration = currentState === 'GREEN'
+    ? Math.floor(Math.random() * 3001) + 7000
+    : Math.floor(Math.random() * 1001) + 2000;
 
   lightTimeoutId = setTimeout(() => {
-    state.lightState = nextState;
+
+    // Switch GREEN ↔ RED
+    state.lightState = currentState === 'GREEN' ? 'RED' : 'GREEN';
+
+    // Reset red-light tracking
     state.redKeyPresses = 0;
     state.redInteractionStartTime = null;
 
-    if (nextState === 'GREEN') {
+    // Play sound for the new light
+    if (state.lightState === 'GREEN') {
+
       soundFx.playGreenLight();
+
       if (elements.workspaceTextarea) {
         elements.workspaceTextarea.focus();
       }
+
     } else {
+
       soundFx.playRedLight();
+
     }
 
+    // Update the screen
     updateHUD();
     renderReferenceCode();
+
+    // IMPORTANT: Schedule the next change
     scheduleNextLightChange();
-  }, nextDuration);
+
+  }, duration);
 }
 
 function startGame() {
