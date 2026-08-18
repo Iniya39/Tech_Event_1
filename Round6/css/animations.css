@@ -1,0 +1,120 @@
+/* ==========================================================================
+   ANIMATIONS.CSS - UI Animations, Transitions & Glow Effects
+   Round 6: CONNECTIONS Technical Competition
+   ========================================================================== */
+
+/* Pulse Glow for Start Button */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    }
+}
+
+.pulse-glow {
+    animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+/* Countdown Number Pulse */
+@keyframes countdownPulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Timer Warning Pulse */
+@keyframes timerPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+    }
+}
+
+/* Feedback Banner Pop In */
+@keyframes popIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.6);
+        opacity: 0;
+    }
+    70% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Question Transition Fade Slide */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Feedback Banner Slide in from Right */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Shake Animation for Incorrect Attempts */
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-2px, 0, 0);
+    }
+    20%, 80% {
+        transform: translate3d(4px, 0, 0);
+    }
+    30%, 50%, 70% {
+        transform: translate3d(-6px, 0, 0);
+    }
+    40%, 60% {
+        transform: translate3d(6px, 0, 0);
+    }
+}
+
+/* Respect Prefers-Reduced-Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+

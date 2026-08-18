@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <!-- Gradients -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0b132b"/>
+      <stop offset="35%" stop-color="#050a18"/>
+      <stop offset="70%" stop-color="#02040a"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ffff" stop-opacity="0.9"/>
+      <stop offset="25%" stop-color="#00e5ff" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#0055ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="doomGreenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#39ff14" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#00aa33" stop-opacity="0.4"/>
+      <stop offset="80%" stop-color="#003311" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a3342"/>
+      <stop offset="50%" stop-color="#141a24"/>
+      <stop offset="100%" stop-color="#090d14"/>
+    </linearGradient>
+
+    <linearGradient id="brassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#544933"/>
+      <stop offset="50%" stop-color="#2c2415"/>
+      <stop offset="100%" stop-color="#120e07"/>
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Patterns -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#162238" stroke-width="0.75" opacity="0.4"/>
+    </pattern>
+    <pattern id="hexGrid" width="60" height="104" patternUnits="userSpaceOnUse" patternTransform="scale(0.5)">
+      <path d="M30 0 L60 17.3 L60 52 L30 69.3 L0 52 L0 17.3 Z M30 52 L60 69.3 L60 104 L30 121.3 L0 104 L0 69.3 Z" fill="none" stroke="#102a45" stroke-width="1" opacity="0.25"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="1920" height="1080" fill="url(#bgGrad)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <rect width="1920" height="1080" fill="url(#hexGrid)"/>
+
+  <!-- Cosmic Nebula Clouds -->
+  <g opacity="0.35">
+    <path d="M100,200 Q400,50 800,250 T1600,150 Q1850,300 1750,700 T1100,950 Q600,1050 250,850 Z" fill="#0d2347" filter="url(#glow)"/>
+    <path d="M300,400 Q700,250 1200,450 T1800,600 Q1500,900 900,850 T200,650 Z" fill="#073b30" filter="url(#glow)"/>
+    <path d="M600,100 Q900,300 1400,200 T1850,450 Q1400,750 800,650 T350,300 Z" fill="#1f1138" filter="url(#glow)"/>
+  </g>
+
+  <!-- Massive Latverian Support Pillars (Left & Right) -->
+  <!-- Left Pillar Structure -->
+  <g id="left-monolith">
+    <polygon points="0,0 260,0 200,1080 0,1080" fill="url(#metalGrad)" stroke="#1e2c3d" stroke-width="2"/>
+    <polygon points="260,0 340,0 280,1080 200,1080" fill="#0d141e" stroke="#101824" stroke-width="1.5"/>
+    
+    <!-- Architectural Carvings / Conduits -->
+    <line x1="80" y1="0" x2="60" y2="1080" stroke="#00ffff" stroke-width="1.5" opacity="0.3" filter="url(#softGlow)"/>
+    <line x1="160" y1="0" x2="120" y2="1080" stroke="#39ff14" stroke-width="1.5" opacity="0.3" filter="url(#softGlow)"/>
+    
+    <!-- Subtle environmental crack structure: Letter 'A' embedded at (115, 340) -->
+    <path d="M105,370 L120,320 L135,370 M112,350 L128,350" fill="none" stroke="#25435b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+    <path d="M105,320 L95,315 M135,370 L145,375" stroke="#1b3040" stroke-width="1.5" opacity="0"/>
+
+    <!-- Structural seam: Letter 'S' embedded at (190, 680) -->
+    <path d="M210,695 C185,695 185,675 210,675 C235,675 235,655 210,655" fill="none" stroke="#284435" stroke-width="2.8" stroke-linecap="round" opacity="0.6"/>
+  </g>
+
+  <!-- Right Pillar Structure -->
+  <g id="right-monolith">
+    <polygon points="1920,0 1660,0 1720,1080 1920,1080" fill="url(#metalGrad)" stroke="#1e2c3d" stroke-width="2"/>
+    <polygon points="1660,0 1580,0 1640,1080 1720,1080" fill="#0d141e" stroke="#101824" stroke-width="1.5"/>
+
+    <line x1="1840" y1="0" x2="1860" y2="1080" stroke="#39ff14" stroke-width="1.5" opacity="0.3" filter="url(#softGlow)"/>
+    <line x1="1760" y1="0" x2="1800" y2="1080" stroke="#00ffff" stroke-width="1.5" opacity="0.3" filter="url(#softGlow)"/>
+
+    <!-- Right Pillar crack: Disabled -->
+    <path d="M1775,270" fill="none" stroke="#223e4f" stroke-width="2.5" opacity="0"/>
+
+    <!-- Sub-console rune: Disabled -->
+    <path d="M1695,760" fill="none" stroke="#2a4533" stroke-width="2.5" opacity="0"/>
+  </g>
+
+  <!-- Upper Chamber Vault Ceiling -->
+  <polygon points="0,0 1920,0 1650,140 270,140" fill="url(#brassGrad)" stroke="#3d3320" stroke-width="2"/>
+  <line x1="960" y1="0" x2="960" y2="140" stroke="#39ff14" stroke-width="2" opacity="0.4"/>
+  
+  <!-- Ceiling Arch Runes: Letter 'G' embedded in central chevron truss at (560, 95) -->
+  <path d="M575,75 C545,75 545,115 575,115 L575,95 L560,95" fill="none" stroke="#3e4d3a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+
+  <!-- Ceiling Wire Conduit: Letter 'A' embedded at (820, 95) -->
+  <path d="M815,115 L825,75 L835,115 M820,95 L830,95" fill="none" stroke="#3e4854" stroke-width="2.6" stroke-linecap="round" opacity="0.65"/>
+
+  <!-- Ceiling Truss Joint: Letter 'R' embedded at (1260, 95) -->
+  <path d="M1250,75 L1250,115 M1250,75 L1270,75 C1280,75 1280,95 1270,95 L1250,95 M1260,95 L1275,115" fill="none" stroke="#483f30" stroke-width="2.6" stroke-linecap="round" opacity="0.65"/>
+
+  <!-- Center Quantum Timeline Core Assembly -->
+  <!-- Outer Rotating Astrolabe Rings -->
+  <g id="astrolabe-rings" transform="translate(960, 540)">
+    <!-- Ring 1 (Huge Outer) -->
+    <circle r="440" fill="none" stroke="#1c334d" stroke-width="6" opacity="0.5"/>
+    <circle r="440" fill="none" stroke="#00d4ff" stroke-width="2" stroke-dasharray="30 40 100 20 60 50" opacity="0.6" filter="url(#softGlow)"/>
+
+    <!-- Ring 2 (Doom Hexagonal Containment) -->
+    <polygon points="0,-360 312,-180 312,180 0,360 -312,180 -312,-180" fill="none" stroke="#1f442b" stroke-width="5" opacity="0.7"/>
+    <polygon points="0,-360 312,-180 312,180 0,360 -312,180 -312,-180" fill="none" stroke="#39ff14" stroke-width="1.5" stroke-dasharray="15 35 70 20" opacity="0.5" filter="url(#softGlow)"/>
+
+    <!-- Ring 3 (Interlocked Dial) -->
+    <circle r="270" fill="none" stroke="#2c3b4e" stroke-width="8" opacity="0.6"/>
+    <circle r="270" fill="none" stroke="#00ffff" stroke-width="2" stroke-dasharray="4 12" opacity="0.5"/>
+
+    <!-- Core Sphere and Energy Corona -->
+    <circle r="170" fill="url(#coreGlow)"/>
+    <circle r="140" fill="url(#doomGreenGlow)"/>
+    <circle r="100" fill="#ffffff" opacity="0.8" filter="url(#glow)"/>
+    <circle r="70" fill="#c2f8ff" filter="url(#glow)"/>
+
+    <!-- Energy Particle Tendrils Clashing -->
+    <!-- Thor's Lightning Arcs (Cyan/White) -->
+    <path d="M-100,-40 L-170,-90 L-210,-60 L-320,-160 L-360,-130 L-460,-240" fill="none" stroke="#ffffff" stroke-width="3.5" filter="url(#glow)"/>
+    <path d="M-100,-40 L-170,-90 L-210,-60 L-320,-160 L-360,-130 L-460,-240" fill="none" stroke="#00e5ff" stroke-width="6" opacity="0.8" filter="url(#glow)"/>
+    
+    <path d="M-70,80 L-140,150 L-220,130 L-310,240 L-430,220" fill="none" stroke="#00e5ff" stroke-width="3" filter="url(#softGlow)"/>
+
+    <!-- Doom's Sorcery Flux (Emerald Green) -->
+    <path d="M90,-50 L160,-110 L220,-80 L300,-190 L390,-150 L480,-270" fill="none" stroke="#a3ff85" stroke-width="3.5" filter="url(#glow)"/>
+    <path d="M90,-50 L160,-110 L220,-80 L300,-190 L390,-150 L480,-270" fill="none" stroke="#39ff14" stroke-width="6" opacity="0.8" filter="url(#glow)"/>
+
+    <path d="M80,70 L150,140 L240,110 L340,250 L450,210" fill="none" stroke="#39ff14" stroke-width="3" filter="url(#softGlow)"/>
+
+    <!-- Astrolabe Ring Glyphs (Second Word "FORCE" / "ASGARD FORCE") -->
+    <!-- Astrolabe Top-Left node: Letter 'D' embedded at (-270, -270) -->
+    <path d="M-275,-280 L-275,-240 C-250,-240 -250,-280 -275,-280" fill="none" stroke="#254a63" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Astrolabe Left Dial: Letter 'F' embedded at (-390, 0) -->
+    <path d="M-400,-15 L-400,20 M-400,-15 L-375,-15 M-400,0 L-380,0" fill="none" stroke="#224257" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Astrolabe Bottom-Left Dial: Letter 'O' embedded at (-280, 260) -->
+    <path d="M-290,262 C-290,245 -260,245 -260,262 C-260,280 -290,280 -290,262" fill="none" stroke="#26485e" stroke-width="2.8" stroke-linecap="round" opacity="0.65"/>
+
+    <!-- Astrolabe Bottom Core Stand: Letter 'R' embedded at (-50, 370) -->
+    <path d="M-58,355 L-58,390 M-58,355 L-40,355 C-30,355 -30,372 -40,372 L-58,372 M-48,372 L-35,390" fill="none" stroke="#2a4533" stroke-width="2.8" stroke-linecap="round" opacity="0.65"/>
+
+    <!-- Astrolabe Bottom-Right Dial: Letter 'C' embedded at (260, 270) -->
+    <path d="M275,255 L255,255 L255,290 L275,290" fill="none" stroke="#2a4d35" stroke-width="2.8" stroke-linecap="round" opacity="0.65"/>
+
+    <!-- Astrolabe Right Dial: Letter 'E' embedded at (390, 0) -->
+    <path d="M375,-15 L375,20 L400,20 M375,-15 L400,-15 M375,2 L395,2" fill="none" stroke="#2b4f38" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+
+    <!-- Astrolabe Top-Right Dial: Disabled -->
+    <path d="M250,-275" fill="none" stroke="#244558" stroke-width="3" opacity="0"/>
+  </g>
+
+  <!-- Lower Floor Grate and Platform Structures -->
+  <g id="lower-catwalk">
+    <polygon points="0,1080 350,860 1570,860 1920,1080" fill="url(#brassGrad)" stroke="#1a2530" stroke-width="2"/>
+    <line x1="350" y1="860" x2="1570" y2="860" stroke="#00ffff" stroke-width="2" opacity="0.4" filter="url(#softGlow)"/>
+
+    <!-- Floor Catwalk Panels -->
+    <line x1="600" y1="860" x2="450" y2="1080" stroke="#121b24" stroke-width="3"/>
+    <line x1="960" y1="860" x2="960" y2="1080" stroke="#121b24" stroke-width="3"/>
+    <line x1="1320" y1="860" x2="1470" y2="1080" stroke="#121b24" stroke-width="3"/>
+
+    <!-- Floor Seam Runes -->
+    <!-- Catwalk Center-Left: Disabled -->
+    <path d="M755,940" fill="none" stroke="#334d3d" stroke-width="3" opacity="0"/>
+
+    <!-- Catwalk Center-Right: Disabled -->
+    <path d="M1170,940" fill="none" stroke="#2d4a5c" stroke-width="3" opacity="0"/>
+  </g>
+
+  <!-- Runic Hologram Circles around Chamber (Atmospheric Visuals) -->
+  <g opacity="0.4">
+    <circle cx="480" cy="420" r="45" fill="none" stroke="#00ffff" stroke-width="1" stroke-dasharray="5 5"/>
+    <circle cx="1440" cy="420" r="45" fill="none" stroke="#39ff14" stroke-width="1" stroke-dasharray="5 5"/>
+    <polygon points="480,390 505,435 455,435" fill="none" stroke="#00ffff" stroke-width="1"/>
+    <polygon points="1440,450 1415,405 1465,405" fill="none" stroke="#39ff14" stroke-width="1"/>
+  </g>
+
+  <!-- Ambient Light Vignette Overlay -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="65%">
+    <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#000000" stop-opacity="0.85"/>
+  </radialGradient>
+  <rect width="1920" height="1080" fill="url(#vignette)" pointer-events="none"/>
+</svg>

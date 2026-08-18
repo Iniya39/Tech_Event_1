@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thor vs Doctor Doom: Round 7 — The Timeline Core. Solve pattern sequences, discover hidden image ciphers, and decode multiversal Morse signals in 7 minutes.">
+    <title>Thor vs Doctor Doom — Round 7: The Timeline Core</title>
+    <link rel="stylesheet" href="final-round.css">
+</head>
+<body>
+
+    <!-- Animated Cosmic Timeline Background -->
+    <div class="cosmic-canvas-container" aria-hidden="true">
+        <div class="timeline-strand strand-1"></div>
+        <div class="timeline-strand strand-2"></div>
+        <div class="timeline-strand strand-3"></div>
+    </div>
+
+    <!-- Main Game Shell -->
+    <main id="timeline-core-app">
+        
+        <!-- Header & Top HUD -->
+        <header class="core-hud-header" role="banner">
+            <div class="hud-left">
+                <span class="round-badge" id="round-badge">ROUND 7</span>
+                <h1 class="stage-title" id="stage-title">THE TIMELINE CORE</h1>
+            </div>
+
+            <!-- Global 30-Minute Timer -->
+            <div class="hud-center">
+                <div class="timer-box" id="timer-box" role="timer" aria-live="polite">
+                    <span class="timer-label">TIME:</span>
+                    <span class="timer-display" id="timer-display">30:00</span>
+                </div>
+            </div>
+
+            <!-- Progress Tracker & Options Trigger -->
+            <div class="hud-right">
+                <div class="progress-container">
+                    <span class="progress-label">CORE HARMONIZATION</span>
+                    <div class="progress-counter">
+                        <span class="current-val" id="current-progress-val">0</span> / <span id="total-progress-val">15</span>
+                    </div>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-options" id="btn-options" aria-haspopup="dialog">
+                    ⚙ [ OPTIONS ]
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Puzzle Deck -->
+        <section class="core-content-deck" aria-label="Timeline Core Puzzle Terminal">
+            <div class="puzzle-card" id="puzzle-card">
+                
+                <!-- Puzzle Header Info -->
+                <div class="puzzle-header">
+                    <span class="puzzle-sub-tag" id="puzzle-sub-tag">SEQUENCE ANOMALY 01</span>
+                    <span class="puzzle-stage-indicator" id="puzzle-stage-indicator">STAGE 1 OF 3</span>
+                </div>
+
+                <!-- Puzzle Prompt Description -->
+                <div class="puzzle-prompt" id="puzzle-prompt">
+                    Identify the missing element in the temporal sequence:
+                </div>
+
+                <!-- Stage Specific Dynamic Viewport (Pattern, Image Viewport, or Morse Signal) -->
+                <div class="puzzle-dynamic-viewport" id="puzzle-dynamic-area">
+                    <!-- Injected dynamically by final-round.js -->
+                </div>
+
+                <!-- Answer Input & Submission Form -->
+                <div class="answer-control-panel">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="puzzle-input" 
+                            class="puzzle-input" 
+                            placeholder="Enter solution..." 
+                            autocomplete="off" 
+                            spellcheck="false"
+                            aria-label="Puzzle answer submission input"
+                        >
+                        <button type="button" id="btn-submit" class="btn-submit">
+                            TRANSMIT
+                        </button>
+                    </div>
+                    <div class="feedback-message" id="feedback-msg" aria-live="assertive"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer Lore Tracker -->
+        <footer style="text-align: center; color: var(--text-muted); font-size: 0.85rem; font-family: var(--font-tech); letter-spacing: 1px;">
+            ASGARDIAN TEMPORAL MATRIX &bull; LATVERIAN TIMELINE CORE LOCKDOWN ACTIVE
+        </footer>
+
+    </main>
+
+    <!-- Modal 0: Initial Final Round Rules Popup -->
+    <div class="modal-backdrop active" id="final-rules-modal" role="dialog" aria-modal="true" aria-labelledby="rules-modal-title">
+        <div class="modal-dialog rules-modal-dialog">
+            <div class="modal-header">
+                <h2 class="modal-title" id="rules-modal-title">FINAL ROUND — RULES</h2>
+            </div>
+            <div class="rules-modal-body">
+                <p class="rules-lead-text">In this round, you will face 3 sub-rounds:</p>
+                <ol class="rules-stage-list">
+                    <li><span class="stage-num-badge">1</span> MAT Pattern Decoding</li>
+                    <li><span class="stage-num-badge">2</span> Hidden Image Analysis</li>
+                    <li><span class="stage-num-badge">3</span> Morse of the Multiverse</li>
+                </ol>
+                <div class="rules-time-callout">
+                    <span class="callout-icon">⏱</span>
+                    <span>Total time allotted: <strong>30 minutes</strong>.</span>
+                </div>
+            </div>
+            <div class="rules-modal-footer">
+                <button type="button" class="btn-start-final-round" id="btn-start-final-round">
+                    START FINAL ROUND
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 0.5: Morse of the Multiverse Instructions Popup -->
+    <div class="modal-backdrop" id="morse-intro-modal" role="dialog" aria-modal="true" aria-labelledby="morse-intro-title">
+        <div class="modal-dialog morse-intro-dialog">
+            <div class="modal-header">
+                <h2 class="modal-title" id="morse-intro-title">MORSE OF THE MULTIVERSE</h2>
+            </div>
+            <div class="morse-intro-body">
+                <ul class="morse-intro-list">
+                    <li>Decode the hidden Morse transmission to proceed.</li>
+                    <li>Use the Morse Cheat Sheet under <strong>[ OPTIONS ]</strong> if required.</li>
+                    <li>You can access the Morse Cheat Sheet by solving the 9&times;9 Sudoku puzzle.</li>
+                    <li>After solving the Sudoku puzzle, you can access the Cheat Sheet a maximum of <strong>3 times</strong>.</li>
+                    <li>Incorrect Sudoku answers are allowed, but each incorrect attempt will reduce the remaining Final Round time by 30 seconds.</li>
+                    <li>Your remaining time is always displayed on the screen.</li>
+                    <li>Read the instructions carefully before continuing.</li>
+                </ul>
+            </div>
+            <div class="morse-intro-footer">
+                <button type="button" class="btn-submit" id="btn-close-morse-intro">
+                    CONTINUE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 0.8: Sudoku Cheat-Sheet Access Gate -->
+    <div class="modal-backdrop" id="sudoku-modal" role="dialog" aria-modal="true" aria-labelledby="sudoku-modal-title">
+        <div class="modal-dialog sudoku-modal-dialog">
+            <div class="modal-header">
+                <h2 class="modal-title" id="sudoku-modal-title">TEMPORAL CIPHER MATRIX — 9&times;9 SUDOKU</h2>
+                <button type="button" class="btn-close-modal" id="btn-close-sudoku" aria-label="Close Sudoku">&times;</button>
+            </div>
+            
+            <div class="sudoku-timer-callout" id="sudoku-timer-callout">
+                <span>⏱ RUNNING TIME: <strong id="sudoku-live-timer">30:00</strong></span>
+                <span style="color: var(--warning-red); font-size: 0.82rem;">[-30s PENALTY ON WRONG ATTEMPT]</span>
+            </div>
+
+            <p class="sudoku-desc">
+                Solve the quantum matrix below to unlock the <strong>Multiverse Morse Cheat Sheet</strong> (max 3 views). Fill each missing cell with numbers <strong>1 to 9</strong>. Each row, column, and 3&times;3 box must contain numbers 1 to 9 without duplicates.
+            </p>
+            
+            <div class="sudoku-grid-wrapper">
+                <div class="sudoku-grid" id="sudoku-grid">
+                    <!-- 9x9 Interactive Sudoku Cells -->
+                </div>
+            </div>
+
+            <div class="sudoku-feedback" id="sudoku-feedback" aria-live="polite"></div>
+
+            <div class="sudoku-footer">
+                <button type="button" class="btn-submit" id="btn-verify-sudoku">
+                    VERIFY MATRIX
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: Options Panel -->
+    <div class="modal-backdrop" id="options-modal" role="dialog" aria-modal="true" aria-labelledby="options-modal-title">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h2 class="modal-title" id="options-modal-title">TEMPORAL CONSOLE OPTIONS</h2>
+                <button type="button" class="btn-close-modal" id="btn-close-options" aria-label="Close options">&times;</button>
+            </div>
+            <div class="options-menu-list">
+                <!-- Morse Cheat Sheet is only visible inside Options during Stage 3 (Morse Round) -->
+                <button type="button" class="btn-options-item" id="btn-open-morse-ref" style="display: none;">
+                    <span>📡 Multiverse Morse Cheat Sheet</span>
+                    <span class="morse-views-badge" id="morse-options-badge">(Locked)</span>
+                </button>
+                <button type="button" class="btn-options-item" onclick="document.getElementById('options-modal').classList.remove('active')">
+                    <span>⚡ Resume Calibration</span>
+                    <span>&check;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Morse Code Reference Sheet Overlay -->
+    <div class="modal-backdrop" id="morse-ref-modal" role="dialog" aria-modal="true" aria-labelledby="morse-ref-title">
+        <div class="modal-dialog morse-modal-dialog">
+            <div class="modal-header">
+                <h2 class="modal-title" id="morse-ref-title">INTERNATIONAL MORSE CODE DIRECTORY</h2>
+                <button type="button" class="btn-close-modal" id="btn-close-morse-ref" aria-label="Close reference">&times;</button>
+            </div>
+            <div class="morse-access-banner" id="morse-access-banner">
+                <span>⚡ MULTIVERSE CHEAT SHEET: <strong id="morse-access-counter">1 / 3 VIEWS USED</strong></span>
+                <span style="color: var(--warning-red); font-size: 0.85rem;">[ MAX 3 VIEWS ]</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem;">
+                Decipher cosmic transmissions by cross-referencing letters and digits. Use the <code>/</code> symbol as a word separator.
+            </p>
+            <div class="morse-ref-grid" id="morse-ref-grid">
+                <!-- Dynamically populated from options/morse-reference.js -->
+            </div>
+            <div class="morse-ref-rules">
+                <strong>Signal Key:</strong> <code>.</code> = Dot (Short Pulse) &nbsp;|&nbsp; <code>-</code> = Dash (Long Pulse) &nbsp;|&nbsp; <code>/</code> = Word Separator
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Final Combined Result Dialog -->
+    <div class="modal-backdrop" id="result-modal" role="dialog" aria-modal="true" aria-labelledby="result-title">
+        <div class="modal-dialog final-result-dialog">
+            <h2 class="result-glow-title" id="result-title">TIMELINE CORE ACCESS GRANTED</h2>
+            <p class="result-sub-status" id="result-subtitle">ALL ANOMALIES RESOLVED &bull; REALITY STABILIZED</p>
+
+            <div class="result-stats-grid">
+                <div class="stat-box highlight">
+                    <div class="stat-label">FINAL SCORE</div>
+                    <div class="stat-value" id="stat-score">100 / 100</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">PUZZLES COMPLETED</div>
+                    <div class="stat-value" id="stat-completed">15 / 15</div>
+                </div>
+                <div class="stat-box" style="display: none;">
+                    <div class="stat-label">TIME REMAINING</div>
+                    <div class="stat-value" id="stat-time">03:45</div>
+                </div>
+            </div>
+
+            <button type="button" class="btn-cinematic-trigger" id="btn-launch-cinematic">
+                ⚡ INITIATE FINAL CINEMATIC ⚡
+            </button>
+        </div>
+    </div>
+
+    <!-- Screen Overlay: Final Thor vs Doctor Doom Cinematic Climax -->
+    <div class="cinematic-screen-overlay" id="cinematic-overlay" role="dialog" aria-modal="true">
+        <div class="cinematic-viewport">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: var(--font-heading); color: var(--thor-cyan); letter-spacing: 2px; font-weight: 700;">
+                    CHAPTER VII: THE COLLISION OF FATES
+                </span>
+                <span style="font-family: var(--font-tech); color: var(--doom-green); letter-spacing: 1px;">
+                    DOCTOR DOOM'S TIMELINE CORE
+                </span>
+            </div>
+
+            <!-- Dramatic Dialogue Box -->
+            <div class="cinematic-dialogue-box">
+                <div class="cinematic-speaker speaker-doom" id="cinematic-speaker">DOCTOR DOOM</div>
+                <div class="cinematic-speech-text" id="cinematic-speech">
+                    "You are too late, Odinson. The Timeline Core answers only to Doom..."
+                </div>
+            </div>
+
+            <div class="cinematic-actions">
+                <button type="button" class="btn-cinematic-next" id="btn-cinematic-next">
+                    CONTINUE &rarr;
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modular Script Imports (Strict Separation of Data and Game Logic) -->
+    <!-- Round 1: MAT Pattern Decoding -->
+    <script src="round1-pattern/questions.js"></script>
+    <script src="round1-pattern/answers.js"></script>
+
+    <!-- Round 2: Hidden Message Image Analysis -->
+    <script src="round2-hidden-image/questions.js"></script>
+    <script src="round2-hidden-image/answers.js"></script>
+
+    <!-- Round 3: Morse of the Multiverse -->
+    <script src="round3-morse/questions.js"></script>
+    <script src="round3-morse/answers.js"></script>
+
+    <!-- Options: Morse Reference Sheet -->
+    <script src="options/morse-reference.js"></script>
+
+    <!-- Supabase Connection Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../supabase-config.js"></script>
+    <script src="../../supabase.js"></script>
+
+    <!-- Core Game Controller -->
+    <script src="final-round.js"></script>
+</body>
+</html>

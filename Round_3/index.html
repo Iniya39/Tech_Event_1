@@ -32,7 +32,7 @@
             </div>
             <div>
               <h1 class="brand-title gradient-text-brand">
-                RED LIGHT <span style="color: #ffffff;">CODE RACE</span>
+                ROUND 03 // RED LIGHT GREEN LIGHT CODE SPRINT
               </h1>
               <div class="brand-subtitle">
                 <span class="status-dot"></span>
@@ -140,6 +140,10 @@
                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
               </svg>
             </button>
+
+            <button id="btn-move-ch4" class="btn-primary" style="background: linear-gradient(135deg, #10b981, #06b6d4); font-weight: 800;" onclick="window.location.href='../round4/index.html'">
+              MOVE TO CHAPTER 4 →
+            </button>
           </div>
 
         </div>
@@ -169,8 +173,8 @@
         </div>
         <div class="telemetry-divider"></div>
         <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: #64748b;">TIME:</span>
-          <span id="telemetry-time" style="font-weight: 700; color: #67e8f9;">0.0s</span>
+          <span style="color: #64748b;">TIME REMAINING:</span>
+          <span id="telemetry-time" style="font-weight: 700; color: #67e8f9;">40:00</span>
         </div>
       </div>
     </div>
@@ -288,28 +292,36 @@
       </div>
     </main>
 
-    <!-- Multiplayer Leaderboard Telemetry Section -->
-    <section class="leaderboard-section">
-      <div class="leaderboard-card">
-        <div class="leaderboard-header">
-          <div class="leaderboard-title">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-              <circle cx="9" cy="7" r="4"></circle>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-            <h2>MULTIPLAYER TELEMETRY // LIVE CIRCUIT RACERS</h2>
-          </div>
-          <div style="display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">
-            <span class="signal-indicator-dot" style="background:#06b6d4;animation:pulse-dot 1.5s infinite"></span>
-            <span>4 CONNECTED RACERS</span>
-          </div>
-        </div>
 
-        <div id="leaderboard-list" class="leaderboard-racers-list"></div>
+
+    <!-- Round 3 Intro / Instructions Splash Modal -->
+    <div id="round3-intro-modal" class="modal-backdrop">
+      <div class="modal-dialog" style="text-align: center; max-width: 540px;">
+        <div style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: #06b6d4; letter-spacing: 0.15em; text-transform: uppercase;">
+          STAGE 03
+        </div>
+        <h1 style="font-family: var(--font-orbitron); font-size: 1.6rem; font-weight: 900; color: #ffffff; margin: 0.5rem 0;">
+          ROUND 3: RED LIGHT GREEN LIGHT CODE SPRINT
+        </h1>
+        <p style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem;">
+          Race against live signal telemetry! Type target code boilerplates rapidly while observing the strict green/red light security beacon.
+        </p>
+        <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: 10px; padding: 1rem; text-align: left; margin-bottom: 1.5rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #06b6d4; font-weight: 700; margin-bottom: 0.5rem;">
+            INSTRUCTIONS &amp; PROTOCOL:
+          </div>
+          <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; padding-left: 1.2rem;">
+            <li>Type the reference code snippet into your workspace.</li>
+            <li><strong>GREEN LIGHT:</strong> Input unlocked — type as fast as you can!</li>
+            <li><strong>RED LIGHT:</strong> STOP typing immediately! Any keypress during Red Light triggers a violation penalty.</li>
+            <li><strong>TIMER:</strong> 40:00 overall countdown timer governs the entire sprint.</li>
+          </ul>
+        </div>
+        <button type="button" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem 1.5rem; font-size: 1rem;" onclick="document.getElementById('round3-intro-modal').classList.add('hidden')">
+          START ROUND 3 →
+        </button>
       </div>
-    </section>
+    </div>
 
     <!-- Mission Complete Modal -->
     <div id="mission-complete-modal" class="modal-backdrop hidden">
@@ -441,6 +453,10 @@
             </svg>
             COPY & SHARE CIRCUIT TELEMETRY
           </button>
+
+          <button id="btn-proceed-round-4" class="btn-submit" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #10b981, #06b6d4);" onclick="window.location.href='../round4/index.html'">
+            <span>PROCEED TO ROUND 4 →</span>
+          </button>
         </div>
 
       </div>
@@ -450,6 +466,11 @@
     <footer class="site-footer">
       RED LIGHT CODE RACE // SERVER SYNCHRONIZED CYBER CIRCUIT PROTOCOL
     </footer>
+
+    <!-- Supabase Connection Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../supabase.js"></script>
 
     <!-- Pure Vanilla Javascript Entrypoint (No Build / Server Required) -->
     <script src="./js/app.js"></script>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiversal Leaderboard // Thor vs Doctor Doom</title>
+    
+    <!-- Google Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #05070d;
+            --bg-card: rgba(13, 19, 33, 0.9);
+            --border-cyan: rgba(0, 229, 255, 0.3);
+            --border-purple: rgba(139, 92, 246, 0.3);
+            --accent-cyan: #00e5ff;
+            --accent-purple: #8b5cf6;
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-silver: #94a3b8;
+            --accent-bronze: #d97706;
+            --text-bright: #ffffff;
+            --text-secondary: #94a3b8;
+            --font-heading: 'Orbitron', 'Rajdhani', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-bright);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+            background-attachment: fixed;
+        }
+
+        .leaderboard-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Top Bar & Header */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-back {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid var(--border-cyan);
+            color: var(--accent-cyan);
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 229, 255, 0.25);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-refresh {
+            background: linear-gradient(135deg, #00e5ff, #7000ff);
+            border: none;
+            color: #ffffff;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-refresh:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
+        }
+
+        .header-title {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-badge {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid var(--border-cyan);
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            letter-spacing: 0.15em;
+        }
+
+        .header-h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .header-h1 span {
+            color: var(--accent-cyan);
+        }
+
+        /* Metrics Summary Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .metric-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+        }
+
+        /* Leaderboard Table Box */
+        .table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(0, 229, 255, 0.05);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+
+        .table-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            background: rgba(5, 7, 13, 0.8);
+            border: 1px solid var(--border-cyan);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            color: #ffffff;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            outline: none;
+            width: 260px;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+        }
+
+        /* Styled Table */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-table th {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            background: rgba(0, 229, 255, 0.03);
+        }
+
+        .leaderboard-table td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-bright);
+        }
+
+        .leaderboard-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        /* Badges */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            color: #000;
+            box-shadow: 0 0 12px rgba(148, 163, 184, 0.5);
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #b45309, #78350f);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(180, 83, 9, 0.5);
+        }
+
+        .rank-other {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .team-name-cell {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        .team-id-tag {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            margin-left: 6px;
+        }
+
+        .total-score-cell {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+        }
+
+        .score-val {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .score-empty {
+            color: #475569;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 2rem;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="leaderboard-container">
+        
+        <!-- Top Nav -->
+        <div class="top-nav">
+            <a href="index.html" class="btn-back">
+                <span>← BACK TO EVENT PORTAL</span>
+            </a>
+            <button class="btn-refresh" onclick="loadLeaderboardData()">
+                <span>🔄 REFRESH SCORES</span>
+            </button>
+        </div>
+
+        <!-- Header -->
+        <header class="header-title">
+            <div class="header-badge">TOURNAMENT SCOREBOARD</div>
+            <h1 class="header-h1">LIVE <span>LEADERBOARD</span></h1>
+        </header>
+
+        <!-- Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">TOTAL TEAMS</div>
+                <div class="metric-value" id="metric-total-teams">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">HIGHEST SCORE</div>
+                <div class="metric-value" id="metric-high-score">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">SCORES SUBMITTED</div>
+                <div class="metric-value" id="metric-submitted-count">-</div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="table-card">
+            <div class="table-controls">
+                <input type="text" id="search-input" class="search-box" placeholder="🔍 Search team name..." oninput="filterTable()">
+                <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary);" id="last-updated-text">
+                    Updating...
+                </div>
+            </div>
+
+            <div id="table-wrapper">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>RANK</th>
+                            <th>TEAM NAME</th>
+                            <th>ROUND 1</th>
+                            <th>ROUND 2</th>
+                            <th>ROUND 3</th>
+                            <th>ROUND 4</th>
+                            <th>ROUND 5</th>
+                            <th>ROUND 6</th>
+                            <th>ROUND 7</th>
+                            <th>TOTAL SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-tbody">
+                        <tr>
+                            <td colspan="10" class="status-message">Loading leaderboard scores from database...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SUPABASE CLIENT & CONFIG -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase.js"></script>
+
+    <script>
+        let fullLeaderboardData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLeaderboardData();
+        });
+
+        async function loadLeaderboardData() {
+            const tbody = document.getElementById('leaderboard-tbody');
+            tbody.innerHTML = `<tr><td colspan="10" class="status-message">Fetching latest scores...</td></tr>`;
+
+            const { data, error } = await window.TournamentDB.getLeaderboard();
+
+            if (error) {
+                tbody.innerHTML = `<tr><td colspan="10" class="status-message" style="color: #ef4444;">Error loading leaderboard: ${error.message}</td></tr>`;
+                return;
+            }
+
+            fullLeaderboardData = data || [];
+            updateMetrics(fullLeaderboardData);
+            renderTable(fullLeaderboardData);
+
+            const now = new Date();
+            document.getElementById('last-updated-text').textContent = `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
+        function updateMetrics(teams) {
+            document.getElementById('metric-total-teams').textContent = teams.length;
+            
+            const maxScore = teams.length > 0 ? Math.max(...teams.map(t => t.total_score || 0)) : 0;
+            document.getElementById('metric-high-score').textContent = maxScore;
+
+            let submittedCount = 0;
+            teams.forEach(t => {
+                for (let i = 1; i <= 7; i++) {
+                    if (t[`round_${i}_score`] !== null && t[`round_${i}_score`] !== undefined) {
+                        submittedCount++;
+                    }
+                }
+            });
+            document.getElementById('metric-submitted-count').textContent = submittedCount;
+        }
+
+        function renderTable(teams) {
+            const tbody = document.getElementById('leaderboard-tbody');
+
+            if (teams.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="status-message">No teams or scores recorded yet.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = teams.map((team, idx) => {
+                const rankNum = idx + 1;
+                let rankClass = 'rank-other';
+                let rankDisplay = `#${rankNum}`;
+                if (rankNum === 1) { rankClass = 'rank-1'; rankDisplay = '🥇 1'; }
+                else if (rankNum === 2) { rankClass = 'rank-2'; rankDisplay = '🥈 2'; }
+                else if (rankNum === 3) { rankClass = 'rank-3'; rankDisplay = '🥉 3'; }
+
+                const r1 = formatScore(team.round_1_score);
+                const r2 = formatScore(team.round_2_score);
+                const r3 = formatScore(team.round_3_score);
+                const r4 = formatScore(team.round_4_score);
+                const r5 = formatScore(team.round_5_score);
+                const r6 = formatScore(team.round_6_score);
+                const r7 = formatScore(team.round_7_score);
+
+                return `
+                    <tr>
+                        <td>
+                            <span class="rank-badge ${rankClass}">${rankDisplay}</span>
+                        </td>
+                        <td>
+                            <span class="team-name-cell">${escapeHtml(team.team_name)}</span>
+                            <span class="team-id-tag">#${team.team_id}</span>
+                        </td>
+                        <td>${r1}</td>
+                        <td>${r2}</td>
+                        <td>${r3}</td>
+                        <td>${r4}</td>
+                        <td>${r5}</td>
+                        <td>${r6}</td>
+                        <td>${r7}</td>
+                        <td class="total-score-cell">${team.total_score || 0}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function formatScore(score) {
+            if (score === null || score === undefined) {
+                return `<span class="score-empty">-</span>`;
+            }
+            return `<span class="score-val">${score}</span>`;
+        }
+
+        function filterTable() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            if (!query) {
+                renderTable(fullLeaderboardData);
+                return;
+            }
+            const filtered = fullLeaderboardData.filter(t => t.team_name.toLowerCase().includes(query));
+            renderTable(filtered);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+    </script>
+</body>
+</html>

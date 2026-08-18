@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thor vs Doctor Doom: The Multiversal Technical Competition — 7-Round Grand Event Portal.">
+    <title>Thor vs Doctor Doom: The Multiversal War // Main Event Hub</title>
+    
+    <!-- Google Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #05070d;
+            --bg-card: rgba(13, 19, 33, 0.85);
+            --border-cyan: rgba(0, 229, 255, 0.3);
+            --border-purple: rgba(139, 92, 246, 0.3);
+            --accent-cyan: #00e5ff;
+            --accent-purple: #8b5cf6;
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-bright: #ffffff;
+            --text-secondary: #94a3b8;
+            --font-heading: 'Orbitron', 'Rajdhani', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-bright);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+            background-attachment: fixed;
+        }
+
+        .event-container {
+            max-width: 900px;
+            width: 100%;
+            margin: auto;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Header Hero */
+        .event-header {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            position: relative;
+            width: 100%;
+        }
+
+        .event-badge {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            background: rgba(0, 229, 255, 0.08);
+            border: 1px solid var(--border-cyan);
+            padding: 0.5rem 1.25rem;
+            border-radius: 999px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .event-title {
+            font-family: var(--font-heading);
+            font-size: 3.25rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            text-transform: uppercase;
+            text-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .event-title span {
+            color: var(--accent-cyan);
+        }
+
+        .event-subtitle {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            color: var(--accent-purple);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .event-desc {
+            max-width: 760px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        /* Team Registration & Login Section */
+        .auth-card {
+            background: linear-gradient(135deg, rgba(13, 19, 33, 0.95), rgba(20, 30, 50, 0.95));
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(0, 229, 255, 0.08);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .auth-card.highlight {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .auth-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .auth-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            color: var(--accent-cyan);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .auth-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-tab-btn.active {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+        }
+
+        .auth-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .auth-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .input-group label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-control {
+            background: rgba(5, 7, 13, 0.8);
+            border: 1px solid var(--border-cyan);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #ffffff;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .input-control:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+        }
+
+        .auth-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-auth-submit {
+            background: linear-gradient(135deg, #00e5ff, #3b82f6);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-auth-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.6);
+        }
+
+        .btn-dummy {
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: var(--accent-gold);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-dummy:hover {
+            background: rgba(245, 158, 11, 0.25);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .auth-status-msg {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .auth-status-msg.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid var(--accent-red);
+            color: #fca5a5;
+        }
+
+        .auth-status-msg.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--accent-green);
+            color: #6ee7b7;
+        }
+
+        /* Logged In Team Status Bar */
+        .logged-in-box {
+            display: none;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid var(--accent-green);
+            border-radius: 12px;
+            padding: 1.25rem 1.75rem;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-sizing: border-box;
+        }
+
+        .logged-in-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .team-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .team-details {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .team-details span {
+            color: var(--accent-cyan);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
+
+        /* Start Action Banner */
+        .start-banner {
+            background: linear-gradient(135deg, rgba(13, 19, 33, 0.95), rgba(20, 30, 50, 0.95));
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 2.25rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(0, 229, 255, 0.08);
+            backdrop-filter: blur(12px);
+        }
+
+        @media (max-width: 768px) {
+            .start-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .banner-info h2 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.35rem;
+        }
+
+        .banner-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .btn-start-event {
+            background: linear-gradient(135deg, #00e5ff, #7000ff);
+            color: #ffffff;
+            border: none;
+            padding: 1rem 2.25rem;
+            border-radius: 10px;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.05rem;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .btn-start-event:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 35px rgba(0, 229, 255, 0.7);
+        }
+
+        .btn-start-event.locked {
+            background: rgba(148, 163, 184, 0.2);
+            color: #64748b;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .event-footer {
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #475569;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="event-container">
+
+        <!-- Main Event Header -->
+        <header class="event-header">
+            <div class="event-badge">TECHNICAL COMPETITION SAGA</div>
+            <h1 class="event-title">THOR <span>VS</span> DOCTOR DOOM</h1>
+            <div class="event-subtitle">THE MULTIVERSAL WAR // 7-ROUND EVENT MATRIX</div>
+            <p class="event-desc">
+                Doctor Doom has shattered the multiverse timeline! Join forces with Thor and the Avengers across 7 sequential tactical rounds to decode ciphers, analyze data streams, bypass security locks, and defeat Doctor Doom at the Timeline Core.
+            </p>
+        </header>
+
+        <!-- TEAM REGISTRATION & LOGIN CARD -->
+        <div class="auth-card" id="auth-card">
+            <div class="auth-header">
+                <div class="auth-title">
+                    <span>🛡️</span>
+                    <span id="auth-heading-text">TEAM AUTHENTICATION PROTOCOL</span>
+                </div>
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-login" onclick="switchAuthTab('login')">LOGIN</button>
+                    <button class="auth-tab-btn" id="tab-register" onclick="switchAuthTab('register')">REGISTER TEAM</button>
+                </div>
+            </div>
+
+            <div class="auth-form">
+                <div class="input-group">
+                    <label for="auth-team-name">TEAM NAME</label>
+                    <input type="text" id="auth-team-name" class="input-control" placeholder="e.g. test or CODE KNIGHTS" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="auth-password">PASSWORD</label>
+                    <input type="password" id="auth-password" class="input-control" placeholder="e.g. test or secret123">
+                </div>
+            </div>
+
+            <div id="auth-status-msg" class="auth-status-msg"></div>
+
+            <div class="auth-actions">
+                <button type="button" class="btn-dummy" onclick="fillDummyCredentials()">⚡ AUTO-FILL DUMMY (test / test)</button>
+                <button type="button" class="btn-auth-submit" id="btn-auth-action" onclick="handleAuthSubmit()">LOGIN & ACCESS GAME</button>
+            </div>
+        </div>
+
+        <!-- LOGGED-IN STATUS BAR -->
+        <div class="logged-in-box" id="logged-in-box">
+            <div class="logged-in-info">
+                <div class="team-badge">AUTHENTICATED</div>
+                <div class="team-details">
+                    TEAM: <span id="display-team-name">-</span> (ID: #<span id="display-team-id">-</span>)
+                </div>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()">LOGOUT / SWITCH TEAM</button>
+        </div>
+
+        <!-- Start Event Handoff Banner -->
+        <div class="start-banner" style="margin-top: 0.5rem;">
+            <div class="banner-info">
+                <h2>READY TO DEPLOY?</h2>
+                <p id="mission-status-text">Authenticate your team above to unlock mission entry and record scores.</p>
+            </div>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <a href="leaderboard.html" class="btn-start-event" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">
+                    <span>🏆 VIEW LEADERBOARD</span>
+                </a>
+                <a href="Round_1-2/index.html" class="btn-start-event" id="btn-start-mission" onclick="checkMissionAccess(event)">
+                    <span>BEGIN MISSION (START ROUND 1)</span>
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="event-footer">
+            THOR VS DOCTOR DOOM // MULTIVERSAL COMPETITION MATRIX &bull; ALL ROUNDS CONNECTED
+        </footer>
+
+    </div>
+
+    <!-- SUPABASE DEPENDENCIES -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="supabase.js"></script>
+
+    <script>
+        let authMode = 'login'; // 'login' or 'register'
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingSession();
+        });
+
+        function switchAuthTab(mode) {
+            authMode = mode;
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const headingText = document.getElementById('auth-heading-text');
+            const submitBtn = document.getElementById('btn-auth-action');
+            const msgBox = document.getElementById('auth-status-msg');
+
+            msgBox.className = 'auth-status-msg';
+            msgBox.style.display = 'none';
+
+            if (mode === 'login') {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                headingText.textContent = 'TEAM LOGIN PROTOCOL';
+                submitBtn.textContent = 'LOGIN & ACCESS GAME';
+            } else {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                headingText.textContent = 'NEW TEAM REGISTRATION';
+                submitBtn.textContent = 'CREATE TEAM & LOGIN';
+            }
+        }
+
+        function fillDummyCredentials() {
+            document.getElementById('auth-team-name').value = 'test';
+            document.getElementById('auth-password').value = 'test';
+            switchAuthTab('login');
+        }
+
+        async function handleAuthSubmit() {
+            const teamName = document.getElementById('auth-team-name').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+            const msgBox = document.getElementById('auth-status-msg');
+
+            if (!teamName || !password) {
+                showMsg('Please fill in both Team Name and Password.', 'error');
+                return;
+            }
+
+            showMsg('Authenticating with database...', 'success');
+
+            let result;
+            if (authMode === 'login') {
+                result = await window.TournamentDB.loginTeam(teamName, password);
+            } else {
+                result = await window.TournamentDB.createTeam(teamName, password);
+            }
+
+            if (result.error) {
+                showMsg(result.error.message, 'error');
+            } else {
+                showMsg('Success! Team authenticated. Loading mission portal...', 'success');
+                setTimeout(() => {
+                    updateUIAfterLogin(result.data.id, result.data.team_name);
+                }, 400);
+            }
+        }
+
+        function checkExistingSession() {
+            const team = window.TournamentDB.getCurrentTeam();
+            if (team.id && team.team_name) {
+                updateUIAfterLogin(team.id, team.team_name);
+            } else {
+                updateUIAfterLogout();
+            }
+        }
+
+        function updateUIAfterLogin(teamId, teamName) {
+            document.getElementById('auth-card').style.display = 'none';
+            const loggedInBox = document.getElementById('logged-in-box');
+            loggedInBox.style.display = 'flex';
+            document.getElementById('display-team-name').textContent = teamName;
+            document.getElementById('display-team-id').textContent = teamId;
+
+            const startBtn = document.getElementById('btn-start-mission');
+            startBtn.classList.remove('locked');
+            document.getElementById('mission-status-text').textContent = "Team #" + teamId + " (" + teamName + ") authenticated! Cleared for deployment.";
+        }
+
+        function updateUIAfterLogout() {
+            document.getElementById('auth-card').style.display = 'flex';
+            document.getElementById('logged-in-box').style.display = 'none';
+
+            const startBtn = document.getElementById('btn-start-mission');
+            startBtn.classList.add('locked');
+            document.getElementById('mission-status-text').textContent = "Authenticate your team above to unlock mission entry and record scores.";
+        }
+
+        function handleLogout() {
+            window.TournamentDB.logoutTeam();
+            updateUIAfterLogout();
+            showMsg('Logged out successfully. Please log in or register a team.', 'error');
+        }
+
+        function checkMissionAccess(event) {
+            const team = window.TournamentDB.getCurrentTeam();
+            if (!team.id) {
+                event.preventDefault();
+                const authCard = document.getElementById('auth-card');
+                authCard.classList.add('highlight');
+                showMsg('ACCESS DENIED: Please login or register your team first to begin mission!', 'error');
+                authCard.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    authCard.classList.remove('highlight');
+                }, 2000);
+            }
+        }
+
+        function showMsg(message, type) {
+            const msgBox = document.getElementById('auth-status-msg');
+            msgBox.textContent = message;
+            msgBox.className = 'auth-status-msg ' + type;
+            msgBox.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

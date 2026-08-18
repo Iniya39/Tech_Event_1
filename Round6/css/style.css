@@ -1,0 +1,246 @@
+/* ==========================================================================
+   STYLE.CSS - Base Theme, Typography & Design Tokens
+   Round 6: CONNECTIONS Technical Competition
+   ========================================================================== */
+
+:root {
+    /* Color Palette */
+    --bg-dark: #080b11;
+    --bg-surface: #0f1523;
+    --bg-surface-elevated: #182035;
+    --glass-bg: rgba(18, 26, 45, 0.75);
+    --glass-border: rgba(99, 131, 241, 0.18);
+    --glass-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.45);
+
+    /* Primary Accent Colors */
+    --primary-cyan: #00f2fe;
+    --primary-blue: #4facfe;
+    --primary-violet: #7f00ff;
+    --accent-glow: rgba(0, 242, 254, 0.35);
+
+    /* Text Colors */
+    --text-main: #f0f4fc;
+    --text-muted: #8e9bb4;
+    --text-dim: #5c6882;
+
+    /* Status Colors */
+    --color-success: #00e676;
+    --color-success-bg: rgba(0, 230, 118, 0.15);
+    --color-danger: #ff1744;
+    --color-danger-bg: rgba(255, 23, 68, 0.15);
+    --color-warning: #ffea00;
+    --color-warning-bg: rgba(255, 234, 0, 0.15);
+
+    /* Difficulty Colors */
+    --diff-challenging: #00e5ff;
+    --diff-very-challenging: #3d5af1;
+    --diff-difficult: #b000ff;
+    --diff-expert: #ff007f;
+    --diff-final: #ff3d00;
+
+    /* Typography */
+    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 0%, #151d36 0%, var(--bg-dark) 70%);
+}
+
+/* App Container */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1rem 1.5rem;
+}
+
+/* Glassmorphism Panel Class */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+}
+
+/* Top Header */
+.top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1.5rem;
+    background: rgba(15, 21, 35, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.badge-round {
+    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-violet));
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    font-family: var(--font-mono);
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--primary-cyan);
+    color: var(--primary-cyan);
+}
+
+/* Main Content Wrapper */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+/* Screen Management */
+.screen {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    opacity: 1;
+    transition: opacity var(--transition-normal);
+}
+
+.screen.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Buttons */
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-blue) 50%, var(--primary-violet) 100%);
+    color: #080b11;
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 20px var(--accent-glow);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+}
+
+.primary-btn:active {
+    transform: translateY(1px);
+}
+
+.primary-btn .arrow {
+    font-size: 1.3rem;
+    transition: transform var(--transition-fast);
+}
+
+.primary-btn:hover .arrow {
+    transform: translateX(4px);
+}
+
+/* Footer */
+.bottom-footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Focus styles for Accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary-cyan);
+    outline-offset: 4px;
+}

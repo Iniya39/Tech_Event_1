@@ -100,55 +100,13 @@ class SoundManager {
   }
 
   playGreenLight() {
-    if (this.isMuted) return;
-    this.initCtx();
-    if (!this.ctx) return;
-
-    try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
-      osc.frequency.exponentialRampToValueAtTime(1046.50, this.ctx.currentTime + 0.2); // C6
-
-      gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
-
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.3);
-    } catch (e) {
-      // Audio fallback
-    }
+    // No variation in sound while changing lights
+    return;
   }
 
   playRedLight() {
-    if (this.isMuted) return;
-    this.initCtx();
-    if (!this.ctx) return;
-
-    try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(220, this.ctx.currentTime); // A3
-      osc.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.25); // A2
-
-      gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
-
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.3);
-    } catch (e) {
-      // Audio fallback
-    }
+    // No variation in sound while changing lights
+    return;
   }
 
   playKeyPress() {
@@ -177,28 +135,8 @@ class SoundManager {
   }
 
   playRedWarningKey() {
-    if (this.isMuted) return;
-    this.initCtx();
-    if (!this.ctx) return;
-
-    try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(150, this.ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
-
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.08);
-    } catch (e) {
-      // Audio fallback
-    }
+    // Play common keypress sound instead of warning key
+    this.playKeyPress();
   }
 
   playViolation() {
@@ -360,6 +298,7 @@ const state = {
   redLightViolations: 0,
   redKeyPresses: 0,
   redKeyPenalty: 0,
+  redLightStartTime: null,
   scoreWiped: false,
   isMuted: false,
   
@@ -572,9 +511,14 @@ function updateHUD() {
     elements.violationsCard.classList.remove('has-violations');
   }
 
-  // Telemetry Bar
+  // Telemetry Bar (40-Minute Countdown Timer)
+  const totalLimitSeconds = 40 * 60; // 40 minutes = 2400 seconds
+  const remainingSecs = Math.max(0, totalLimitSeconds - Math.floor(state.liveElapsedTime || 0));
+  const minsStr = Math.floor(remainingSecs / 60).toString().padStart(2, '0');
+  const secsStr = (remainingSecs % 60).toString().padStart(2, '0');
+
   elements.telemetrySpeed.textContent = `${cpm} CPM`;
-  elements.telemetryTime.textContent = `${state.liveElapsedTime.toFixed(1)}s`;
+  elements.telemetryTime.textContent = `${minsStr}:${secsStr}`;
 
   // Start / Reset buttons visibility
   if (state.gameState === 'IDLE') {
@@ -614,18 +558,18 @@ function updateHUD() {
     elements.workspaceStatusText.textContent = 'STATUS: READY FOR SUBMISSION';
   } else {
     elements.arenaStatusBadge.className = 'arena-status-badge badge-red';
-    elements.arenaStatusBadge.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> WORKSPACE LOCKED`;
-    elements.workspaceStatusText.textContent = 'STATUS: LOCKED ON RED';
+    elements.arenaStatusBadge.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> RED LIGHT ACTIVE`;
+    elements.workspaceStatusText.textContent = 'STATUS: RED LIGHT ACTIVE (TYPING CLEARS CODE)';
   }
 
-  // Textarea state & placeholder
-  elements.workspaceTextarea.readOnly = (state.gameState !== 'PLAYING' || state.lightState === 'RED');
+  // Textarea state & placeholder - Workspace is NOT locked on RED light!
+  elements.workspaceTextarea.readOnly = (state.gameState !== 'PLAYING');
   elements.workspaceTextarea.disabled = (state.gameState !== 'PLAYING');
   
   if (state.gameState === 'IDLE') {
     elements.workspaceTextarea.placeholder = 'Press "START RACE" above to initiate signal telemetry...';
   } else if (state.lightState === 'RED') {
-    elements.workspaceTextarea.placeholder = '🔒 WORKSPACE LOCKED (RED LIGHT). STOP TYPING!';
+    elements.workspaceTextarea.placeholder = '⚠️ RED LIGHT ACTIVE! Typing will clear your code completely!';
   } else {
     elements.workspaceTextarea.placeholder = 'Start typing reference code here...';
   }
@@ -720,9 +664,14 @@ function scheduleNextLightChange() {
     // Switch GREEN ↔ RED
     state.lightState = currentState === 'GREEN' ? 'RED' : 'GREEN';
 
-    // Reset red-light tracking
+    // Reset red-light tracking & record RED light start timestamp for 0.5s grace period
     state.redKeyPresses = 0;
     state.redInteractionStartTime = null;
+    if (state.lightState === 'RED') {
+      state.redLightStartTime = Date.now();
+    } else {
+      state.redLightStartTime = null;
+    }
 
     // Play sound for the new light
     if (state.lightState === 'GREEN') {
@@ -756,6 +705,7 @@ function startGame() {
   state.redLightViolations = 0;
   state.redKeyPresses = 0;
   state.redKeyPenalty = 0;
+  state.redLightStartTime = null;
   state.scoreWiped = false;
   state.raceStartTime = Date.now();
   state.liveElapsedTime = 0;
@@ -818,6 +768,7 @@ function resetGame() {
   state.redLightViolations = 0;
   state.redKeyPresses = 0;
   state.redKeyPenalty = 0;
+  state.redLightStartTime = null;
   state.scoreWiped = false;
   state.raceStartTime = null;
   state.liveElapsedTime = 0;
@@ -900,6 +851,16 @@ function showMissionCompleteModal() {
   elements.modalAccuracy.textContent = `${accuracy}%`;
   elements.modalViolations.textContent = state.redLightViolations;
 
+  // AUTOMATIC SUPABASE DB SCORE TRANSMISSION (ROUND 3)
+  if (typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+    const teamId = localStorage.getItem("current_team_id");
+    if (teamId) {
+      window.TournamentDB.saveRoundScore(teamId, 3, state.finalScore)
+        .then(res => console.log("🏆 [Supabase DB] Round 3 score saved under Team ID #" + teamId + ":", res))
+        .catch(err => console.error("❌ [Supabase DB] Error saving Round 3 score:", err));
+    }
+  }
+
   if (state.redLightViolations > 0) {
     elements.modalViolationsCard.style.borderColor = 'rgba(239, 68, 68, 0.5)';
     elements.modalViolationsCard.style.background = 'rgba(127, 29, 29, 0.2)';
@@ -960,27 +921,32 @@ function setupEventListeners() {
     }
   });
 
-  // Workspace Keydown Interception (STRICT PENALTY ENGINE)
+  // Workspace Keydown Interception (with 0.5s grace period)
   elements.workspaceTextarea.addEventListener('keydown', (e) => {
     if (state.gameState !== 'PLAYING') return;
 
-    if (state.lightState === 'RED') {
-      // 1. Intercept key during RED light (prevent typing into textarea)
+    const timeSinceRed = (state.lightState === 'RED' && state.redLightStartTime)
+      ? (Date.now() - state.redLightStartTime)
+      : (state.lightState === 'RED' ? Infinity : -1);
+
+    // If typing after 0.5s (500ms) grace period on RED light
+    const isRedWithGracePassed = (state.lightState === 'RED' && timeSinceRed > 500);
+
+    if (isRedWithGracePassed) {
+      const ignoredKeys = ['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+      if (ignoredKeys.includes(e.key)) return;
+
       e.preventDefault();
       e.stopPropagation();
 
-      state.redKeyPresses++;
+      // Play common typing sound
+      soundFx.playKeyPress();
 
-      // 2. 6th character on RED (>5): Clear entire code AND score/mark!
-      if (state.redKeyPresses > 5) {
-        triggerViolation('6TH RED KEYPRESS DETECTED: ENTIRE CODE & SCORE WIPED');
-        return;
-      }
+      // Clear workspace code completely upon typing on RED light after 0.5s grace period
+      state.userCode = '';
+      elements.workspaceTextarea.value = '';
 
-      // 3. First 5 characters (1 to 5): Deduct score for each character typed on RED!
-      state.redKeyPenalty += 10; // -10 PTS for each red keypress
-      soundFx.playRedWarningKey();
-      updateHUD();
+      triggerViolation('RED LIGHT TYPING DETECTED (AFTER 0.5s GRACE): ENTIRE CODE CLEARED');
     } else {
       // Handle Tab key inside textarea
       if (e.key === 'Tab') {
@@ -1001,36 +967,61 @@ function setupEventListeners() {
         return;
       }
 
-      // Normal typing click on GREEN
+      // Normal typing sound on GREEN or within 0.5s grace period
       soundFx.playKeyPress();
     }
   });
 
-  // Intercept Paste / Cut on RED
+  // Intercept Paste / Cut on RED (after 0.5s grace period)
   elements.workspaceTextarea.addEventListener('paste', (e) => {
-    if (state.lightState === 'RED') {
-      e.preventDefault();
-      triggerViolation('PASTE INTERCEPTED ON RED');
+    if (state.gameState === 'PLAYING' && state.lightState === 'RED') {
+      const timeSinceRed = state.redLightStartTime ? (Date.now() - state.redLightStartTime) : Infinity;
+      if (timeSinceRed > 500) {
+        e.preventDefault();
+        soundFx.playKeyPress();
+        state.userCode = '';
+        elements.workspaceTextarea.value = '';
+        triggerViolation('PASTE DETECTED ON RED LIGHT (AFTER 0.5s GRACE): ENTIRE CODE CLEARED');
+      }
     }
   });
 
   elements.workspaceTextarea.addEventListener('cut', (e) => {
-    if (state.lightState === 'RED') {
-      e.preventDefault();
-      triggerViolation('CUT INTERCEPTED ON RED');
+    if (state.gameState === 'PLAYING' && state.lightState === 'RED') {
+      const timeSinceRed = state.redLightStartTime ? (Date.now() - state.redLightStartTime) : Infinity;
+      if (timeSinceRed > 500) {
+        e.preventDefault();
+        soundFx.playKeyPress();
+        state.userCode = '';
+        elements.workspaceTextarea.value = '';
+        triggerViolation('CUT DETECTED ON RED LIGHT (AFTER 0.5s GRACE): ENTIRE CODE CLEARED');
+      }
     }
   });
 
   // Textarea input handling
   elements.workspaceTextarea.addEventListener('input', (e) => {
-    if (state.gameState === 'PLAYING' && state.lightState === 'GREEN') {
-      state.userCode = e.target.value;
-      if (state.scoreWiped && state.userCode.length > 0) {
-        state.scoreWiped = false;
+    if (state.gameState === 'PLAYING') {
+      const timeSinceRed = (state.lightState === 'RED' && state.redLightStartTime)
+        ? (Date.now() - state.redLightStartTime)
+        : (state.lightState === 'RED' ? Infinity : -1);
+
+      const isRedWithGracePassed = (state.lightState === 'RED' && timeSinceRed > 500);
+
+      if (isRedWithGracePassed) {
+        soundFx.playKeyPress();
+        state.userCode = '';
+        elements.workspaceTextarea.value = '';
+        triggerViolation('TYPING DETECTED ON RED LIGHT (AFTER 0.5s GRACE): ENTIRE CODE CLEARED');
+      } else {
+        state.userCode = e.target.value;
+        if (state.scoreWiped && state.userCode.length > 0) {
+          state.scoreWiped = false;
+        }
+        renderReferenceCode();
+        updateHUD();
+        renderLeaderboard();
       }
-      renderReferenceCode();
-      updateHUD();
-      renderLeaderboard();
     }
   });
 

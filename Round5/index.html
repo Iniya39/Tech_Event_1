@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVENGERS: Crisis Operations // Resistance Command Grid</title>
+    <meta name="description"
+        content="Branching tactical crisis decision-making terminal for the Avengers Resistance vs Doctor Doom.">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- Top HUD Header (Fixed & Persistent across all phases) -->
+        <header class="hud-header">
+            <div class="brand-section">
+                <div class="brand-logo-emblem" aria-hidden="true">
+                    <!-- Tactical Avengers Emblem -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 22h4.5l2-4.5h7l2 4.5H22L12 2zm0 6.5l2.2 5h-4.4L12 8.5z" />
+                    </svg>
+                </div>
+                <div class="brand-title-group">
+                    <h1 class="brand-title">AVENGERS // RESISTANCE GRID</h1>
+                    <span class="brand-subtitle">SECTOR-07 CRISIS RESPONSE TERMINAL</span>
+                </div>
+            </div>
+
+            <div class="hud-status-group">
+                <!-- Persistent Global 15-Minute Timer -->
+                <div class="global-timer-badge" id="global-timer-badge">
+                    <div class="timer-pulse-dot"></div>
+                    <div class="timer-text-group">
+                        <span class="timer-badge-label">MISSION TIMER</span>
+                        <span class="timer-badge-val" id="global-timer-val">15:00</span>
+                    </div>
+                </div>
+
+                <!-- Squad Callsign Badge -->
+                <div class="team-callsign-badge" id="team-callsign-badge">
+                    <div class="status-dot"></div>
+                    <span id="team-badge-text">TERMINAL STANDBY</span>
+                </div>
+
+                <!-- Audio & Fullscreen Controls -->
+                <div class="hud-controls">
+                    <button class="icon-btn" id="sound-toggle-btn" title="Toggle Tactical Audio"
+                        aria-label="Toggle Audio">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="fullscreen-toggle-btn" title="Toggle Fullscreen"
+                        aria-label="Toggle Fullscreen">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 10-Phase Indicator Progress Bar -->
+        <nav class="phase-progress-bar" id="phase-progress-bar" aria-label="10-Phase Mission Progress">
+            <div class="phase-step-pill" id="pill-phase-1" data-phase="1">
+                <span class="pill-number">P1</span>
+                <span class="pill-name">SHIELD</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-2" data-phase="2">
+                <span class="pill-number">P2</span>
+                <span class="pill-name">SCOUT</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-3" data-phase="3">
+                <span class="pill-number">P3</span>
+                <span class="pill-name">SIGNAL</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-4" data-phase="4">
+                <span class="pill-number">P4</span>
+                <span class="pill-name">ALLY</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-5" data-phase="5">
+                <span class="pill-number">P5</span>
+                <span class="pill-name">RESOURCE</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-6" data-phase="6">
+                <span class="pill-number">P6</span>
+                <span class="pill-name">RETREAT</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-7" data-phase="7">
+                <span class="pill-number">P7</span>
+                <span class="pill-name">FRACTURE</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-8" data-phase="8">
+                <span class="pill-number">P8</span>
+                <span class="pill-name">DECEPTION</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill" id="pill-phase-9" data-phase="9">
+                <span class="pill-number">P9</span>
+                <span class="pill-name">NETWORK</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+            <div class="phase-step-pill finale-pill" id="pill-phase-10" data-phase="10">
+                <span class="pill-number">P10</span>
+                <span class="pill-name">FINALE [x2]</span>
+                <span class="pill-status">STANDBY</span>
+            </div>
+        </nav>
+
+        <!-- MAIN INTERACTIVE CONTAINER -->
+        <main id="main-content">
+
+            <!-- ====================================================================
+           SCREEN 1: MISSION BRIEFING & SQUAD TERMINAL
+           ==================================================================== -->
+            <section class="screen active" id="screen-briefing" aria-labelledby="briefing-title">
+                <div class="briefing-layout">
+
+                    <!-- Left: Tactical Briefing -->
+                    <div class="briefing-main-card">
+                        <div class="crisis-alert-banner">
+                            <span class="status-dot"
+                                style="background-color: var(--alert-red); box-shadow: 0 0 8px var(--alert-red);"></span>
+                            <span>LIVE INVASION DETECTED // 10-PHASE METROPOLITAN CRISIS</span>
+                        </div>
+
+                        <h2 class="briefing-hero-title" id="briefing-title">
+                            RESISTANCE UNIT <span>TACTICAL DEPLOYMENT</span>
+                        </h2>
+
+                        <p class="briefing-teaser-text">
+                            A dimensional rift has destabilized the sector defense barrier. Doctor Victor von Doom's
+                            vanguard legions are penetrating metropolitan airspace. Your squad is the frontline tactical
+                            unit on station.
+                        </p>
+
+                        <div class="ops-rules-list">
+                            <div class="ops-rule-item">
+                                <span class="ops-rule-number">01 //</span>
+                                <span><strong>Strategic Deliberation Required:</strong> In this round, you must answer each question by thinking smartly and analyzing the tactical context deeply.</span>
+                            </div>
+                            <div class="ops-rule-item">
+                                <span class="ops-rule-number">02 //</span>
+                                <span><strong>Plausible Options &amp; Trap Signals:</strong> Every option presented might look like a correct answer at first glance, but you must evaluate each scenario and make the smartest move.</span>
+                            </div>
+                            <div class="ops-rule-item">
+                                <span class="ops-rule-number">03 //</span>
+                                <span><strong>Analytical Decision Making:</strong> Carefully weigh risk versus reward, structural stability, timing, and resource constraints before authorizing your directive.</span>
+                            </div>
+                            <div class="ops-rule-item">
+                                <span class="ops-rule-number">04 //</span>
+                                <span><strong>10-Phase Crisis Execution:</strong> Execute your strategy with discipline across all 10 crisis phases to secure sector victory.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Squad Authorization Panel -->
+                    <div class="briefing-side-card">
+                        <div>
+                            <h3 class="terminal-title">MISSION INITIALIZATION</h3>
+                            <p class="terminal-desc">Terminal linked to the Resistance Command Matrix. Ready to begin tactical crisis directives.</p>
+                        </div>
+
+                        <button type="button" class="btn-primary" id="begin-mission-btn" style="width: 100%; justify-content: center;">
+                            <span>Begin Mission Directive</span>
+                            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- ====================================================================
+           SCREEN 2: DECISION POINT SCREEN
+           ==================================================================== -->
+            <section class="screen" id="screen-decision" aria-labelledby="decision-title">
+
+                <!-- Decision Header -->
+                <div class="decision-header">
+                    <div class="decision-meta">
+                        <span class="phase-tag" id="decision-phase-tag">PHASE 1 // INITIAL BREACH</span>
+                        <h2 class="decision-title" id="decision-title">PHASE 1: THE SHIELD COLLAPSE</h2>
+                        <div class="threat-badge" id="decision-threat-badge">DEFCON 1 // CRITICAL</div>
+                    </div>
+                </div>
+
+                <!-- Tactical Situation Briefing -->
+                <div class="situation-card">
+                    <div class="situation-heading">
+                        <div class="situation-heading-icon"></div>
+                        <span>TACTICAL CRISIS REPORT</span>
+                    </div>
+                    <p class="situation-text" id="situation-text">
+                        A dimensional breach has opened above the city. Doom's forces are pouring through, and a
+                        civilian shelter's energy shield is failing. Multiple response teams are already requesting instructions.
+                    </p>
+                </div>
+
+                <!-- Interactive 3 Options Grid (Clean, plausible, no visual bias) -->
+                <div class="options-grid" id="options-grid" role="group" aria-label="Tactical Options">
+                    <!-- Dynamically populated option cards -->
+                </div>
+
+            </section>
+
+
+            <!-- ====================================================================
+           SCREEN 3: CONSEQUENCE SCREEN
+           ==================================================================== -->
+            <section class="screen" id="screen-consequence" aria-labelledby="consequence-choice-title">
+                <div class="consequence-wrapper">
+                    <div class="consequence-card">
+
+                        <div class="consequence-badge-row">
+                            <span class="consequence-status-tag" id="consequence-phase-tag">PHASE 1 OUTCOME</span>
+                            <span class="status-dot"
+                                style="background-color: var(--accent-cyan); box-shadow: 0 0 8px var(--accent-cyan);"></span>
+                        </div>
+
+                        <h2 class="consequence-choice-title" id="consequence-choice-title">DIRECTIVE AUTHORIZED</h2>
+
+                        <div class="consequence-narrative-box">
+                            <p class="consequence-text" id="consequence-text">
+                                The shield stabilizes and civilians are safe for now, but your team is left defenseless as Doom's scouts close in.
+                            </p>
+                        </div>
+
+                        <div class="consequence-telemetry-notice" id="consequence-notice">
+                            TACTICAL DIRECTIVE REGISTERED // TELEMETRY UPDATING RESISTANCE GRID
+                        </div>
+
+                        <div class="consequence-footer">
+                            <button type="button" class="btn-primary" id="consequence-continue-btn">
+                                <span>Proceed to Next Directive</span>
+                                <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ====================================================================
+           SCREEN 4: FINAL RESULTS SCREEN
+           ==================================================================== -->
+            <section class="screen" id="screen-results" aria-labelledby="results-ending-title">
+                <div class="results-grid">
+
+                    <!-- Left: Mission Ending & Phase-by-Phase Recap Panel -->
+                    <div class="results-main-panel">
+
+                        <!-- Hero Ending Summary Card -->
+                        <div class="results-hero-card" id="results-hero-card">
+                            <span class="results-badge-pill" id="results-badge-pill">MISSION SUCCESS // 800-1000 PTS</span>
+                            <h2 class="results-ending-title" id="results-ending-title">FULL SUCCESS</h2>
+
+                            <div class="results-narration-box">
+                                <p class="results-narration-text" id="results-narration-text">
+                                    Mission successful. A hidden transmission has been decoded. One Avenger has answered the call.
+                                </p>
+                            </div>
+
+                            <p class="results-eval-text" id="results-eval-text">
+                                Your squad demonstrated extraordinary tactical coordination under extreme duress.
+                            </p>
+                        </div>
+
+                        <!-- Phase-by-Phase Mission Log & Evaluation Recap -->
+                        <div class="mission-path-card">
+                            <div class="section-label">PHASE-BY-PHASE TACTICAL RECAP</div>
+                            <div class="path-timeline-nodes" id="path-nodes-container">
+                                <!-- Dynamically populated 8-phase recap with color-coded ratings -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Score Metrics & Reset Panel -->
+                    <div class="results-side-panel">
+
+                        <!-- Total Score Card (0-1100 Scale) -->
+                        <div class="total-score-card">
+                            <div class="score-title-small">CUMULATIVE PERFORMANCE SCORE</div>
+                            <div class="score-giant-number" id="results-total-score">1100</div>
+                            <div class="score-scale-denom">OUT OF 1100 MARKS</div>
+                            <div class="score-tier-label" id="results-tier-label">FULL SUCCESS</div>
+                        </div>
+
+                        <!-- Score Meter Progress Bar -->
+                        <div class="tracks-card">
+                            <div class="section-label">SCORE EFFICIENCY METER</div>
+                            <div class="track-row">
+                                <div class="track-header-line">
+                                    <span class="track-name-label">
+                                        🎯 MISSION READINESS INDEX
+                                    </span>
+                                    <span class="track-val-badge" id="score-meter-val">1100 / 1100</span>
+                                </div>
+                                <div class="track-meter-bar">
+                                    <div class="track-fill-bar fill-judgment" id="score-meter-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reset Button for Next Team -->
+                        <button type="button" class="btn-restart" id="restart-mission-btn">
+                            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;">
+                                <path
+                                    d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                            </svg>
+                            <span>Run Another Mission</span>
+                        </button>
+
+                        <button type="button" class="btn-primary" id="btn-proceed-round-6" style="margin-top: 12px; width: 100%; justify-content: center; background: linear-gradient(135deg, #00f0ff, #7000ff);" onclick="window.location.href='../Round6/index.html'">
+                            <span>PROCEED TO ROUND 6 →</span>
+                        </button>
+
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- Supabase Connection Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../supabase.js"></script>
+
+    <!-- Scripts -->
+    <script src="gameData.js"></script>
+    <script src="audio.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

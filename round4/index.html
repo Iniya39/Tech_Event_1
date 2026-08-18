@@ -451,26 +451,20 @@
     <!-- Sticky Top Navigation / Investigation HUD -->
     <header class="r4-hud-header" role="banner">
       <div class="r4-hud-inner">
+        <!-- Left Group: Continuous horizontal flow of brand, stage, case file, and evidence -->
         <div class="r4-hud-left">
           <div class="r4-brand-logo">
             <span class="r4-logo-icon">◈</span>
             <span class="r4-logo-text">CRYPTIC QUEST</span>
           </div>
-          <div class="r4-hud-tag">ROUND 04 // THE SIGNAL INCIDENT</div>
-        </div>
 
-        <div class="r4-hud-center">
-          <div class="r4-hud-status-pill">
-            <span class="r4-pulse-dot"></span>
-            <span class="r4-hud-status-text">INVESTIGATION ACTIVE</span>
-          </div>
+          <div class="r4-hud-tag">ROUND 04 // THE SIGNAL INCIDENT</div>
+
           <div class="r4-hud-chal-indicator">
             <span class="r4-hud-chal-label">STAGE:</span>
             <span id="r4-hud-chal-count" class="r4-hud-chal-val">01 / 06</span>
           </div>
-        </div>
 
-        <div class="r4-hud-right">
           <!-- Case File Reopen Button -->
           <button id="r4-btn-open-dossier" class="r4-btn-hud-tool" title="View Case Dossier &amp; Incident Timeline">
             <span>📁 CASE FILE</span>
@@ -481,17 +475,14 @@
             <span>🗄️ EVIDENCE</span>
             <span id="r4-evidence-badge-count" class="r4-evidence-badge">0/6</span>
           </button>
+        </div>
 
+        <!-- Right Group: Timing and Score pinned at the right corner -->
+        <div class="r4-hud-right">
           <!-- 30-Minute Universal Timer -->
           <div id="r4-timer-container" class="r4-hud-badge r4-hud-timer" title="Investigation Time Remaining">
             <span class="r4-hud-badge-icon">⏱</span>
             <span id="r4-timer-display" class="r4-timer-mono">30:00</span>
-          </div>
-
-          <!-- Single Attempt Mode Indicator -->
-          <div class="r4-hud-badge r4-hud-badge-attempt" title="Strict One Final Submission Rule">
-            <span class="r4-hud-badge-icon">🔒</span>
-            <span class="r4-attempt-text">SINGLE ATTEMPT MODE</span>
           </div>
 
           <!-- Total Score Display -->
@@ -735,8 +726,7 @@
   <!-- Standard Competition Footer -->
   <footer class="r4-global-footer">
     <div class="r4-footer-inner">
-      <span class="r4-footer-version">ROUND 04 // THE SIGNAL INCIDENT (ONE ATTEMPT ONLY)</span>
-      <span class="r4-footer-mode">🔒 SINGLE ATTEMPT MODE ACTIVE</span>
+      <span class="r4-footer-version">ROUND 04 // THE SIGNAL INCIDENT</span>
     </div>
   </footer>
 
@@ -747,6 +737,11 @@
       RESET TEST PROGRESS
     </button>
   </div>
+
+  <!-- Supabase Connection Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../supabase.js"></script>
 
   <!-- Main Game Engine Script -->
   <script src="script.js"></script>

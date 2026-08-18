@@ -1,0 +1,396 @@
+/* ==========================================================================
+   CHAPTER 2: GUESS THE LOGIC — Technical Competition Styling & Code Panels
+   ========================================================================== */
+
+/* 1. GTL Header & HUD Bar */
+.gtl-hud-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 14px 20px;
+    background: rgba(10, 16, 30, 0.85);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.gtl-hud-title {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-cyan);
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gtl-hud-metrics {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.gtl-hud-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gtl-hud-metric .m-label {
+    font-size: 10px;
+    font-family: var(--font-sub);
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+}
+
+.gtl-hud-metric .m-val {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    color: var(--color-cyan);
+}
+
+.gtl-hud-metric.timer-highlight .m-val {
+    color: var(--color-amber);
+    font-size: 20px;
+}
+
+.gtl-hud-metric.timer-highlight.warning .m-val {
+    color: var(--color-rose);
+    animation: timerPulse 0.5s infinite alternate;
+}
+
+/* 2. Progress Bar */
+.gtl-progress-wrap {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.gtl-progress-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+    box-shadow: 0 0 12px var(--color-cyan);
+    transition: width 0.1s linear;
+}
+
+.gtl-progress-fill.warning {
+    background: linear-gradient(90deg, var(--color-amber), var(--color-rose));
+    box-shadow: 0 0 12px var(--color-rose);
+}
+
+/* 3. Code Editor Panel */
+.gtl-code-editor {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 240, 255, 0.1);
+    margin-bottom: 24px;
+}
+
+.gtl-editor-header {
+    background: #161b22;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gtl-window-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.gtl-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+.gtl-dot.red { background: #ff5f56; }
+.gtl-dot.yellow { background: #ffbd2e; }
+.gtl-dot.green { background: #27c93f; }
+
+.gtl-editor-tab {
+    font-family: 'Consolas', 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.gtl-question-badges {
+    display: flex;
+    gap: 8px;
+}
+
+.gtl-badge {
+    font-family: var(--font-sub);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.gtl-badge.cat {
+    background: rgba(0, 240, 255, 0.15);
+    color: var(--color-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+}
+.gtl-badge.diff {
+    background: rgba(112, 0, 255, 0.2);
+    color: #b388ff;
+    border: 1px solid rgba(112, 0, 255, 0.4);
+}
+
+/* 4. Code Body & Syntax Container */
+.gtl-code-content {
+    display: flex;
+    padding: 20px 0;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: auto;
+    background: #0d1117;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gtl-line-numbers {
+    padding: 0 18px;
+    color: #484f58;
+    text-align: right;
+    user-select: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.gtl-code-text {
+    padding: 0 20px;
+    color: #e6edf3;
+    white-space: pre;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    flex: 1;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/* Syntax Highlighting Tokens */
+.token-keyword { color: #ff7b72; font-weight: bold; }
+.token-fn { color: #d2a8ff; font-weight: bold; }
+.token-number { color: #79c0ff; }
+.token-string { color: #a5d6ff; }
+.token-op { color: #f29d49; }
+.token-comment { color: #8b949e; font-style: italic; }
+
+/* 5. Prompt & Input Section */
+.gtl-prompt-text {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--text-main);
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.gtl-input-form {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.gtl-input-field {
+    flex: 1;
+    background: rgba(10, 16, 30, 0.9);
+    border: 2px solid rgba(0, 240, 255, 0.4);
+    border-radius: var(--radius-sm);
+    padding: 14px 20px;
+    font-family: 'Consolas', monospace;
+    font-size: 18px;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.gtl-input-field:focus {
+    border-color: var(--color-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.gtl-input-field:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 6. Animated Feedback Overlay Card */
+.gtl-feedback-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 10, 18, 0.92);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.gtl-feedback-overlay.active {
+    display: flex;
+}
+
+.gtl-feedback-card {
+    background: rgba(16, 24, 40, 0.9);
+    border: 2px solid var(--color-cyan);
+    border-radius: var(--radius-md);
+    padding: 36px 48px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+    max-width: 480px;
+    width: 90%;
+}
+
+.gtl-feedback-card.correct {
+    border-color: var(--color-emerald);
+    box-shadow: 0 0 40px rgba(0, 255, 157, 0.4);
+}
+
+.gtl-feedback-card.incorrect {
+    border-color: var(--color-rose);
+    box-shadow: 0 0 40px rgba(255, 42, 109, 0.4);
+}
+
+.gtl-feedback-card.timeout {
+    border-color: var(--color-amber);
+    box-shadow: 0 0 40px rgba(255, 183, 3, 0.4);
+}
+
+.gtl-feedback-title {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+.gtl-feedback-card.correct .gtl-feedback-title { color: var(--color-emerald); }
+.gtl-feedback-card.incorrect .gtl-feedback-title { color: var(--color-rose); }
+.gtl-feedback-card.timeout .gtl-feedback-title { color: var(--color-amber); }
+
+.gtl-feedback-sub {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    color: #ffffff;
+    margin-top: 8px;
+}
+
+.gtl-feedback-reveal {
+    font-family: 'Consolas', monospace;
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+}
+.gtl-feedback-reveal span {
+    color: var(--color-cyan);
+    font-weight: bold;
+}
+
+/* 7. Performance Rating Badge */
+.gtl-rating-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(22, 33, 56, 0.9);
+    border: 1px solid var(--border-glow);
+    border-radius: var(--radius-md);
+    padding: 20px 28px;
+    margin: 24px 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+.gtl-rating-badge {
+    font-family: var(--font-heading);
+    font-size: 48px;
+    font-weight: 900;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-cyan), var(--color-purple));
+    color: #ffffff;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+}
+
+.gtl-rating-badge.grade-s { background: linear-gradient(135deg, #ffe600, #ff0055); box-shadow: 0 0 30px rgba(255, 230, 0, 0.6); }
+.gtl-rating-badge.grade-a { background: linear-gradient(135deg, #00ff9d, #00f0ff); box-shadow: 0 0 25px rgba(0, 255, 157, 0.5); }
+.gtl-rating-badge.grade-b { background: linear-gradient(135deg, #00f0ff, #7000ff); box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); }
+.gtl-rating-badge.grade-c { background: linear-gradient(135deg, #ffb703, #ff7b72); box-shadow: 0 0 20px rgba(255, 183, 3, 0.4); }
+.gtl-rating-badge.grade-d { background: linear-gradient(135deg, #ff2a6d, #7000ff); box-shadow: 0 0 20px rgba(255, 42, 109, 0.4); }
+
+.gtl-rating-info {
+    flex: 1;
+    text-align: left;
+}
+
+.gtl-rating-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    color: var(--color-cyan);
+    margin-bottom: 4px;
+}
+
+.gtl-rating-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* Responsive Rules */
+@media (max-width: 768px) {
+    .gtl-hud-bar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .gtl-hud-metrics {
+        justify-content: space-around;
+    }
+
+    .gtl-input-form {
+        flex-direction: column;
+    }
+
+    .gtl-code-content {
+        font-size: 13px;
+    }
+
+    .gtl-rating-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .gtl-rating-info {
+        text-align: center;
+    }
+}

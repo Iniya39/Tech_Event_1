@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Database Integration Test</title>
+    <style>
+        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
+        .card { background: #1e293b; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; }
+        h1, h2 { color: #38bdf8; }
+        button { background: #0284c7; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+        button:hover { background: #0369a1; }
+        pre { background: #090d16; padding: 1rem; border-radius: 6px; overflow-x: auto; color: #4ade80; }
+        input { padding: 0.5rem; font-size: 1rem; border-radius: 4px; border: 1px solid #475569; background: #0f172a; color: white; margin-right: 8px; }
+    </style>
+</head>
+<body>
+    <h1>🏆 Tech Event Tournament — Database & Login Integration Test</h1>
+    
+    <div class="card">
+        <h2>1. Connection & Credentials Checklist</h2>
+        <p>Connected to project URL configured in <code>supabase-config.js</code>.</p>
+        <button onclick="testConnection()">Test Supabase Connection</button>
+        <pre id="conn-output">Click button to test connection...</pre>
+    </div>
+
+    <div class="card">
+        <h2>2. Team Authentication & Score Submission Test</h2>
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+            <input type="text" id="team-input" value="test" placeholder="Team Name">
+            <input type="text" id="pass-input" value="test" placeholder="Password">
+            <button onclick="testLoginTeam()">1. Test Login (test / test)</button>
+            <button onclick="testRegisterTeam()">2. Register New Team</button>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+            <button onclick="testSaveScores()">3. Save Scores (R1=80, R2=90, R3=75)</button>
+            <button onclick="testFetchLeaderboard()">4. Fetch Leaderboard</button>
+        </div>
+        <pre id="action-output">Test output will appear here...</pre>
+    </div>
+
+    <!-- Include Supabase JS v2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Include Supabase Configuration -->
+    <script src="supabase-config.js"></script>
+    <!-- Include Tournament DB Helpers -->
+    <script src="supabase.js"></script>
+
+    <script>
+        async function testConnection() {
+            const out = document.getElementById('conn-output');
+            out.textContent = "Connecting to Supabase...";
+            try {
+                const client = window.TournamentDB.getSupabaseClient();
+                if (!client) {
+                    out.textContent = "Error: Supabase client initialization failed.";
+                    return;
+                }
+                const { data, error } = await client.from('teams').select('count', { count: 'exact' });
+                if (error) {
+                    out.textContent = "Connection Failed: " + JSON.stringify(error, null, 2);
+                } else {
+                    out.textContent = "SUCCESS! Connected to Supabase PostgreSQL database.\nTotal teams in database: " + data.length;
+                }
+            } catch (err) {
+                out.textContent = "Exception: " + err.message;
+            }
+        }
+
+        let currentTeamId = null;
+
+        async function testLoginTeam() {
+            const out = document.getElementById('action-output');
+            const teamName = document.getElementById('team-input').value;
+            const password = document.getElementById('pass-input').value;
+            out.textContent = "Attempting login for team '" + teamName + "'...";
+
+            const { data, error } = await window.TournamentDB.loginTeam(teamName, password);
+            if (error) {
+                out.textContent = "LOGIN ERROR:\n" + error.message;
+            } else {
+                currentTeamId = data.id;
+                out.textContent = "SUCCESS! Logged in as Team:\n" + JSON.stringify(data, null, 2);
+            }
+        }
+
+        async function testRegisterTeam() {
+            const out = document.getElementById('action-output');
+            const teamName = document.getElementById('team-input').value;
+            const password = document.getElementById('pass-input').value;
+            out.textContent = "Registering new team '" + teamName + "'...";
+
+            const { data, error } = await window.TournamentDB.createTeam(teamName, password);
+            if (error) {
+                out.textContent = "REGISTRATION ERROR:\n" + error.message;
+            } else {
+                currentTeamId = data.id;
+                out.textContent = "SUCCESS! Team created:\n" + JSON.stringify(data, null, 2);
+            }
+        }
+
+        async function testSaveScores() {
+            const out = document.getElementById('action-output');
+            if (!currentTeamId) {
+                out.textContent = "Please login or register a team first.";
+                return;
+            }
+            out.textContent = "Submitting scores for team ID " + currentTeamId + "...";
+
+            const r1 = await window.TournamentDB.saveRoundScore(currentTeamId, 1, 80);
+            const r2 = await window.TournamentDB.saveRoundScore(currentTeamId, 2, 90);
+            const r3 = await window.TournamentDB.saveRoundScore(currentTeamId, 3, 75);
+
+            out.textContent = "SUCCESS! Submitted scores for Round 1 (80), Round 2 (90), Round 3 (75).\n\n" +
+                "Round 1 Result: " + JSON.stringify(r1.data) + "\n" +
+                "Round 2 Result: " + JSON.stringify(r2.data) + "\n" +
+                "Round 3 Result: " + JSON.stringify(r3.data);
+        }
+
+        async function testFetchLeaderboard() {
+            const out = document.getElementById('action-output');
+            out.textContent = "Fetching leaderboard...";
+            const { data, error } = await window.TournamentDB.getLeaderboard();
+            if (error) {
+                out.textContent = "Error fetching leaderboard:\n" + JSON.stringify(error, null, 2);
+            } else {
+                out.textContent = "SUCCESS! Leaderboard Data:\n" + JSON.stringify(data, null, 2);
+            }
+        }
+    </script>
+</body>
+</html>

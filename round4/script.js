@@ -877,11 +877,8 @@ const Round4CrypticQuest = (() => {
             <button type="button" class="r4-btn r4-btn-ghost r4-c2-suspect-btn ${state.selectedSuspect === 'noah' ? 'r4-suspect-selected' : ''}" data-c2-suspect="noah">NOAH</button>
           </div>
 
-          <div class="r4-single-attempt-callout" style="margin-top:1rem;">
-            <span class="r4-att-icon">🔒</span>
-            <div>
-              <strong>ONE ATTEMPT ONLY:</strong> Select ONE suspect and click Submit Final Decision. Your choice will be permanently locked.
-            </div>
+          <div class="r4-subtle-note-box" style="margin-top:1rem;">
+            <span>💡 Select ONE suspect and click Submit when ready.</span>
           </div>
         </div>
       `;
@@ -993,11 +990,8 @@ const Round4CrypticQuest = (() => {
             <p>The recovered files point to one key piece of the incident. What was the terminal trying to recover?</p>
           </div>
 
-          <div class="r4-single-attempt-callout">
-            <span class="r4-att-icon">🔒</span>
-            <div>
-              <strong>ONE ATTEMPT ONLY:</strong> File inspection is unlimited. Clicking Submit Final Answer permanently records your attempt.
-            </div>
+          <div class="r4-subtle-note-box" style="margin-top:1rem;">
+            <span>💡 Inspect files and submit your answer when ready.</span>
           </div>
         </div>
       `;
@@ -1145,11 +1139,8 @@ const Round4CrypticQuest = (() => {
             </div>
           </div>
 
-          <div class="r4-single-attempt-callout" style="margin-top:1rem;">
-            <span class="r4-att-icon">🔒</span>
-            <div>
-              <strong>ONE ATTEMPT ONLY:</strong> Inspection is unlimited. Clicking Submit Final Decision locks your answer.
-            </div>
+          <div class="r4-subtle-note-box" style="margin-top:1rem;">
+            <span>💡 Inspect objects and submit your decision when ready.</span>
           </div>
         </div>
       `;
@@ -1208,11 +1199,8 @@ const Round4CrypticQuest = (() => {
             ${renderedSlots}
           </div>
 
-          <div class="r4-single-attempt-callout" style="margin-top:1rem;">
-            <span class="r4-att-icon">🔒</span>
-            <div>
-              <strong>ONE ATTEMPT ONLY:</strong> Arrange the cards and click Submit Final Sequence.
-            </div>
+          <div class="r4-subtle-note-box" style="margin-top:1rem;">
+            <span>💡 Arrange cards in order and submit your sequence when ready.</span>
           </div>
         </div>
       `;
@@ -1296,11 +1284,8 @@ const Round4CrypticQuest = (() => {
             ${theoryCardsHTML}
           </div>
 
-          <div class="r4-single-attempt-callout" style="margin-top:1.25rem;">
-            <span class="r4-att-icon">🔒</span>
-            <div>
-              <strong>ONE ATTEMPT ONLY:</strong> Inspecting all hypotheses is unlimited. Clicking Submit Final Verdict locks your verdict permanently.
-            </div>
+          <div class="r4-subtle-note-box" style="margin-top:1.25rem;">
+            <span>💡 Review all hypotheses and submit your verdict when ready.</span>
           </div>
         </div>
       `;
@@ -1356,6 +1341,9 @@ const Round4CrypticQuest = (() => {
             ${customSubmitLabel}
           </button>
         </form>
+
+        <!-- Inline Continue / Stage Result Banner (Positioned Directly Below Submit Button) -->
+        <div id="r4-continue-banner" class="r4-continue-card-inline" style="display:none;"></div>
 
         <div class="r4-action-buttons-row">
           <button 
@@ -1969,6 +1957,16 @@ const Round4CrypticQuest = (() => {
     if (timeEl) timeEl.textContent = timeTakenFormatted;
     if (chalEl) chalEl.textContent = `${state.completedChallenges.length} / 6`;
 
+    // AUTOMATIC SUPABASE DB SCORE TRANSMISSION (ROUND 4)
+    if (typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+      const teamId = localStorage.getItem("current_team_id");
+      if (teamId) {
+        window.TournamentDB.saveRoundScore(teamId, 4, state.score)
+          .then(res => console.log("🏆 [Supabase DB] Round 4 score saved under Team ID #" + teamId + ":", res))
+          .catch(err => console.error("❌ [Supabase DB] Error saving Round 4 score:", err));
+      }
+    }
+
     setScreen('COMPLETED');
   }
 
@@ -2004,7 +2002,7 @@ const Round4CrypticQuest = (() => {
       window.navigateToRound5(payload);
     } else {
       console.log('[ROUND 04] Handoff dispatched to next round:', payload);
-      alert(`ROUND 04 COMPLETE\n\nFinal Score: ${state.score} PTS\nStages Completed: ${state.completedChallenges.length} / 6\n\nHandoff event 'round4:completed' dispatched.`);
+      window.location.href = '../Round5/index.html';
     }
   }
 

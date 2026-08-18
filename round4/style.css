@@ -826,19 +826,20 @@ h1, h2, h3, h4 {
 }
 
 .r4-hud-inner {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0.85rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .r4-hud-left {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .r4-brand-logo {
@@ -862,36 +863,20 @@ h1, h2, h3, h4 {
   font-weight: 700;
   color: var(--r4-purple);
   background: var(--r4-purple-soft);
-  padding: 0.2rem 0.55rem;
+  padding: 0.25rem 0.6rem;
   border-radius: var(--r4-radius-sm);
   border: 1px solid rgba(139, 92, 246, 0.25);
-}
-
-.r4-hud-center {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.r4-hud-status-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-family: var(--r4-font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--r4-cyan);
-  background: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.25);
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
 }
 
 .r4-hud-chal-indicator {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   font-size: 0.8125rem;
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--r4-radius-md);
 }
 
 .r4-hud-chal-label {
@@ -909,6 +894,7 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-left: auto;
 }
 
 .r4-btn-hud-tool {
@@ -2087,6 +2073,23 @@ h1, h2, h3, h4 {
   animation: r4-fade-in-up 300ms ease forwards;
 }
 
+.r4-continue-card-inline {
+  background: rgba(10, 20, 36, 0.95);
+  border: 1px solid var(--r4-border-glow);
+  border-radius: var(--r4-radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+  animation: r4-fade-in-up 250ms ease forwards;
+}
+
+.r4-continue-card-inline .r4-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
 .r4-continue-header {
   font-family: var(--r4-font-display);
   font-size: 1.35rem;
@@ -2631,6 +2634,27 @@ h1, h2, h3, h4 {
   font-weight: 800;
 }
 
+/* Subtle Note Box */
+.r4-subtle-note-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(0, 229, 255, 0.04);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  border-radius: var(--r4-radius-md);
+  padding: 0.6rem 1rem;
+  font-family: var(--r4-font-mono);
+  font-size: 0.78rem;
+  color: var(--r4-text-secondary);
+  text-align: center;
+  transition: border-color var(--r4-transition-fast);
+}
+
+.r4-subtle-note-box:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
 /* Single Attempt Callout */
 .r4-single-attempt-callout {
   display: flex;
@@ -3168,5 +3192,282 @@ h1, h2, h3, h4 {
 
   .r4-suspects-grid, .r4-lock-slots-grid, .r4-room-grid, .r4-c4-options-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   20. TRUE DESKTOP LANDSCAPE COMMAND HUB & TERMINAL LAYOUT
+   -------------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  /* Widescreen Canvas & Containers */
+  .r4-container {
+    max-width: 1600px;
+    padding: 0 2rem;
+  }
+
+  /* SCREEN 01: BRIEFING DOSSIER HUB */
+  .r4-briefing-container {
+    padding: 2.5rem 1.5rem;
+    min-height: calc(100vh - 40px);
+    display: flex;
+    align-items: center;
+  }
+
+  .r4-briefing-master-card {
+    max-width: 1540px;
+    padding: 2.5rem 3rem;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "tabs pane"
+      "footer footer";
+    column-gap: 2.5rem;
+    row-gap: 1.5rem;
+    align-items: start;
+  }
+
+  .r4-briefing-header {
+    grid-area: header;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--r4-border-subtle);
+    margin-bottom: 0;
+  }
+
+  .r4-hero-title {
+    font-size: 2.5rem;
+    margin: 0.4rem 0 0.1rem;
+  }
+
+  .r4-case-banner {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+  }
+
+  .r4-hero-tagline {
+    font-size: 0.78rem;
+  }
+
+  .r4-briefing-tabs {
+    grid-area: tabs;
+    flex-direction: column;
+    gap: 0.5rem;
+    border-bottom: none;
+    border-right: 1px solid var(--r4-border-subtle);
+    padding-right: 1.5rem;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    overflow-y: auto;
+    max-height: 540px;
+  }
+
+  .r4-briefing-tab {
+    width: 100%;
+    padding: 0.75rem 1.1rem;
+    font-size: 0.85rem;
+  }
+
+  .r4-briefing-pane {
+    grid-area: pane;
+    padding-left: 0.5rem;
+  }
+
+  .r4-briefing-box {
+    padding: 2rem;
+  }
+
+  .r4-briefing-footer {
+    grid-area: footer;
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+  }
+
+  /* SCREEN 02: ACTIVE CHALLENGE WIDESCREEN TERMINAL */
+  .r4-game-main {
+    padding: 2rem 0 3.5rem;
+  }
+
+  .r4-challenge-container {
+    max-width: 1560px;
+  }
+
+  .r4-challenge-card {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "header header"
+      "left right"
+      "feedback right";
+    column-gap: 2.5rem;
+    row-gap: 1rem;
+    align-items: start;
+    padding: 2.5rem 3rem;
+  }
+
+  .r4-chal-meta-row {
+    grid-column: 1 / -1;
+    margin-bottom: 0.4rem;
+  }
+
+  .r4-chal-title {
+    grid-column: 1 / -1;
+    font-size: 2.2rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .r4-chal-subtitle {
+    grid-column: 1 / -1;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Left Side: Interactive Puzzle Box */
+  .r4-puzzle-box {
+    grid-column: 1;
+    margin-bottom: 0;
+    padding: 2rem;
+  }
+
+  /* Right Side: Control Panel (Form, Hint, Submit) */
+  .r4-chal-actions {
+    grid-column: 2;
+    position: sticky;
+    top: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: rgba(7, 10, 18, 0.95);
+    border: 1px solid var(--r4-border-glow);
+    border-radius: var(--r4-radius-lg);
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .r4-answer-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .r4-answer-input-box {
+    width: 100%;
+  }
+
+  .r4-btn-primary#r4-btn-submit-answer {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .r4-action-buttons-row {
+    width: 100%;
+  }
+
+  .r4-action-buttons-row .r4-btn {
+    width: 100%;
+  }
+
+  .r4-feedback-area {
+    grid-column: 1;
+    margin-top: 0.75rem;
+  }
+
+  .r4-continue-card {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+  }
+
+  /* Grid Layouts for Panes & Stage Components */
+  .r4-timeline-interactive {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .r4-timeline-connector {
+    display: none;
+  }
+
+  .r4-rules-dossier-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .r4-known-unknown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .r4-room-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+  }
+
+  .r4-c4-options-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.65rem;
+  }
+
+  .r4-suspects-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
+
+  .r4-lock-slots-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .r4-path-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+  }
+
+  .r4-locked-slots-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+  }
+
+  .r4-evidence-wall-grid, .r4-wall-items-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  /* Header HUD & Progress Bar */
+  .r4-hud-inner {
+    max-width: 1560px;
+    padding: 0.85rem 2rem;
+  }
+
+  .r4-progress-list {
+    max-width: 1560px;
+    padding: 0.65rem 2rem;
+    justify-content: space-between;
+  }
+
+  .r4-progress-step {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Result Screen Layouts */
+  .r4-timeup-card,
+  .r4-complete-card {
+    max-width: 1180px;
+    padding: 3rem 4rem;
+  }
+
+  .r4-stats-summary-grid,
+  .r4-results-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
   }
 }

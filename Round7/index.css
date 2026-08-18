@@ -1,0 +1,238 @@
+/* ============================================================
+   THOR VS DOCTOR DOOM — MAIN GAME PORTAL STYLESHEET
+   ============================================================ */
+
+:root {
+    --bg-dark: #020612;
+    --card-bg: rgba(9, 17, 34, 0.7);
+    --thor-cyan: #00e5ff;
+    --thor-glow: rgba(0, 229, 255, 0.45);
+    --doom-green: #39ff14;
+    --doom-glow: rgba(57, 255, 20, 0.4);
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --font-heading: 'Orbitron', sans-serif;
+    --font-tech: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Background effects */
+.space-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at 50% 30%, #0c1c38 0%, #030713 70%, #000000 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.energy-vortex {
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, rgba(57, 255, 20, 0.08) 50%, transparent 80%);
+    filter: blur(60px);
+}
+
+.game-wrapper {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+/* Header */
+.main-title-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.asgard-badge {
+    font-family: var(--font-tech);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--thor-cyan);
+    letter-spacing: 4px;
+    padding: 0.35rem 1.25rem;
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 20px;
+}
+
+.main-hero-title {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: #ffffff;
+    text-shadow: 0 0 30px var(--thor-glow);
+}
+
+.vs-text {
+    color: var(--doom-green);
+    text-shadow: 0 0 20px var(--doom-glow);
+    font-style: italic;
+}
+
+.subtitle-text {
+    font-family: var(--font-tech);
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    letter-spacing: 3px;
+}
+
+/* Story Grid */
+.story-rounds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.round-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.round-card.completed {
+    border-color: rgba(0, 229, 255, 0.25);
+}
+
+.card-status {
+    font-family: var(--font-tech);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--doom-green);
+    letter-spacing: 1.5px;
+}
+
+.round-number {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--thor-cyan);
+}
+
+.round-name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.hero-recruit {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.hero-recruit strong {
+    color: #ffffff;
+}
+
+/* Spotlight Card for Round 7 */
+.final-round-spotlight {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(8, 22, 48, 0.9), rgba(6, 28, 20, 0.9));
+    border: 2px solid var(--thor-cyan);
+    box-shadow: 0 0 35px var(--thor-glow);
+    padding: 2.5rem;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.spotlight-tag {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--doom-green);
+    letter-spacing: 3px;
+}
+
+.final-round-spotlight .round-number {
+    font-size: 1.6rem;
+    color: var(--thor-cyan);
+}
+
+.final-round-spotlight .round-name {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.final-desc {
+    max-width: 720px;
+    font-size: 1.1rem;
+    color: #e0f7fa;
+    line-height: 1.6;
+}
+
+.final-stages-pill {
+    font-family: var(--font-tech);
+    font-size: 1rem;
+    color: var(--doom-green);
+    padding: 0.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 30px;
+    border: 1px solid rgba(57, 255, 20, 0.3);
+}
+
+.btn-start-final-round {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #000000;
+    background: linear-gradient(90deg, var(--thor-cyan), var(--doom-green));
+    padding: 1.1rem 2.8rem;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 2px;
+    box-shadow: 0 0 25px var(--thor-glow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-start-final-round:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 40px var(--doom-glow);
+}
+
+.main-footer {
+    text-align: center;
+    font-family: var(--font-tech);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+}

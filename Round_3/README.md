@@ -27,17 +27,12 @@ A high-octane cyberpunk speed-coding game built with **100% Pure Vanilla HTML5, 
 * **Submission Ready**: Submit completed code only during Green Light phases.
 
 ### 🔴 Red Light Protocol (`STOP!`)
-* **Workspace Locked**: All keystrokes are intercepted and blocked from polluting your code.
-* **Two-Tier Penalty Engine**:
-  1. **Keys 1 to 5 on Red Light**:
-     * **Score Deduction**: Each key tapped on Red immediately deducts **-10 PTS** from your live score.
-     * **Code Preserved**: Your typed workspace code remains **100% safe**.
-     * **Warning Sound**: Plays an 8-bit square wave error tone.
-  2. **6th Key and Above on Red Light (`> 5` Characters)**:
-     * 💥 **Workspace Cleared**: The entire typed code is deleted immediately.
-     * 📉 **Score Wiped**: Your score is reset to **0 PTS**.
-     * 🚨 **Violation Logged**: Adds **+1 Violation** count.
-     * 🔊 **Alarm Triggered**: Displays a full-screen red warning flash and triggers a two-tone alarm siren.
+* **Workspace Interactive (Unlocked)**: The workspace remains unlocked during Red Light.
+* **Instant Code Wipe Penalty Engine**:
+  * 💥 **Workspace Cleared**: Typing any key on Red Light immediately deletes your entire typed code completely.
+  * 📉 **Score Wiped**: Your score is reset to **0 PTS**.
+  * 🚨 **Violation Logged**: Adds **+1 Violation** count.
+  * 🔊 **Uniform Sound**: Standard keypress typing sound plays on all typing (no audio variation on light state change).
 
 ---
 

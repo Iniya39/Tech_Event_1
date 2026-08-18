@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round 6: CONNECTIONS - Technical Competition</title>
+    <meta name="description" content="Technical competition round: CONNECTIONS. Identify the common computer science concept from visual clues.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body class="dark-theme">
+    <div id="app" class="app-container">
+
+        <!-- HEADER / TOP NAV -->
+        <header class="top-header">
+            <div class="brand">
+                <span class="badge-round">ROUND 6</span>
+                <h1 class="brand-title">CONNECTIONS</h1>
+            </div>
+            <div class="header-controls">
+                <button id="sound-toggle-btn" class="icon-btn" aria-label="Toggle Sound">
+                    <span id="sound-icon">🔇</span>
+                    <span id="sound-text">SOUND OFF</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="main-content">
+
+            <!-- SCREEN 1: INTRO SCREEN -->
+            <section id="screen-intro" class="screen active">
+                <div class="intro-card glass-panel">
+                    <div class="intro-badge">TECHNICAL COMPETITION ROUND 6</div>
+                    <h1 class="intro-title">CONNECTIONS</h1>
+                    <p class="intro-subtitle">"Find the common technical connection."</p>
+                    
+                    <div class="intro-description">
+                        <p>Observe each visual puzzle image carefully. The images represent clues pointing toward a single core computer science concept, tool, language, or system.</p>
+                        <p>Type your answer in the text box. You have <strong>unlimited attempts</strong> within the 20-second time limit per question!</p>
+                    </div>
+
+                    <div class="intro-rules-grid">
+                        <div class="rule-box">
+                            <span class="rule-value">15</span>
+                            <span class="rule-label">QUESTIONS</span>
+                        </div>
+                        <div class="rule-box">
+                            <span class="rule-value">20s</span>
+                            <span class="rule-label">TIME / QUESTION</span>
+                        </div>
+                        <div class="rule-box">
+                            <span class="rule-value">N ATTEMPTS</span>
+                            <span class="rule-label">MULTIPLE TRIES</span>
+                        </div>
+                        <div class="rule-box">
+                            <span class="rule-value">DIRECT</span>
+                            <span class="rule-label">TYPE YOUR ANSWER</span>
+                        </div>
+                    </div>
+
+                    <div class="intro-actions">
+                        <button id="start-game-btn" class="primary-btn pulse-glow">
+                            START ROUND <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 2: COUNTDOWN OVERLAY -->
+            <section id="screen-countdown" class="screen hidden">
+                <div class="countdown-container">
+                    <div id="countdown-number" class="countdown-display">3</div>
+                    <div class="countdown-subtext">GET READY</div>
+                </div>
+            </section>
+
+            <!-- SCREEN 3: ACTIVE GAME QUESTION -->
+            <section id="screen-question" class="screen hidden">
+                <!-- HUD TOP PANEL -->
+                <div class="hud-container glass-panel">
+                    <div class="hud-item question-tracker">
+                        <span class="hud-label">QUESTION</span>
+                        <span id="hud-question-num" class="hud-val">1 / 15</span>
+                    </div>
+
+                    <div class="hud-item score-tracker">
+                        <span class="hud-label">SCORE</span>
+                        <span id="hud-score" class="hud-val">0</span>
+                    </div>
+
+                    <div class="hud-item timer-tracker">
+                        <span class="hud-label">TIME REMAINING</span>
+                        <div class="timer-display-wrapper">
+                            <span id="hud-timer" class="hud-val timer-val">20s</span>
+                        </div>
+                    </div>
+
+                    <div class="hud-item difficulty-tracker">
+                        <span id="hud-difficulty-badge" class="diff-tag diff-challenging">CHALLENGING</span>
+                    </div>
+                </div>
+
+                <!-- HUD PROGRESS BAR -->
+                <div class="progress-bar-container">
+                    <div id="hud-progress-fill" class="progress-bar-fill" style="width: 6.66%;"></div>
+                </div>
+
+                <!-- MAIN QUESTION BODY -->
+                <div class="question-body">
+                    <div class="question-instruction">
+                        <h2>Find the common technical connection.</h2>
+                    </div>
+
+                    <!-- SINGLE IMAGE CONTAINER -->
+                    <div id="dynamic-image-grid" class="single-image-wrapper">
+                        <!-- Dynamically populated by JS -->
+                    </div>
+
+                    <!-- ANSWER SUBMISSION FORM -->
+                    <form id="answer-form" class="answer-form glass-panel" autocomplete="off" onsubmit="return false;">
+                        <label for="user-answer-input" class="input-label">YOUR ANSWER</label>
+                        <div class="input-group">
+                            <input 
+                                type="text" 
+                                id="user-answer-input" 
+                                class="answer-input" 
+                                placeholder="Type your technical answer..." 
+                                autofocus 
+                                required
+                            />
+                            <button type="submit" id="submit-answer-btn" class="submit-btn">
+                                SUBMIT ANSWER
+                            </button>
+                        </div>
+                        <div class="input-hint">Unlimited attempts allowed within 20s! Exact spelling required.</div>
+                    </form>
+                </div>
+
+                <!-- FEEDBACK OVERLAY BANNER -->
+                <div id="feedback-banner" class="feedback-banner hidden">
+                    <div class="feedback-content">
+                        <div id="feedback-status" class="feedback-status">CORRECT</div>
+                        <div id="feedback-points" class="feedback-points">+100 POINTS</div>
+                        <div id="feedback-correct-answer" class="feedback-correct-answer"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 4: RESULT SCREEN -->
+            <section id="screen-result" class="screen hidden">
+                <div class="result-card glass-panel">
+                    <div class="result-header">
+                        <span class="badge-completed">ROUND COMPLETE</span>
+                        <h1 class="result-title">FINAL RESULTS</h1>
+                    </div>
+
+                    <!-- RANK BADGE -->
+                    <div class="rank-display-container">
+                        <div id="result-rank-badge" class="rank-badge rank-s">S</div>
+                        <div id="result-rank-title" class="rank-title">Exceptional Performance</div>
+                    </div>
+
+                    <!-- METRICS GRID -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-label">TOTAL SCORE</span>
+                            <span id="result-score" class="metric-value highlight">0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">CORRECT</span>
+                            <span id="result-correct" class="metric-value color-success">0 / 15</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">INCORRECT</span>
+                            <span id="result-wrong" class="metric-value color-danger">0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">TIMEOUT</span>
+                            <span id="result-timeout" class="metric-value color-warning">0</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">ACCURACY</span>
+                            <span id="result-accuracy" class="metric-value">0%</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">TOTAL TIME</span>
+                            <span id="result-total-time" class="metric-value">0s</span>
+                        </div>
+                    </div>
+
+                    <!-- DETAILED SUMMARY TABLE -->
+                    <div class="summary-section">
+                        <h3>Question Performance Breakdown</h3>
+                        <div class="summary-table-wrapper">
+                            <table class="summary-table">
+                                <thead>
+                                    <tr>
+                                        <th>Q#</th>
+                                        <th>Difficulty</th>
+                                        <th>Submitted Answer</th>
+                                        <th>Correct Answer</th>
+                                        <th>Status</th>
+                                        <th>Attempts</th>
+                                        <th>Time</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="result-table-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- RESTART ACTION -->
+                    <div class="result-actions" style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
+                        <button id="restart-game-btn" class="primary-btn">
+                            RESTART ROUND ↺
+                        </button>
+                        <button id="btn-proceed-round-7" class="primary-btn pulse-glow" style="background: linear-gradient(135deg, #00f0ff, #7000ff); border-color: #00f0ff;" onclick="window.location.href='../Round7/index.html'">
+                            PROCEED TO FINAL ROUND (ROUND 7) →
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bottom-footer">
+            <p>Connections Technical Round &bull; Computer Science & Engineering Competition</p>
+        </footer>
+    </div>
+
+    <!-- Supabase Connection Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../supabase.js"></script>
+
+    <!-- JavaScript Modules -->
+    <script src="js/storage.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/scoring.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
