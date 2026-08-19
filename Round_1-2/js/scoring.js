@@ -7,7 +7,7 @@ class ScoringSystem {
     constructor(config = {}) {
         this.baseScore = config.baseScore !== undefined ? config.baseScore : 100;
         this.speedBonusMultiplier = config.speedBonusMultiplier !== undefined ? config.speedBonusMultiplier : 10;
-        this.questionTime = config.questionTime !== undefined ? config.questionTime : 20;
+        this.questionTime = config.questionTime !== undefined ? config.questionTime : 90;
     }
 
     /**

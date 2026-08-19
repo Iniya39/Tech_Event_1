@@ -27,6 +27,32 @@
     gap: 8px;
 }
 
+.btn-next-chap-nav {
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(112, 0, 255, 0.2));
+    border: 1px solid rgba(0, 240, 255, 0.5);
+    color: #00f0ff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: 'Rajdhani', 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-next-chap-nav:hover {
+    background: linear-gradient(135deg, #00f0ff, #7000ff);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    transform: translateY(-1px);
+}
+
 .gtl-hud-metrics {
     display: flex;
     gap: 24px;
@@ -162,6 +188,8 @@
     background: #0d1117;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: left;
+    justify-content: flex-start;
 }
 
 .gtl-line-numbers {
@@ -185,6 +213,7 @@
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
+    text-align: left;
 }
 
 /* Syntax Highlighting Tokens */

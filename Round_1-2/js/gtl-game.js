@@ -163,12 +163,9 @@ class GTLGameEngine {
      * @param {string} submittedAnswer 
      */
     async submitAnswer(submittedAnswer) {
-        if (!this.isQuestionActive || this.isSubmitted) return;
+        if (!this.isQuestionActive || this.isSubmitted || this.isSubmitting) return;
 
-        // Anti-cheating submission lock
-        this.isSubmitted = true;
-        this.stopTimer();
-        this.setState("SUBMITTED");
+        this.isSubmitting = true;
 
         const responseTime = parseFloat((this.config.questionTime - this.remainingTime).toFixed(2));
         const currentQ = this.questions[this.currentQuestionIndex];
@@ -178,6 +175,28 @@ class GTLGameEngine {
         const isCorrect = validationResult.isCorrect;
         const scoreEarned = validationResult.score;
 
+        this.isSubmitting = false;
+
+        if (!isCorrect) {
+            // Incorrect answer: Allow n attempts within time limit
+            if (this.sound && this.sound.playTimeout) this.sound.playTimeout();
+            
+            if (this.callbacks.onFeedback) {
+                this.callbacks.onFeedback({
+                    type: 'INCORRECT',
+                    scoreEarned: 0,
+                    correctAnswer: currentQ.correctAnswer,
+                    gameInstance: this
+                });
+            }
+            return;
+        }
+
+        // Correct Answer: Lock & advance
+        this.isSubmitted = true;
+        this.stopTimer();
+        this.setState("SUBMITTED");
+
         this.totalScore += scoreEarned;
 
         this.questionResults.push({
@@ -185,24 +204,28 @@ class GTLGameEngine {
             category: currentQ.category,
             submittedAnswer: submittedAnswer,
             correctAnswer: currentQ.correctAnswer,
-            isCorrect: isCorrect,
+            isCorrect: true,
             isTimeout: false,
             responseTime: responseTime,
             score: scoreEarned
         });
 
-        // Trigger Audio Feedback
-        if (isCorrect) {
-            if (this.sound && this.sound.playCorrect) this.sound.playCorrect();
-        } else {
-            if (this.sound && this.sound.playTimeout) this.sound.playTimeout();
+        // Trigger Audio & Instant DB Persistence
+        if (this.sound && this.sound.playCorrect) this.sound.playCorrect();
+
+        // Instant Database Score Transmission & Realtime Leaderboard Update (Round 2)
+        const teamId = localStorage.getItem("current_team_id");
+        if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+            window.TournamentDB.saveRoundScore(teamId, 2, this.totalScore)
+                .then(res => console.log(`🏆 [Supabase DB] Instant Round 2 score updated: ${this.totalScore}`, res))
+                .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
         }
 
         // Trigger UI Feedback State
         this.setState("FEEDBACK");
         if (this.callbacks.onFeedback) {
             this.callbacks.onFeedback({
-                type: isCorrect ? 'CORRECT' : 'INCORRECT',
+                type: 'CORRECT',
                 scoreEarned: scoreEarned,
                 correctAnswer: currentQ.correctAnswer,
                 gameInstance: this

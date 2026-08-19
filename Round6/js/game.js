@@ -14,7 +14,7 @@ const GameEngine = (function () {
     let currentQuestionIndex = 0;
     let activeQuestion = null;
     let timerInterval = null;
-    let secondsRemaining = 20;
+    let secondsRemaining = 100;
     let questionStartTime = 0;
     let attemptsCount = 0;
     let isSubmitting = false;
@@ -178,7 +178,7 @@ const GameEngine = (function () {
     }
 
     /**
-     * Loads question at index into UI and starts 20s timer.
+     * Loads question at index into UI and starts 90s timer.
      */
     function loadQuestion(index) {
         if (index >= CONNECTIONS_QUESTIONS.length) {
@@ -191,9 +191,15 @@ const GameEngine = (function () {
         currentState = 'QUESTION';
         attemptsCount = 0;
         isSubmitting = false;
+        secondsRemaining = activeQuestion.timeLimit || 100;
+        questionStartTime = Date.now();
 
         // Reset HUD & Input
         showScreen('screen-question');
+        // Tab-switch monitoring temporarily disabled
+        // if (typeof window.startTabSwitchMonitoring === 'function') {
+        //     window.startTabSwitchMonitoring();
+        // }
         updateHUD();
         renderQuestionImage(activeQuestion);
 
@@ -210,16 +216,14 @@ const GameEngine = (function () {
         feedbackBanner.className = 'feedback-banner hidden';
 
         if (hintEl) {
-            hintEl.textContent = "Unlimited attempts allowed within 20s! Exact spelling required.";
+            hintEl.textContent = "Unlimited attempts allowed within 100s! Exact spelling required.";
             hintEl.style.color = "var(--text-dim)";
         }
 
         // Set focus to input field
         setTimeout(() => answerInput.focus(), 100);
 
-        // Start 20s Question Timer
-        secondsRemaining = activeQuestion.timeLimit || 20;
-        questionStartTime = Date.now();
+        // Start 90s Question Timer
         startTimer();
     }
 
@@ -252,28 +256,57 @@ const GameEngine = (function () {
         progressFill.style.width = `${pct}%`;
     }
 
+    let lastTickedSecond = -1;
+
     /**
-     * Timer countdown logic.
+     * Timer countdown logic using high-precision timestamp calculation.
      */
     function startTimer() {
         clearInterval(timerInterval);
         const timerEl = document.getElementById('hud-timer');
+        const progressFill = document.getElementById('hud-progress-fill');
+        const totalDuration = (activeQuestion && activeQuestion.timeLimit) ? activeQuestion.timeLimit : 100;
+        lastTickedSecond = totalDuration;
 
-        timerInterval = setInterval(() => {
-            secondsRemaining--;
-            timerEl.textContent = `${secondsRemaining}s`;
+        if (progressFill) {
+            progressFill.style.transition = 'none';
+            progressFill.style.width = '100%';
+            void progressFill.offsetWidth;
+            progressFill.style.transition = 'width 0.2s linear';
+        }
 
-            if (secondsRemaining <= 10 && secondsRemaining > 5) {
-                timerEl.className = 'hud-val timer-val warning';
-                playSound('tick');
-            } else if (secondsRemaining <= 5 && secondsRemaining > 0) {
-                timerEl.className = 'hud-val timer-val critical';
-                playSound('tick');
-            } else if (secondsRemaining <= 0) {
+        const updateTimer = () => {
+            if (currentState !== 'QUESTION' || isSubmitting) return;
+
+            const elapsedSeconds = (Date.now() - questionStartTime) / 1000;
+            const remaining = Math.max(0, Math.ceil(totalDuration - elapsedSeconds));
+            secondsRemaining = remaining;
+            timerEl.textContent = `${remaining}s`;
+
+            if (progressFill) {
+                const pct = Math.max(0, Math.min(100, (remaining / totalDuration) * 100)).toFixed(1);
+                progressFill.style.width = `${pct}%`;
+            }
+
+            if (remaining !== lastTickedSecond) {
+                lastTickedSecond = remaining;
+                if (remaining <= 10 && remaining > 5) {
+                    timerEl.className = 'hud-val timer-val warning';
+                    playSound('tick');
+                } else if (remaining <= 5 && remaining > 0) {
+                    timerEl.className = 'hud-val timer-val critical';
+                    playSound('tick');
+                }
+            }
+
+            if (remaining <= 0) {
                 clearInterval(timerInterval);
                 handleTimeout();
             }
-        }, 1000);
+        };
+
+        updateTimer();
+        timerInterval = setInterval(updateTimer, 100);
     }
 
     /**
@@ -396,6 +429,14 @@ const GameEngine = (function () {
         if (result.isCorrect) {
             sessionData.correct++;
             sessionData.score += result.score;
+
+            // Instant Database Score Transmission & Realtime Leaderboard Update (Round 6)
+            const teamId = localStorage.getItem("current_team_id");
+            if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+                window.TournamentDB.saveRoundScore(teamId, 6, sessionData.score)
+                    .then(res => console.log(`🏆 [Supabase DB] Instant Round 6 score updated: ${sessionData.score}`, res))
+                    .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
+            }
 
             statusEl.textContent = "✓ CORRECT";
             pointsEl.textContent = `+${result.score} POINTS`;

@@ -61,6 +61,32 @@ html, body {
     user-select: none;
 }
 
+.btn-next-chap-nav {
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(139, 92, 246, 0.2));
+    border: 1px solid rgba(0, 229, 255, 0.5);
+    color: var(--thor-cyan);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-next-chap-nav:hover {
+    background: linear-gradient(135deg, var(--thor-cyan), var(--doom-green));
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+    transform: translateY(-1px);
+}
+
 /* Animated Deep Space Cosmic Background */
 .cosmic-canvas-container {
     position: fixed;
@@ -1217,12 +1243,71 @@ html, body {
     letter-spacing: 1px;
 }
 
-.sudoku-footer {
-    margin-top: 1rem;
-}
-
 .sudoku-footer .btn-submit {
     width: 100%;
+}
+
+/* Round 7 Disclaimer Callout Box */
+.rules-disclaimer-box {
+    margin-top: 1.25rem;
+    padding: 1.1rem 1.25rem;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1.5px solid #f59e0b;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+    text-align: left;
+}
+
+.rules-disclaimer-box .disclaimer-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #f59e0b;
+    letter-spacing: 1px;
+}
+
+.rules-disclaimer-box .disclaimer-text {
+    margin: 0;
+    color: #fef08a;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    font-family: var(--font-body);
+}
+
+/* One-time Skip Question Button */
+.btn-skip-question {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+    border: 1px solid #f59e0b;
+    color: #f59e0b;
+    padding: 0 1.25rem;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-skip-question:hover:not(:disabled) {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+    transform: translateY(-1px);
+}
+
+.btn-skip-question:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #64748b;
+    color: #94a3b8;
+    background: rgba(30, 41, 59, 0.5);
+    box-shadow: none;
 }
 
 /* Responsive Media Queries */

@@ -5,7 +5,7 @@
 
 const GAME_CONFIG = {
     totalQuestions: 15,
-    defaultQuestionTime: 20,
+    defaultQuestionTime: 100,
     speedBonusMultiplier: 5,
     
     // Performance Ranks & Configurable Score/Accuracy Thresholds

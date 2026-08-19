@@ -27,47 +27,6 @@ const CODE_SNIPPETS = [
 </body>
 </html>`,
     description: 'The fundamental HTML5 boilerplate structure required for modern web applications.'
-  },
-  {
-    id: 'cyber-login-form',
-    title: 'Cyberpunk Auth Interface',
-    difficulty: 'MEDIUM',
-    language: 'html',
-    code: `<form class="cyber-card p-6 bg-slate-900 border border-cyan-500/50 rounded-xl">
-  <h2 class="text-xl font-bold text-cyan-400 mb-4">NET ACCESS</h2>
-  <div class="mb-4">
-    <label for="handle" class="block text-xs uppercase tracking-wider text-slate-400">Agent Handle</label>
-    <input type="text" id="handle" name="handle" required class="w-full bg-slate-950 border border-slate-700 px-3 py-2 text-emerald-400 focus:outline-none focus:border-cyan-400" />
-  </div>
-  <button type="submit" class="w-full py-2 bg-cyan-500 text-slate-950 font-bold hover:bg-cyan-400">
-    AUTHENTICATE
-  </button>
-</form>`,
-    description: 'Tactical login interface snippet using Tailwind classes.'
-  },
-  {
-    id: 'full-html5-app',
-    title: 'Modern SPA Shell',
-    difficulty: 'HARD',
-    language: 'html',
-    code: `<!DOCTYPE html>
-<html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cyber Matrix Protocol</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-950 text-slate-100 flex flex-col min-h-screen">
-  <header class="h-16 border-b border-slate-800 flex items-center justify-between px-6">
-    <span class="font-mono text-emerald-400 font-bold">SYSTEM // ACTIVE</span>
-  </header>
-  <div id="app" class="flex-1 p-8 grid grid-cols-2 gap-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-lg p-4"></div>
-  </div>
-</body>
-</html>`,
-    description: 'Full Single Page Application HTML markup layout with external scripts.'
   }
 ];
 
@@ -301,13 +260,13 @@ const state = {
   redLightStartTime: null,
   scoreWiped: false,
   isMuted: false,
-  
+
   // Timing & Telemetry
   raceStartTime: null,
   liveElapsedTime: 0,
   finalTimeTaken: 0,
   finalScore: 0,
-  
+
   // Ghost Multiplayer Racers
   ghosts: [
     { id: '1', name: 'CYBER_SAMURAI_99', colorClass: 'color-samurai', progress: 0, cpm: 320, violations: 0, isStopped: false },
@@ -338,12 +297,12 @@ const elements = {
   btnStartGame: document.getElementById('btn-start-game'),
   btnResetGame: document.getElementById('btn-reset-game'),
   btnToggleMute: document.getElementById('btn-toggle-mute'),
-  
+
   // Sub-header Telemetry
   snippetSelectorContainer: document.getElementById('snippet-selector-container'),
   telemetrySpeed: document.getElementById('telemetry-speed'),
   telemetryTime: document.getElementById('telemetry-time'),
-  
+
   // Arena
   arenaCard: document.getElementById('arena-card'),
   arenaTitle: document.getElementById('arena-title'),
@@ -358,10 +317,10 @@ const elements = {
   btnSubmitCode: document.getElementById('btn-submit-code'),
   violationFlashOverlay: document.getElementById('violation-flash-overlay'),
   violationFlashTotal: document.getElementById('violation-flash-total'),
-  
+
   // Leaderboard
   leaderboardList: document.getElementById('leaderboard-list'),
-  
+
   // Modal
   missionModal: document.getElementById('mission-complete-modal'),
   modalPlayerName: document.getElementById('modal-player-name'),
@@ -441,12 +400,12 @@ function renderReferenceCode() {
   const activeSnippet = getActiveSnippet();
   const refChars = activeSnippet.code.split('');
   const userChars = state.userCode.split('');
-  
+
   // Calculate line numbers
   const refLines = activeSnippet.code.split('\n');
   const userLines = state.userCode.split('\n');
   const maxLineCount = Math.max(refLines.length, userLines.length, 14);
-  
+
   let lineNumbersHtml = '';
   for (let i = 1; i <= maxLineCount; i++) {
     lineNumbersHtml += `<div>${i}</div>`;
@@ -536,10 +495,10 @@ function updateHUD() {
     elements.signalText.textContent = 'SIGNAL STANDBY';
   } else if (state.lightState === 'GREEN') {
     elements.signalBeacon.classList.add('signal-green');
-    elements.signalText.textContent = 'GREEN LIGHT // WRITE';
+    elements.signalText.textContent = 'GREEN LIGHT  WRITE';
   } else {
     elements.signalBeacon.classList.add('signal-red');
-    elements.signalText.textContent = 'RED LIGHT // STOP!';
+    elements.signalText.textContent = 'RED LIGHT  STOP!';
   }
 
   // Arena Card Glow & Badges
@@ -565,7 +524,7 @@ function updateHUD() {
   // Textarea state & placeholder - Workspace is NOT locked on RED light!
   elements.workspaceTextarea.readOnly = (state.gameState !== 'PLAYING');
   elements.workspaceTextarea.disabled = (state.gameState !== 'PLAYING');
-  
+
   if (state.gameState === 'IDLE') {
     elements.workspaceTextarea.placeholder = 'Press "START RACE" above to initiate signal telemetry...';
   } else if (state.lightState === 'RED') {
@@ -698,7 +657,45 @@ function scheduleNextLightChange() {
   }, duration);
 }
 
+function startRound3Countdown() {
+  const introModal = document.getElementById('round3-intro-modal');
+  const countOverlay = document.getElementById('r3-countdown-overlay');
+  const countNum = document.getElementById('r3-countdown-number');
+  if (introModal) {
+    introModal.style.display = 'none';
+    introModal.classList.add('hidden');
+  }
+  if (!countOverlay || !countNum) {
+    startGame();
+    return;
+  }
+
+  countOverlay.style.display = 'flex';
+  let num = 3;
+  countNum.textContent = num;
+  countNum.style.color = '#06b6d4';
+
+  const timer = setInterval(() => {
+    num--;
+    if (num > 0) {
+      countNum.textContent = num;
+    } else if (num === 0) {
+      countNum.textContent = "GO!";
+      countNum.style.color = "#34d399";
+    } else {
+      clearInterval(timer);
+      countOverlay.style.display = 'none';
+      startGame();
+    }
+  }, 1000);
+}
+window.startRound3Countdown = startRound3Countdown;
+
 function startGame() {
+  // Tab-switch monitoring temporarily disabled
+  // if (typeof window.startTabSwitchMonitoring === 'function') {
+  //   window.startTabSwitchMonitoring();
+  // }
   state.gameState = 'PLAYING';
   state.lightState = 'GREEN';
   state.userCode = '';
@@ -877,9 +874,9 @@ function showMissionCompleteModal() {
 // --- Event Listeners Setup ---
 function setupEventListeners() {
   // Start / Reset / Mute Buttons
-  elements.btnStartGame.addEventListener('click', startGame);
+  elements.btnStartGame.addEventListener('click', startRound3Countdown);
   elements.btnResetGame.addEventListener('click', resetGame);
-  
+
   elements.btnToggleMute.addEventListener('click', () => {
     const isMuted = soundFx.toggleMute();
     state.isMuted = isMuted;
@@ -1055,8 +1052,7 @@ function setupEventListeners() {
 
   elements.btnNextRace.addEventListener('click', () => {
     elements.missionModal.classList.add('hidden');
-    state.selectedSnippetIndex = (state.selectedSnippetIndex + 1) % CODE_SNIPPETS.length;
-    startGame();
+    window.location.href = '../round4/index.html';
   });
 
   elements.btnShareTelemetry.addEventListener('click', () => {

@@ -84,6 +84,7 @@ const DOM = {
     puzzleDynamicArea: null,
     puzzleInput: null,
     btnSubmit: null,
+    btnSkipQuestion: null,
     feedbackMsg: null,
 
     // Modals
@@ -210,6 +211,7 @@ function startFinalRound() {
     FinalRoundState.finalRoundStarted = false;
     FinalRoundState.previousStage = 0;
     FinalRoundState.sudokuSolved = false;
+    FinalRoundState.hasUsedSkip = false;
 
     if (DOM.totalProgressVal) {
         DOM.totalProgressVal.textContent = FinalRoundState.totalPuzzlesCount;
@@ -249,6 +251,7 @@ function initDOMReferences() {
     DOM.puzzleDynamicArea = document.getElementById("puzzle-dynamic-area");
     DOM.puzzleInput = document.getElementById("puzzle-input");
     DOM.btnSubmit = document.getElementById("btn-submit");
+    DOM.btnSkipQuestion = document.getElementById("btn-skip-question");
     DOM.feedbackMsg = document.getElementById("feedback-msg");
 
     DOM.finalRulesModal = document.getElementById("final-rules-modal");
@@ -299,6 +302,10 @@ function resumeTimer() {
     if (FinalRoundState.isTimerRunning) return;
 
     FinalRoundState.isTimerRunning = true;
+    // Tab-switch monitoring temporarily disabled
+    // if (typeof window.startTabSwitchMonitoring === 'function') {
+    //     window.startTabSwitchMonitoring();
+    // }
     updateTimerDisplay();
 
     if (FinalRoundState.timerInterval) {
@@ -582,11 +589,46 @@ function checkAnswer() {
 }
 
 /**
+ * Handles single-use Skip Question action during Round 7
+ */
+function handleSkipQuestion() {
+    if (FinalRoundState.isGameOver) return;
+    if (FinalRoundState.hasUsedSkip) {
+        showIncorrect("Skip button has already been used! Only 1 skip allowed per round.");
+        return;
+    }
+
+    FinalRoundState.hasUsedSkip = true;
+    if (DOM.btnSkipQuestion) {
+        DOM.btnSkipQuestion.disabled = true;
+        DOM.btnSkipQuestion.textContent = "⏭ SKIP USED";
+    }
+
+    if (DOM.feedbackMsg) {
+        DOM.feedbackMsg.textContent = "⏭ QUESTION SKIPPED — ADVANCING TO NEXT PUZZLE...";
+        DOM.feedbackMsg.className = "feedback-message info";
+    }
+
+    setTimeout(() => {
+        nextPuzzle();
+    }, 700);
+}
+
+/**
  * Displays positive feedback and advances to next puzzle
  */
 function showCorrect() {
     FinalRoundState.completedPuzzlesCount++;
     updateProgressUI();
+
+    // Instant Database Score Transmission & Realtime Leaderboard Update (Round 7)
+    const currentScore = Math.round((FinalRoundState.completedPuzzlesCount / FinalRoundState.totalPuzzlesCount) * 100);
+    const teamId = localStorage.getItem("current_team_id");
+    if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+        window.TournamentDB.saveRoundScore(teamId, 7, currentScore)
+            .then(res => console.log(`🏆 [Supabase DB] Instant Round 7 score updated: ${currentScore}`, res))
+            .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
+    }
 
     if (DOM.puzzleCard) {
         DOM.puzzleCard.classList.add("correct-feedback");
@@ -1113,6 +1155,9 @@ function attachEventHandlers() {
     if (DOM.btnSubmit) {
         DOM.btnSubmit.addEventListener("click", checkAnswer);
     }
+    if (DOM.btnSkipQuestion) {
+        DOM.btnSkipQuestion.addEventListener("click", handleSkipQuestion);
+    }
 
     if (DOM.puzzleInput) {
         DOM.puzzleInput.addEventListener("keydown", (e) => {
@@ -1175,6 +1220,17 @@ function attachEventHandlers() {
         if (e.target === DOM.morseRefModal) closeMorseReference();
         if (e.target === DOM.sudokuModal) closeSudokuModal();
     });
+}
+
+function openLeaderboardWithPassword(event) {
+    if (event) event.preventDefault();
+    const pass = prompt("🔐 LEADERBOARD ACCESS PROTOCOL\nEnter Password:");
+    if (pass === "leader@123") {
+        sessionStorage.setItem('leaderboard_unlocked', 'true');
+        window.location.href = "../../leaderboard.html";
+    } else if (pass !== null) {
+        alert("❌ ACCESS DENIED: Incorrect password!");
+    }
 }
 
 // Auto-boot on DOM ready

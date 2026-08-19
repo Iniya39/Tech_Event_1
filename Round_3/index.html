@@ -1,478 +1,507 @@
 <!doctype html>
 <html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RED LIGHT CODE RACE // Multiplayer Cyber Race</title>
-    <meta name="description" content="Server-synchronized Red Light Green Light speed coding race with strict penalty mechanics and real-time HUD." />
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Cyberpunk Stylesheet -->
-    <link rel="stylesheet" href="./css/style.css" />
-  </head>
-  <body class="cyber-grid">
-    <!-- Visual Scanline Overlay -->
-    <div class="scanline-overlay"></div>
 
-    <!-- Header HUD -->
-    <header class="header-hud">
-      <div class="hud-container">
-        
-        <!-- Brand & Player Profile -->
-        <div class="brand-section">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="brand-logo-box">
-              R
-              <span class="brand-ping-dot"></span>
-            </div>
-            <div>
-              <h1 class="brand-title gradient-text-brand">
-                ROUND 03 // RED LIGHT GREEN LIGHT CODE SPRINT
-              </h1>
-              <div class="brand-subtitle">
-                <span class="status-dot"></span>
-                <span>CYBER CIRCUIT v2.4</span>
-              </div>
-            </div>
-          </div>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RED LIGHT CODE RACE // Multiplayer Cyber Race</title>
+  <meta name="description"
+    content="Server-synchronized Red Light Green Light speed coding race with strict penalty mechanics and real-time HUD." />
 
-          <!-- Player Handle Pill -->
-          <div class="player-handle-pill">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Cyberpunk Stylesheet -->
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body class="cyber-grid">
+  <!-- Visual Scanline Overlay -->
+  <div class="scanline-overlay"></div>
+
+  <!-- Header HUD -->
+  <header class="header-hud">
+    <div class="hud-container">
+
+      <!-- Brand Section -->
+      <div class="brand-section" style="display: flex; align-items: center; gap: 16px;">
+        <div class="brand-logo-box" style="width: 44px; height: 44px; font-size: 1.25rem;">
+          R3
+          <span class="brand-ping-dot"></span>
+        </div>
+        <div>
+          <h1 class="brand-title gradient-text-brand" style="font-size: 1.35rem; letter-spacing: 0.08em; font-weight: 800; margin: 0; line-height: 1.2;">
+            ROUND 03 — RED LIGHT GREEN LIGHT CODE SPRINT
+          </h1>
+        </div>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="hud-metrics-grid">
+        <!-- Score -->
+        <div class="metric-card">
+          <div class="metric-card-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="8" r="7"></circle>
+              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
             </svg>
-            <button id="player-name-btn" class="player-handle-btn" title="Click to edit handle">
-              <span id="player-name-display">NET_RUNNER_01</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </button>
-            <input type="text" id="player-name-input" class="player-handle-input" style="display: none;" maxlength="15" />
+            <span>Score</span>
           </div>
+          <div id="hud-score-value" class="metric-card-value" style="color: #fbbf24;">0</div>
         </div>
 
-        <!-- Metrics Grid -->
-        <div class="hud-metrics-grid">
-          <!-- Score -->
-          <div class="metric-card">
-            <div class="metric-card-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="7"></circle>
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-              </svg>
-              <span>Score</span>
-            </div>
-            <div id="hud-score-value" class="metric-card-value" style="color: #fbbf24;">0</div>
+        <!-- Correct Characters -->
+        <div class="metric-card">
+          <div class="metric-card-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Correct</span>
           </div>
-
-          <!-- Correct Characters -->
-          <div class="metric-card">
-            <div class="metric-card-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
-              <span>Correct</span>
-            </div>
-            <div id="hud-correct-value" class="metric-card-value font-mono" style="color: #34d399;">0<span style="color:#64748b;font-size:0.75rem;font-weight:400;">/0</span></div>
-          </div>
-
-          <!-- Accuracy -->
-          <div class="metric-card">
-            <div class="metric-card-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <circle cx="12" cy="12" r="6"></circle>
-                <circle cx="12" cy="12" r="2"></circle>
-              </svg>
-              <span>Accuracy</span>
-            </div>
-            <div id="hud-accuracy-value" class="metric-card-value font-mono" style="color: #67e8f9;">100%</div>
-          </div>
-
-          <!-- Violations -->
-          <div id="hud-violations-card" class="metric-card metric-violations">
-            <div class="metric-card-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
-              <span>Violations</span>
-            </div>
-            <div id="hud-violations-value" class="metric-card-value font-mono">0</div>
-          </div>
+          <div id="hud-correct-value" class="metric-card-value font-mono" style="color: #34d399;">0<span
+              style="color:#64748b;font-size:0.75rem;font-weight:400;">/0</span></div>
         </div>
 
-        <!-- Signal Beacon & Controls -->
-        <div class="hud-controls-section">
-          <!-- Signal Beacon Status -->
-          <div id="signal-beacon" class="signal-beacon-pill signal-idle">
-            <span class="signal-indicator-dot"></span>
-            <span id="signal-beacon-text">SIGNAL STANDBY</span>
+        <!-- Accuracy -->
+        <div class="metric-card">
+          <div class="metric-card-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+            </svg>
+            <span>Accuracy</span>
           </div>
+          <div id="hud-accuracy-value" class="metric-card-value font-mono" style="color: #67e8f9;">100%</div>
+        </div>
 
-          <!-- Control Buttons -->
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <button id="btn-start-game" class="btn-primary">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
-              </svg>
-              START RACE
-            </button>
-
-            <button id="btn-reset-game" class="btn-icon" style="display: none;" title="Restart Race">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-              </svg>
-            </button>
-
-            <button id="btn-toggle-mute" class="btn-icon btn-mute-active" title="Mute SFX">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-              </svg>
-            </button>
-
-            <button id="btn-move-ch4" class="btn-primary" style="background: linear-gradient(135deg, #10b981, #06b6d4); font-weight: 800;" onclick="window.location.href='../round4/index.html'">
-              MOVE TO CHAPTER 4 →
-            </button>
+        <!-- Violations -->
+        <div id="hud-violations-card" class="metric-card metric-violations">
+          <div class="metric-card-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>Violations</span>
           </div>
+          <div id="hud-violations-value" class="metric-card-value font-mono">0</div>
+        </div>
+      </div>
 
+      <!-- Signal Beacon & Controls -->
+      <div class="hud-controls-section">
+        <!-- Signal Beacon Status -->
+        <div id="signal-beacon" class="signal-beacon-pill signal-idle">
+          <span class="signal-indicator-dot"></span>
+          <span id="signal-beacon-text"></span>
+        </div>
+
+        <!-- Control Buttons -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button id="btn-start-game" class="btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z">
+              </path>
+            </svg>
+            START RACE
+          </button>
+
+          <button id="btn-reset-game" class="btn-icon" style="display: none;" title="Restart Race">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+          </button>
+
+          <button id="btn-toggle-mute" class="btn-icon btn-mute-active" title="Mute SFX">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+          </button>
+
+          <button id="btn-move-ch4" class="btn-primary"
+            style="background: linear-gradient(135deg, #10b981, #06b6d4); font-weight: 800;"
+            onclick="window.location.href='../round4/index.html'">
+            MOVE TO CHAPTER 4 →
+          </button>
         </div>
 
       </div>
-    </header>
 
-    <!-- Sub-header Challenge Selector & Telemetry Bar -->
-    <div class="telemetry-subbar">
-      <!-- Challenge Switcher -->
-      <div class="snippet-selector-bar">
-        <span class="snippet-selector-label">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="16 18 22 12 16 6"></polyline>
-            <polyline points="8 6 2 12 8 18"></polyline>
-          </svg>
-          SELECT SNIPPET:
-        </span>
-        <div id="snippet-selector-container" style="display: flex; align-items: center; gap: 6px;"></div>
-      </div>
+    </div>
+  </header>
 
-      <!-- Live Race Telemetry -->
-      <div class="telemetry-stats-bar">
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: #64748b;">SPEED:</span>
-          <span id="telemetry-speed" style="font-weight: 700; color: #34d399;">0 CPM</span>
-        </div>
-        <div class="telemetry-divider"></div>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <span style="color: #64748b;">TIME REMAINING:</span>
-          <span id="telemetry-time" style="font-weight: 700; color: #67e8f9;">40:00</span>
-        </div>
-      </div>
+  <!-- Sub-header Telemetry Bar -->
+  <div class="telemetry-subbar" style="justify-content: flex-end;">
+    <!-- Challenge Switcher (Hidden: HTML5 Boilerplate only) -->
+    <div class="snippet-selector-bar" style="display: none;">
+      <span class="snippet-selector-label">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        SELECT SNIPPET:
+      </span>
+      <div id="snippet-selector-container" style="display: flex; align-items: center; gap: 6px;"></div>
     </div>
 
-    <!-- Main 50/50 Arena Section -->
-    <main class="arena-wrapper">
-      <div id="arena-card" class="arena-card arena-idle">
-        
-        <!-- Header Banner -->
-        <div class="arena-header-ribbon">
-          <div class="arena-title-tag">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="4 17 10 11 4 5"></polyline>
-              <line x1="12" y1="19" x2="20" y2="19"></line>
-            </svg>
-            <span id="arena-title">ARENA PROTOCOL // HTML5 Standard Boilerplate</span>
+    <!-- Live Race Telemetry (Large Timer Display) -->
+    <div class="telemetry-stats-bar">
+      <div style="display: flex; align-items: center; gap: 12px; background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.4); padding: 0.4rem 1.25rem; border-radius: 12px;">
+        <span style="color: #94a3b8; font-size: 0.95rem; font-weight: 800; letter-spacing: 1px;">TIME REMAINING:</span>
+        <span id="telemetry-time" style="font-family: 'Orbitron', var(--font-orbitron), monospace; font-size: 2.4rem; font-weight: 900; color: #00f0ff; text-shadow: 0 0 20px rgba(0, 240, 255, 0.7); line-height: 1;">40:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main 50/50 Arena Section -->
+  <main class="arena-wrapper">
+    <div id="arena-card" class="arena-card arena-idle">
+
+      <!-- Header Banner -->
+      <div class="arena-header-ribbon">
+        <div class="arena-title-tag">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <span id="arena-title">ARENA PROTOCOL // HTML5 Standard Boilerplate</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">
+            LANG: <span id="arena-language" style="color: #06b6d4; font-weight: 700;">HTML</span>
+          </span>
+          <div id="arena-status-badge" class="arena-status-badge badge-green">
+            <span class="signal-indicator-dot" style="background:#10b981;"></span>
+            INPUT UNLOCKED
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Grid Layout -->
+      <div class="arena-grid">
+
+        <!-- Left Split: Reference Code Panel -->
+        <div class="editor-box">
+          <div class="editor-box-header">
+            <div class="editor-box-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              <span>TARGET REFERENCE CODE (READ ONLY)</span>
+            </div>
+            <span id="ref-chars-count" style="font-family: var(--font-mono); font-size: 0.6875rem; color: #64748b;">
+              0 CHARS
+            </span>
           </div>
 
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">
-              LANG: <span id="arena-language" style="color: #06b6d4; font-weight: 700;">HTML</span>
-            </span>
-            <div id="arena-status-badge" class="arena-status-badge badge-green">
-              <span class="signal-indicator-dot" style="background:#10b981;"></span>
-              INPUT UNLOCKED
-            </div>
+          <div class="editor-content-viewport">
+            <div id="ref-line-numbers" class="line-numbers-gutter"></div>
+            <div id="ref-code-display" class="reference-display-area"></div>
           </div>
         </div>
 
-        <!-- Split Grid Layout -->
-        <div class="arena-grid">
-          
-          <!-- Left Split: Reference Code Panel -->
-          <div class="editor-box">
-            <div class="editor-box-header">
-              <div class="editor-box-title">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="16 18 22 12 16 6"></polyline>
-                  <polyline points="8 6 2 12 8 18"></polyline>
-                </svg>
-                <span>TARGET REFERENCE CODE (READ ONLY)</span>
-              </div>
-              <span id="ref-chars-count" style="font-family: var(--font-mono); font-size: 0.6875rem; color: #64748b;">
-                0 CHARS
-              </span>
-            </div>
-
-            <div class="editor-content-viewport">
-              <div id="ref-line-numbers" class="line-numbers-gutter"></div>
-              <div id="ref-code-display" class="reference-display-area"></div>
+        <!-- Right Split: Player Workspace Panel -->
+        <div class="editor-box">
+          <div class="editor-box-header">
+            <div class="editor-box-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+              <span>PLAYER WORKSPACE (TYPE HERE)</span>
             </div>
           </div>
 
-          <!-- Right Split: Player Workspace Panel -->
-          <div class="editor-box">
-            <div class="editor-box-header">
-              <div class="editor-box-title">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="4 17 10 11 4 5"></polyline>
-                  <line x1="12" y1="19" x2="20" y2="19"></line>
-                </svg>
-                <span>PLAYER WORKSPACE (TYPE HERE)</span>
+          <div class="editor-content-viewport">
+            <div id="workspace-line-numbers" class="line-numbers-gutter"></div>
+
+            <textarea id="workspace-textarea" class="code-workspace-textarea"
+              placeholder='Press "START RACE" above to initiate signal telemetry...' disabled spellcheck="false"
+              autocorrect="off" autocapitalize="off"></textarea>
+
+            <!-- Violation Flash Overlay -->
+            <div id="violation-flash-overlay" class="violation-flash-overlay" style="display: none;">
+              <svg class="violation-flash-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <h3 class="violation-flash-title">⚠ CODE CLEARED</h3>
+              <p class="violation-flash-desc">
+                RED LIGHT VIOLATION DETECTED! Input intercepted. Workspace cleared completely & penalty applied.
+              </p>
+              <div id="violation-flash-total" class="violation-flash-badge">
+                PENALTY APPLIED: -50 PTS | TOTAL VIOLATIONS: 1
               </div>
             </div>
+          </div>
 
-            <div class="editor-content-viewport">
-              <div id="workspace-line-numbers" class="line-numbers-gutter"></div>
-              
-              <textarea
-                id="workspace-textarea"
-                class="code-workspace-textarea"
-                placeholder='Press "START RACE" above to initiate signal telemetry...'
-                disabled
-                spellcheck="false"
-                autocorrect="off"
-                autocapitalize="off"
-              ></textarea>
+          <!-- Workspace Action Footer -->
+          <div class="workspace-footer">
+            <span id="workspace-status-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">
+              STATUS: READY FOR SUBMISSION
+            </span>
 
-              <!-- Violation Flash Overlay -->
-              <div id="violation-flash-overlay" class="violation-flash-overlay" style="display: none;">
-                <svg class="violation-flash-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
-                  <line x1="12" y1="9" x2="12" y2="13"></line>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-                <h3 class="violation-flash-title">⚠ CODE CLEARED</h3>
-                <p class="violation-flash-desc">
-                  RED LIGHT VIOLATION DETECTED! Input intercepted. Workspace cleared completely & penalty applied.
-                </p>
-                <div id="violation-flash-total" class="violation-flash-badge">
-                  PENALTY APPLIED: -50 PTS | TOTAL VIOLATIONS: 1
-                </div>
-              </div>
-            </div>
-
-            <!-- Workspace Action Footer -->
-            <div class="workspace-footer">
-              <span id="workspace-status-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">
-                STATUS: READY FOR SUBMISSION
-              </span>
-
-              <button id="btn-submit-code" class="btn-submit" disabled>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-                SUBMIT CODE (GREEN LIGHT ONLY)
-              </button>
-            </div>
-
+            <button id="btn-submit-code" class="btn-submit" disabled>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+              SUBMIT CODE (GREEN LIGHT ONLY)
+            </button>
           </div>
 
         </div>
 
       </div>
-    </main>
+
+    </div>
+  </main>
 
 
 
-    <!-- Round 3 Intro / Instructions Splash Modal -->
-    <div id="round3-intro-modal" class="modal-backdrop">
-      <div class="modal-dialog" style="text-align: center; max-width: 540px;">
-        <div style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: #06b6d4; letter-spacing: 0.15em; text-transform: uppercase;">
-          STAGE 03
+  <!-- 3-2-1 Countdown Overlay -->
+  <div id="r3-countdown-overlay" style="display: none; position: fixed; inset: 0; background: rgba(5, 7, 13, 0.94); z-index: 999999; backdrop-filter: blur(15px); align-items: center; justify-content: center; text-align: center;">
+    <div>
+      <div id="r3-countdown-number" style="font-family: 'Orbitron', var(--font-orbitron), sans-serif; font-size: 9rem; font-weight: 900; color: #06b6d4; text-shadow: 0 0 50px rgba(6, 182, 212, 0.8); line-height: 1;">3</div>
+      <div style="font-family: 'Fira Code', monospace; font-size: 1.25rem; color: #94a3b8; letter-spacing: 4px; text-transform: uppercase; margin-top: 1.5rem; font-weight: 700;">GET READY TO CODE</div>
+    </div>
+  </div>
+
+  <!-- Round 3 Intro / Instructions Full-Page Screen -->
+  <div id="round3-intro-modal" class="modal-backdrop" style="position: fixed; inset: 0; background: rgba(5, 7, 13, 0.96); z-index: 99999; backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+    <div style="max-width: 780px; width: 100%; text-align: center;">
+      <div
+        style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #06b6d4; letter-spacing: 0.2em; text-transform: uppercase;">
+        STAGE 03
+      </div>
+      <h1
+        style="font-family: var(--font-orbitron); font-size: 2rem; font-weight: 900; color: #ffffff; margin: 0.75rem 0 1.25rem 0; letter-spacing: 1px;">
+        ROUND 3: RED LIGHT GREEN LIGHT CODE SPRINT
+      </h1>
+      <p style="color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 2rem;">
+        Race against live signal telemetry! Type target code boilerplates rapidly while observing the strict green/red
+        light security beacon.
+      </p>
+
+      <div style="text-align: left; margin-bottom: 2.25rem;">
+        <div
+          style="font-family: var(--font-mono); font-size: 0.85rem; color: #06b6d4; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: 1px;">
+          INSTRUCTIONS &amp; PROTOCOL:
         </div>
-        <h1 style="font-family: var(--font-orbitron); font-size: 1.6rem; font-weight: 900; color: #ffffff; margin: 0.5rem 0;">
-          ROUND 3: RED LIGHT GREEN LIGHT CODE SPRINT
-        </h1>
-        <p style="color: #94a3b8; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem;">
-          Race against live signal telemetry! Type target code boilerplates rapidly while observing the strict green/red light security beacon.
+        <ul style="font-size: 0.95rem; color: #e2e8f0; line-height: 1.8; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px;">
+          <li>Type the reference code snippet into your workspace.</li>
+          <li><strong style="color: #34d399;">GREEN LIGHT:</strong> Input unlocked — type as fast as you can!</li>
+          <li><strong style="color: #f87171;">RED LIGHT:</strong> STOP typing immediately! Any keypress during Red Light triggers a violation
+            penalty.</li>
+          <li><strong style="color: #fbbf24;">TIMER:</strong> 40:00 overall countdown timer governs the entire sprint.</li>
+        </ul>
+      </div>
+
+      <button type="button" class="btn-primary"
+        style="width: 100%; justify-content: center; padding: 1rem 2rem; font-size: 1.1rem; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #06b6d4, #8b5cf6); border: none; box-shadow: 0 0 25px rgba(6, 182, 212, 0.5); cursor: pointer;"
+        onclick="startRound3Countdown()">
+        START ROUND 3 →
+      </button>
+    </div>
+  </div>
+
+  <!-- Mission Complete Modal -->
+  <div id="mission-complete-modal" class="modal-backdrop hidden">
+    <div class="modal-dialog">
+      <!-- Ambient Glow Orbs -->
+      <div class="modal-glow-top"></div>
+      <div class="modal-glow-bottom"></div>
+
+      <!-- Trophy Icon -->
+      <div class="modal-trophy-icon">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+          <path d="M4 22h16"></path>
+          <path d="M10 14.66V17c0 .55-.45 1-1 1H7v2h10v-2h-2c-.55 0-1-.45-1-1v-2.34"></path>
+          <path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"></path>
+        </svg>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <h2 class="font-orbitron"
+          style="font-size: 1.6rem; font-weight: 800; color: #ffffff; letter-spacing: 0.05em; text-transform: uppercase;">
+          MISSION COMPLETE
+        </h2>
+        <p class="font-mono" style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">
+          CIRCUIT TELEMETRY RECORDED FOR <span id="modal-player-name"
+            style="color: #06b6d4; font-weight: 700;">NET_RUNNER_01</span>
         </p>
-        <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: 10px; padding: 1rem; text-align: left; margin-bottom: 1.5rem;">
-          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #06b6d4; font-weight: 700; margin-bottom: 0.5rem;">
-            INSTRUCTIONS &amp; PROTOCOL:
-          </div>
-          <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; padding-left: 1.2rem;">
-            <li>Type the reference code snippet into your workspace.</li>
-            <li><strong>GREEN LIGHT:</strong> Input unlocked — type as fast as you can!</li>
-            <li><strong>RED LIGHT:</strong> STOP typing immediately! Any keypress during Red Light triggers a violation penalty.</li>
-            <li><strong>TIMER:</strong> 40:00 overall countdown timer governs the entire sprint.</li>
-          </ul>
+      </div>
+
+      <!-- Grade & Score Box -->
+      <div class="modal-score-box">
+        <div style="display: flex; justify-content: center;">
+          <span id="modal-grade-badge" class="modal-grade-pill grade-s">S RANK</span>
         </div>
-        <button type="button" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem 1.5rem; font-size: 1rem;" onclick="document.getElementById('round3-intro-modal').classList.add('hidden')">
-          START ROUND 3 →
+        <div class="modal-score-number gradient-text-gold">
+          <span id="modal-final-score">0</span> <span
+            style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; font-weight: 400;">PTS</span>
+        </div>
+        <p class="font-mono"
+          style="font-size: 0.6875rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">
+          Formula: ((Correct / Time) * 100) - (Violations * 50)
+        </p>
+      </div>
+
+      <!-- Stats Breakdown Grid -->
+      <div class="modal-stats-grid">
+        <!-- Time Taken -->
+        <div class="modal-stat-card">
+          <div class="modal-stat-icon-box"
+            style="background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.35); color: #06b6d4;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Total Time
+            </div>
+            <div id="modal-time-taken" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #f8fafc;">
+              0.0s</div>
+          </div>
+        </div>
+
+        <!-- Correct Characters -->
+        <div class="modal-stat-card">
+          <div class="modal-stat-icon-box"
+            style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #10b981;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Correct Chars
+            </div>
+            <div id="modal-correct-chars" class="font-mono"
+              style="font-size: 1.1rem; font-weight: 700; color: #34d399;">0</div>
+          </div>
+        </div>
+
+        <!-- Accuracy -->
+        <div class="modal-stat-card">
+          <div class="modal-stat-icon-box"
+            style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.35); color: #818cf8;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="6"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+            </svg>
+          </div>
+          <div>
+            <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Accuracy
+            </div>
+            <div id="modal-accuracy" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #a5b4fc;">100%
+            </div>
+          </div>
+        </div>
+
+        <!-- Violations -->
+        <div id="modal-violations-card" class="modal-stat-card">
+          <div class="modal-stat-icon-box"
+            style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #ef4444;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div>
+            <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Violations
+            </div>
+            <div id="modal-violations" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #f8fafc;">0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="modal-actions-box">
+        <div class="modal-actions-row">
+          <button id="btn-try-again" class="btn-secondary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+            TRY AGAIN
+          </button>
+
+          <button id="btn-next-race" class="btn-submit" style="width: 100%;">
+            <span>PROCEED TO CHAPTER 4 →</span>
+          </button>
+        </div>
+
+        <button id="btn-share-telemetry" class="btn-share">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          COPY & SHARE CIRCUIT TELEMETRY
+        </button>
+
+        <button id="btn-proceed-round-4" class="btn-submit"
+          style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #10b981, #06b6d4);"
+          onclick="window.location.href='../round4/index.html'">
+          <span>PROCEED TO ROUND 4 →</span>
         </button>
       </div>
+
     </div>
+  </div>
 
-    <!-- Mission Complete Modal -->
-    <div id="mission-complete-modal" class="modal-backdrop hidden">
-      <div class="modal-dialog">
-        <!-- Ambient Glow Orbs -->
-        <div class="modal-glow-top"></div>
-        <div class="modal-glow-bottom"></div>
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    RED LIGHT CODE RACE // SERVER SYNCHRONIZED CYBER CIRCUIT PROTOCOL
+  </footer>
 
-        <!-- Trophy Icon -->
-        <div class="modal-trophy-icon">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-            <path d="M4 22h16"></path>
-            <path d="M10 14.66V17c0 .55-.45 1-1 1H7v2h10v-2h-2c-.55 0-1-.45-1-1v-2.34"></path>
-            <path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"></path>
-          </svg>
-        </div>
+  <!-- Supabase Connection Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <!-- Tab Switch / Focus Loss Control Module -->
+  <script src="../tab-switch-control.js"></script>
 
-        <div style="text-align: center; margin-bottom: 20px;">
-          <h2 class="font-orbitron" style="font-size: 1.6rem; font-weight: 800; color: #ffffff; letter-spacing: 0.05em; text-transform: uppercase;">
-            MISSION COMPLETE
-          </h2>
-          <p class="font-mono" style="font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">
-            CIRCUIT TELEMETRY RECORDED FOR <span id="modal-player-name" style="color: #06b6d4; font-weight: 700;">NET_RUNNER_01</span>
-          </p>
-        </div>
+  <!-- Pure Vanilla Javascript Entrypoint (No Build / Server Required) -->
+  <script src="./js/app.js"></script>
+</body>
 
-        <!-- Grade & Score Box -->
-        <div class="modal-score-box">
-          <div style="display: flex; justify-content: center;">
-            <span id="modal-grade-badge" class="modal-grade-pill grade-s">S RANK</span>
-          </div>
-          <div class="modal-score-number gradient-text-gold">
-            <span id="modal-final-score">0</span> <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; font-weight: 400;">PTS</span>
-          </div>
-          <p class="font-mono" style="font-size: 0.6875rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">
-            Formula: ((Correct / Time) * 100) - (Violations * 50)
-          </p>
-        </div>
-
-        <!-- Stats Breakdown Grid -->
-        <div class="modal-stats-grid">
-          <!-- Time Taken -->
-          <div class="modal-stat-card">
-            <div class="modal-stat-icon-box" style="background: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.35); color: #06b6d4;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-            <div>
-              <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Total Time</div>
-              <div id="modal-time-taken" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #f8fafc;">0.0s</div>
-            </div>
-          </div>
-
-          <!-- Correct Characters -->
-          <div class="modal-stat-card">
-            <div class="modal-stat-icon-box" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #10b981;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
-            </div>
-            <div>
-              <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Correct Chars</div>
-              <div id="modal-correct-chars" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #34d399;">0</div>
-            </div>
-          </div>
-
-          <!-- Accuracy -->
-          <div class="modal-stat-card">
-            <div class="modal-stat-icon-box" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.35); color: #818cf8;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <circle cx="12" cy="12" r="6"></circle>
-                <circle cx="12" cy="12" r="2"></circle>
-              </svg>
-            </div>
-            <div>
-              <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Accuracy</div>
-              <div id="modal-accuracy" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #a5b4fc;">100%</div>
-            </div>
-          </div>
-
-          <!-- Violations -->
-          <div id="modal-violations-card" class="modal-stat-card">
-            <div class="modal-stat-icon-box" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #ef4444;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                <line x1="12" y1="8" x2="12" y2="12"></line>
-                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
-            </div>
-            <div>
-              <div class="font-mono" style="font-size: 0.625rem; color: #94a3b8; text-transform: uppercase;">Violations</div>
-              <div id="modal-violations" class="font-mono" style="font-size: 1.1rem; font-weight: 700; color: #f8fafc;">0</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="modal-actions-box">
-          <div class="modal-actions-row">
-            <button id="btn-try-again" class="btn-secondary">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
-              </svg>
-              TRY AGAIN
-            </button>
-
-            <button id="btn-next-race" class="btn-submit" style="width: 100%;">
-              <span>NEXT RACE</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </button>
-          </div>
-
-          <button id="btn-share-telemetry" class="btn-share">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="5" r="3"></circle>
-              <circle cx="6" cy="12" r="3"></circle>
-              <circle cx="18" cy="19" r="3"></circle>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-            </svg>
-            COPY & SHARE CIRCUIT TELEMETRY
-          </button>
-
-          <button id="btn-proceed-round-4" class="btn-submit" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #10b981, #06b6d4);" onclick="window.location.href='../round4/index.html'">
-            <span>PROCEED TO ROUND 4 →</span>
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Site Footer -->
-    <footer class="site-footer">
-      RED LIGHT CODE RACE // SERVER SYNCHRONIZED CYBER CIRCUIT PROTOCOL
-    </footer>
-
-    <!-- Supabase Connection Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../supabase-config.js"></script>
-    <script src="../supabase.js"></script>
-
-    <!-- Pure Vanilla Javascript Entrypoint (No Build / Server Required) -->
-    <script src="./js/app.js"></script>
-  </body>
 </html>

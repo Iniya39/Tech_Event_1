@@ -69,6 +69,20 @@
         restartMissionBtn: document.getElementById('restart-mission-btn')
     };
 
+    function updateHeaderVisibility() {
+        const p1 = document.getElementById('screen-r5-title');
+        const hud = document.querySelector('.hud-header');
+        const bar = document.querySelector('.phase-progress-bar');
+        if (p1 && p1.classList.contains('active')) {
+            if (hud) hud.style.display = 'none';
+            if (bar) bar.style.display = 'none';
+        } else {
+            if (hud) hud.style.display = 'flex';
+            if (bar) bar.style.display = 'flex';
+        }
+    }
+    window.updateHeaderVisibility = updateHeaderVisibility;
+
     // Initialize App
     function init() {
         setupEventListeners();
@@ -76,6 +90,7 @@
         updatePhasePills(0);
         updateSoundButtonVisual();
         formatGlobalTimerDisplay(state.globalTimeRemaining);
+        updateHeaderVisibility();
     }
 
     // Event Listeners
@@ -192,10 +207,10 @@
     function toggleFullscreen() {
         tacticalAudio.playClick();
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
+            document.documentElement.requestFullscreen().catch(() => { });
         } else {
             if (document.exitFullscreen) {
-                document.exitFullscreen().catch(() => {});
+                document.exitFullscreen().catch(() => { });
             }
         }
     }
@@ -210,6 +225,7 @@
             screenEl.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        updateHeaderVisibility();
     }
 
     // Update Top Phase Step Pills (8 phases)
@@ -328,6 +344,11 @@
         // Start Persistent 15-Minute Countdown
         startGlobalTimer();
 
+        // Tab-switch monitoring temporarily disabled
+        // if (typeof window.startTabSwitchMonitoring === 'function') {
+        //     window.startTabSwitchMonitoring();
+        // }
+
         // Load Phase 1
         loadPhase(1);
     }
@@ -375,7 +396,7 @@
         card.innerHTML = `
             <div class="option-card-top">
                 <div class="option-key-badge">${option.key}</div>
-                <div class="option-directive-label">DIRECTIVE // ${option.key}</div>
+                <div class="option-directive-label">DIRECTIVE S ${option.key}</div>
             </div>
             <div class="option-title">${option.title}</div>
             <button type="button" class="btn-select-option">
@@ -398,6 +419,16 @@
         // Accumulate raw score (+100/0/-100, or +200/0/-200 for phase 8)
         state.rawScore += option.points;
 
+        // Instant Database Score Transmission (Round 5)
+        const maxScore = (GAME_DATA && GAME_DATA.MAX_POSSIBLE_SCORE) || 1100;
+        const currentScore = Math.max(0, Math.min(maxScore, state.rawScore));
+        const teamId = localStorage.getItem("current_team_id");
+        if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+            window.TournamentDB.saveRoundScore(teamId, 5, currentScore)
+                .then(res => console.log(`🏆 [Supabase DB] Instant Round 5 score updated: ${currentScore}`, res))
+                .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
+        }
+
         // Record Decision History
         state.decisionHistory.push({
             phaseNumber: phaseData.phaseNumber,
@@ -416,11 +447,11 @@
     // Render Consequence Screen
     function showConsequenceScreen(option, phaseData) {
         if (DOM.consequencePhaseTag) {
-            DOM.consequencePhaseTag.textContent = `PHASE ${phaseData.phaseNumber} OUTCOME // DIRECTIVE AUTHORIZED`;
+            DOM.consequencePhaseTag.textContent = `PHASE ${phaseData.phaseNumber} OUTCOME  DIRECTIVE AUTHORIZED`;
         }
 
         if (DOM.consequenceChoiceTitle) {
-            DOM.consequenceChoiceTitle.textContent = `OPTION ${option.key} // DIRECTIVE ENGAGED`;
+            DOM.consequenceChoiceTitle.textContent = `OPTION ${option.key}  DIRECTIVE ENGAGED`;
         }
 
         if (DOM.consequenceText) {
@@ -428,7 +459,7 @@
         }
 
         if (DOM.consequenceNotice) {
-            DOM.consequenceNotice.textContent = `DIRECTIVE REGISTERED // TELEMETRY RECORDED (+${option.points} MARKS)`;
+            DOM.consequenceNotice.textContent = `DIRECTIVE REGISTERED  TELEMETRY RECORDED (+${option.points} MARKS)`;
         }
 
         showScreen(DOM.screenConsequence);
@@ -573,3 +604,58 @@
     }
 
 })();
+
+window.showR5Page2 = function () {
+    const p1 = document.getElementById('screen-r5-title');
+    const p2 = document.getElementById('screen-briefing');
+    const dec = document.getElementById('screen-decision');
+    if (p1) p1.classList.remove('active');
+    if (dec) dec.classList.remove('active');
+    if (p2) p2.classList.add('active');
+    if (typeof window.updateHeaderVisibility === 'function') {
+        window.updateHeaderVisibility();
+    }
+};
+
+window.startRound5Countdown = function () {
+    const briefing = document.getElementById('screen-briefing');
+    const countOverlay = document.getElementById('r5-countdown-overlay');
+    const countNum = document.getElementById('r5-countdown-number');
+
+    if (briefing) briefing.classList.remove('active');
+    if (!countOverlay || !countNum) {
+        const dec = document.getElementById('screen-decision');
+        if (dec) dec.classList.add('active');
+        if (typeof window.updateHeaderVisibility === 'function') {
+            window.updateHeaderVisibility();
+        }
+        return;
+    }
+
+    countOverlay.style.display = 'flex';
+    let num = 3;
+    countNum.textContent = num;
+    countNum.style.color = '#00f0ff';
+
+    const timer = setInterval(() => {
+        num--;
+        if (num > 0) {
+            countNum.textContent = num;
+        } else if (num === 0) {
+            countNum.textContent = "GO!";
+            countNum.style.color = "#34d399";
+        } else {
+            clearInterval(timer);
+            countOverlay.style.display = 'none';
+            const dec = document.getElementById('screen-decision');
+            if (dec) dec.classList.add('active');
+            if (typeof window.updateHeaderVisibility === 'function') {
+                window.updateHeaderVisibility();
+            }
+            const beginBtn = document.getElementById('begin-mission-btn');
+            if (beginBtn) {
+                // Trigger original start mission logic if attached
+            }
+        }
+    }, 1000);
+};

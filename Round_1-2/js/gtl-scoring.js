@@ -4,7 +4,7 @@
 
 const GTL_GAME_CONFIG = {
     totalQuestions: 10,
-    questionTime: 30,
+    questionTime: 90,
     baseScore: 100,
     speedBonusMultiplier: 10
 };

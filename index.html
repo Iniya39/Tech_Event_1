@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Thor vs Doctor Doom: The Multiversal Technical Competition — 7-Round Grand Event Portal.">
-    <title>Thor vs Doctor Doom: The Multiversal War // Main Event Hub</title>
-    
+    <meta name="description"
+        content="Thor vs Doctor Doom: The Multiversal Technical Competition — 7-Round Grand Event Portal.">
+    <title>Thor vs Doctor Doom: The Multiversal War Main Event Hub</title>
+
     <!-- Google Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -29,7 +33,9 @@
             --font-mono: 'Share Tech Mono', monospace;
         }
 
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -46,7 +52,7 @@
             justify-content: center;
             margin: 0;
             padding: 0;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 60%),
                 radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
                 linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
@@ -347,7 +353,8 @@
         }
 
         .team-details span {
-            color: var(--accent-cyan);
+            color: #ffffff !important;
+            font-weight: 800;
         }
 
         .btn-logout {
@@ -445,6 +452,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="event-container">
@@ -453,9 +461,11 @@
         <header class="event-header">
             <div class="event-badge">TECHNICAL COMPETITION SAGA</div>
             <h1 class="event-title">THOR <span>VS</span> DOCTOR DOOM</h1>
-            <div class="event-subtitle">THE MULTIVERSAL WAR // 7-ROUND EVENT MATRIX</div>
+            <div class="event-subtitle">THE MULTIVERSAL WAR 7-ROUND EVENT MATRIX</div>
             <p class="event-desc">
-                Doctor Doom has shattered the multiverse timeline! Join forces with Thor and the Avengers across 7 sequential tactical rounds to decode ciphers, analyze data streams, bypass security locks, and defeat Doctor Doom at the Timeline Core.
+                Doctor Doom has shattered the multiverse timeline! Join forces with Thor and the Avengers across 7
+                sequential tactical rounds to decode ciphers, analyze data streams, bypass security locks, and defeat
+                Doctor Doom at the Timeline Core.
             </p>
         </header>
 
@@ -466,28 +476,27 @@
                     <span>🛡️</span>
                     <span id="auth-heading-text">TEAM AUTHENTICATION PROTOCOL</span>
                 </div>
-                <div class="auth-tabs">
+                <div class="auth-tabs" style="display: none;">
                     <button class="auth-tab-btn active" id="tab-login" onclick="switchAuthTab('login')">LOGIN</button>
-                    <button class="auth-tab-btn" id="tab-register" onclick="switchAuthTab('register')">REGISTER TEAM</button>
                 </div>
             </div>
 
             <div class="auth-form">
                 <div class="input-group">
                     <label for="auth-team-name">TEAM NAME</label>
-                    <input type="text" id="auth-team-name" class="input-control" placeholder="e.g. test or CODE KNIGHTS" autocomplete="off">
+                    <input type="text" id="auth-team-name" class="input-control" autocomplete="off">
                 </div>
                 <div class="input-group">
                     <label for="auth-password">PASSWORD</label>
-                    <input type="password" id="auth-password" class="input-control" placeholder="e.g. test or secret123">
+                    <input type="password" id="auth-password" class="input-control">
                 </div>
             </div>
 
             <div id="auth-status-msg" class="auth-status-msg"></div>
 
             <div class="auth-actions">
-                <button type="button" class="btn-dummy" onclick="fillDummyCredentials()">⚡ AUTO-FILL DUMMY (test / test)</button>
-                <button type="button" class="btn-auth-submit" id="btn-auth-action" onclick="handleAuthSubmit()">LOGIN & ACCESS GAME</button>
+                <button type="button" class="btn-auth-submit" id="btn-auth-action" onclick="handleAuthSubmit()">LOGIN &
+                    ACCESS GAME</button>
             </div>
         </div>
 
@@ -496,7 +505,7 @@
             <div class="logged-in-info">
                 <div class="team-badge">AUTHENTICATED</div>
                 <div class="team-details">
-                    TEAM: <span id="display-team-name">-</span> (ID: #<span id="display-team-id">-</span>)
+                    TEAM: <span id="display-team-name">-</span>
                 </div>
             </div>
             <button class="btn-logout" onclick="handleLogout()">LOGOUT / SWITCH TEAM</button>
@@ -505,14 +514,15 @@
         <!-- Start Event Handoff Banner -->
         <div class="start-banner" style="margin-top: 0.5rem;">
             <div class="banner-info">
-                <h2>READY TO DEPLOY?</h2>
                 <p id="mission-status-text">Authenticate your team above to unlock mission entry and record scores.</p>
             </div>
             <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-                <a href="leaderboard.html" class="btn-start-event" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">
+                <a href="leaderboard.html" class="btn-start-event" onclick="openLeaderboardWithPassword(event)"
+                    style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);">
                     <span>🏆 VIEW LEADERBOARD</span>
                 </a>
-                <a href="Round_1-2/index.html" class="btn-start-event" id="btn-start-mission" onclick="checkMissionAccess(event)">
+                <a href="Round_1-2/index.html" class="btn-start-event" id="btn-start-mission"
+                    onclick="checkMissionAccess(event)">
                     <span>BEGIN MISSION (START ROUND 1)</span>
                     <span>→</span>
                 </a>
@@ -615,7 +625,6 @@
 
             const startBtn = document.getElementById('btn-start-mission');
             startBtn.classList.remove('locked');
-            document.getElementById('mission-status-text').textContent = "Team #" + teamId + " (" + teamName + ") authenticated! Cleared for deployment.";
         }
 
         function updateUIAfterLogout() {
@@ -631,6 +640,17 @@
             window.TournamentDB.logoutTeam();
             updateUIAfterLogout();
             showMsg('Logged out successfully. Please log in or register a team.', 'error');
+        }
+
+        function openLeaderboardWithPassword(event) {
+            if (event) event.preventDefault();
+            const pass = prompt("🔐 LEADERBOARD ACCESS PROTOCOL\nEnter Password:");
+            if (pass === "leader@123") {
+                sessionStorage.setItem('leaderboard_unlocked', 'true');
+                window.location.href = "leaderboard.html";
+            } else if (pass !== null) {
+                alert("❌ ACCESS DENIED: Incorrect password!");
+            }
         }
 
         function checkMissionAccess(event) {
@@ -653,6 +673,8 @@
             msgBox.className = 'auth-status-msg ' + type;
             msgBox.style.display = 'block';
         }
-    </script>
+    <!-- Tab Switch / Focus Loss Control Module -->
+    <script src="tab-switch-control.js"></script>
 </body>
+
 </html>

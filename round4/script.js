@@ -31,47 +31,47 @@ const Round4CrypticQuest = (() => {
       'FINAL RECONSTRUCTION'
     ],
     EVIDENCE_DEFS: [
-      { 
-        id: 1, 
-        tag: 'EVIDENCE #01', 
-        title: 'RECOVERED TRANSMISSION', 
-        value: 'IF THIS REACHES YOU, THE PLAN HAS CHANGED.', 
-        desc: 'Restored from the shifted system transmission.' 
+      {
+        id: 1,
+        tag: 'EVIDENCE #01',
+        title: 'RECOVERED TRANSMISSION',
+        value: 'IF THIS REACHES YOU, THE PLAN HAS CHANGED.',
+        desc: 'Restored from the shifted system transmission.'
       },
-      { 
-        id: 2, 
-        tag: 'EVIDENCE #02', 
-        title: 'ACCESS TIMELINE', 
-        value: '21:38 ENTRY / 21:39 EXIT / 21:40 SIGNAL', 
-        desc: 'Access log proved Noah exited before the transmission.' 
+      {
+        id: 2,
+        tag: 'EVIDENCE #02',
+        title: 'ACCESS TIMELINE',
+        value: '21:38 ENTRY / 21:39 EXIT / 21:40 SIGNAL',
+        desc: 'Access log proved Noah exited before the transmission.'
       },
-      { 
-        id: 3, 
-        tag: 'EVIDENCE #03', 
-        title: 'RECOVERED TRANSMISSION RECORD', 
-        value: '21:40 DIGITAL MESSAGE (19-9-7-14-1-12)', 
-        desc: 'Terminal log sequence connected to the 21:40 transmission.' 
+      {
+        id: 3,
+        tag: 'EVIDENCE #03',
+        title: 'RECOVERED TRANSMISSION RECORD',
+        value: '21:40 DIGITAL MESSAGE (19-9-7-14-1-12)',
+        desc: 'Terminal log sequence connected to the 21:40 transmission.'
       },
-      { 
-        id: 4, 
-        tag: 'EVIDENCE #04', 
-        title: 'SURVEILLANCE RECORD', 
-        value: 'CAMERA RECORD — 21:39:19 [STATUS: OFFLINE]', 
-        desc: 'Camera archive recorded a frame while marked offline.' 
+      {
+        id: 4,
+        tag: 'EVIDENCE #04',
+        title: 'SURVEILLANCE RECORD',
+        value: 'CAMERA RECORD — 21:39:19 [STATUS: OFFLINE]',
+        desc: 'Camera archive recorded a frame while marked offline.'
       },
-      { 
-        id: 5, 
-        tag: 'EVIDENCE #05', 
-        title: 'CHRONOLOGICAL LOG', 
-        value: 'MASTER BREACH SEQUENCE: 1 → 2 → 4 → 3', 
-        desc: 'Master sequence reconstructed across all stages.' 
+      {
+        id: 5,
+        tag: 'EVIDENCE #05',
+        title: 'CHRONOLOGICAL LOG',
+        value: 'MASTER BREACH SEQUENCE: 1 → 2 → 4 → 3',
+        desc: 'Master sequence reconstructed across all stages.'
       },
-      { 
-        id: 6, 
-        tag: 'EVIDENCE #06', 
-        title: 'FINAL DEDUCTION', 
-        value: 'THE MESSAGE WAS PART OF THE COMMUNICATION DURING THE INCIDENT', 
-        desc: 'Reconstructed the role and purpose of the 21:40 transmission.' 
+      {
+        id: 6,
+        tag: 'EVIDENCE #06',
+        title: 'FINAL DEDUCTION',
+        value: 'THE MESSAGE WAS PART OF THE COMMUNICATION DURING THE INCIDENT',
+        desc: 'Reconstructed the role and purpose of the 21:40 transmission.'
       }
     ]
   };
@@ -127,30 +127,30 @@ const Round4CrypticQuest = (() => {
   function getParticipantId() {
     try {
       const params = new URLSearchParams(window.location.search);
-      const idFromParam = params.get('team') || 
-                          params.get('teamId') || 
-                          params.get('teamName') || 
-                          params.get('participant') || 
-                          params.get('user') || 
-                          params.get('id');
+      const idFromParam = params.get('team') ||
+        params.get('teamId') ||
+        params.get('teamName') ||
+        params.get('participant') ||
+        params.get('user') ||
+        params.get('id');
       if (idFromParam) {
         const cleanId = idFromParam.trim().replace(/[^a-zA-Z0-9_-]/g, '_');
         sessionStorage.setItem('r4_current_participant_id', cleanId);
         return cleanId;
       }
-      
-      const idFromSession = sessionStorage.getItem('r4_current_participant_id') || 
-                            sessionStorage.getItem('active_team') || 
-                            sessionStorage.getItem('teamName') ||
-                            sessionStorage.getItem('teamId');
+
+      const idFromSession = sessionStorage.getItem('r4_current_participant_id') ||
+        sessionStorage.getItem('active_team') ||
+        sessionStorage.getItem('teamName') ||
+        sessionStorage.getItem('teamId');
       if (idFromSession) {
         return idFromSession.trim().replace(/[^a-zA-Z0-9_-]/g, '_');
       }
 
-      const idFromLocal = localStorage.getItem('active_team') || 
-                          localStorage.getItem('teamName') ||
-                          localStorage.getItem('teamId') ||
-                          localStorage.getItem('current_team');
+      const idFromLocal = localStorage.getItem('active_team') ||
+        localStorage.getItem('teamName') ||
+        localStorage.getItem('teamId') ||
+        localStorage.getItem('current_team');
       if (idFromLocal) {
         return idFromLocal.trim().replace(/[^a-zA-Z0-9_-]/g, '_');
       }
@@ -332,9 +332,9 @@ const Round4CrypticQuest = (() => {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && (
-          key.startsWith(prefix) || 
-          key.startsWith(CONFIG.STORAGE_PREFIX) || 
-          key.startsWith('round04_') || 
+          key.startsWith(prefix) ||
+          key.startsWith(CONFIG.STORAGE_PREFIX) ||
+          key.startsWith('round04_') ||
           key.startsWith('round4_') ||
           key.startsWith('r4_')
         )) {
@@ -345,7 +345,7 @@ const Round4CrypticQuest = (() => {
     } catch (e) {
       console.warn('Developer reset error:', e);
     }
-    
+
     // Stop any running timer
     if (timerInterval) {
       clearInterval(timerInterval);
@@ -393,6 +393,7 @@ const Round4CrypticQuest = (() => {
   function setScreen(screenName) {
     state.screen = screenName;
     const screens = [
+      { name: 'PAGE1', el: document.getElementById('r4-page1-title') },
       { name: 'BRIEFING', el: document.getElementById('r4-briefing') },
       { name: 'PLAYING', el: document.getElementById('r4-game') },
       { name: 'TIME_UP', el: document.getElementById('r4-time-up') },
@@ -402,8 +403,10 @@ const Round4CrypticQuest = (() => {
     screens.forEach(s => {
       if (s.el) {
         if (s.name === screenName) {
+          s.el.style.display = 'flex';
           s.el.classList.add('r4-screen-active');
         } else {
+          s.el.style.display = 'none';
           s.el.classList.remove('r4-screen-active');
         }
       }
@@ -586,7 +589,7 @@ const Round4CrypticQuest = (() => {
   // --------------------------------------------------------------------------
   function setBriefingStep(stepNum) {
     state.briefingStep = stepNum;
-    
+
     // Update tabs
     document.querySelectorAll('.r4-briefing-tab').forEach(tab => {
       const step = parseInt(tab.getAttribute('data-briefing-step'), 10);
@@ -657,7 +660,7 @@ const Round4CrypticQuest = (() => {
     if (currentId === 1) {
       metaType = 'TRANSMISSION RESTORATION';
       chalTitle = 'THE CORRUPTED TRANSMISSION';
-      chalSubtitle = 'ROUND 04 // CHALLENGE 01 / 06';
+      chalSubtitle = 'ROUND 04 — CHALLENGE 01 / 06';
       customSubmitLabel = 'SUBMIT TRANSMISSION →';
       inputPlaceholder = 'ENTER RECOVERED MESSAGE...';
 
@@ -891,7 +894,7 @@ const Round4CrypticQuest = (() => {
     else if (currentId === 3) {
       metaType = 'TERMINAL EXPLORATION';
       chalTitle = 'THE GLITCHED TERMINAL';
-      chalSubtitle = 'ROUND 04 // CHALLENGE 03 / 06';
+      chalSubtitle = 'ROUND 04 — CHALLENGE 03 / 06';
       customSubmitLabel = 'SUBMIT FINAL ANSWER →';
       inputPlaceholder = 'ENTER YOUR ANSWER';
 
@@ -1004,7 +1007,7 @@ const Round4CrypticQuest = (() => {
     else if (currentId === 4) {
       metaType = 'OBSERVATION & CONTRADICTION';
       chalTitle = 'THE ROOM THAT LIES';
-      chalSubtitle = 'ROUND 04 // CHALLENGE 04 / 06';
+      chalSubtitle = 'ROUND 04 — CHALLENGE 04 / 06';
       customSubmitLabel = 'SUBMIT FINAL DECISION →';
       inputPlaceholder = 'ENTER YOUR ANSWER';
 
@@ -1014,69 +1017,69 @@ const Round4CrypticQuest = (() => {
       ];
 
       const roomObjects = [
-        { 
-          id: 'clock', 
-          icon: '⏱️', 
-          name: 'CLOCK', 
-          state: '21:42', 
-          header: 'ROOM CLOCK RECORD', 
-          detail: '21:30 — Clock synchronized<br>21:35 — Normal operation<br>21:40 — Normal operation<br>21:42 — Current room time<br><br><strong>STATUS: NO CLOCK ANOMALY DETECTED</strong>' 
+        {
+          id: 'clock',
+          icon: '⏱️',
+          name: 'CLOCK',
+          state: '21:42',
+          header: 'ROOM CLOCK RECORD',
+          detail: '21:30 — Clock synchronized<br>21:35 — Normal operation<br>21:40 — Normal operation<br>21:42 — Current room time<br><br><strong>STATUS: NO CLOCK ANOMALY DETECTED</strong>'
         },
-        { 
-          id: 'terminal', 
-          icon: '💻', 
-          name: 'TERMINAL', 
-          state: 'ACTIVE', 
-          header: 'TERMINAL STATUS', 
-          detail: 'CURRENT STATE: ACTIVE<br><br>21:37 — Terminal initialized<br>21:39 — System activity detected<br>21:40 — Signal transmission recorded<br>21:41 — Terminal remains active<br><br><strong>STATUS: SYSTEM ACTIVITY CONFIRMED</strong>' 
+        {
+          id: 'terminal',
+          icon: '💻',
+          name: 'TERMINAL',
+          state: 'ACTIVE',
+          header: 'TERMINAL STATUS',
+          detail: 'CURRENT STATE: ACTIVE<br><br>21:37 — Terminal initialized<br>21:39 — System activity detected<br>21:40 — Signal transmission recorded<br>21:41 — Terminal remains active<br><br><strong>STATUS: SYSTEM ACTIVITY CONFIRMED</strong>'
         },
-        { 
-          id: 'security', 
-          icon: '🛡️', 
-          name: 'SECURITY', 
-          state: 'GREEN', 
-          header: 'SECURITY SYSTEM', 
-          detail: 'CURRENT STATUS: GREEN<br><br>21:30–21:42<br>No alarm triggered.<br>No forced-entry alert.<br>No emergency lockdown.<br><br><strong>STATUS: NO SECURITY ALERT RECORDED</strong>' 
+        {
+          id: 'security',
+          icon: '🛡️',
+          name: 'SECURITY',
+          state: 'GREEN',
+          header: 'SECURITY SYSTEM',
+          detail: 'CURRENT STATUS: GREEN<br><br>21:30–21:42<br>No alarm triggered.<br>No forced-entry alert.<br>No emergency lockdown.<br><br><strong>STATUS: NO SECURITY ALERT RECORDED</strong>'
         },
-        { 
-          id: 'files', 
-          icon: '📁', 
-          name: 'FILE COUNT', 
-          state: '07 FILES', 
-          header: 'FILE SYSTEM STATUS', 
-          detail: 'CURRENT FILE COUNT: 07 FILES<br><br>21:30 — 07 files<br>21:35 — 07 files<br>21:40 — 07 files<br>21:42 — 07 files<br>No file creation or deletion detected.<br><br><strong>STATUS: FILE COUNT CONSISTENT</strong>' 
+        {
+          id: 'files',
+          icon: '📁',
+          name: 'FILE COUNT',
+          state: '07 FILES',
+          header: 'FILE SYSTEM STATUS',
+          detail: 'CURRENT FILE COUNT: 07 FILES<br><br>21:30 — 07 files<br>21:35 — 07 files<br>21:40 — 07 files<br>21:42 — 07 files<br>No file creation or deletion detected.<br><br><strong>STATUS: FILE COUNT CONSISTENT</strong>'
         },
-        { 
-          id: 'camera', 
-          icon: '📹', 
-          name: 'CAMERA', 
-          state: 'OFFLINE', 
-          header: 'CAMERA SYSTEM', 
-          detail: 'CURRENT STATUS: OFFLINE<br><br><strong>RECOVERED CAMERA HISTORY:</strong><br>21:38:42 — CAMERA ACTIVE<br>21:39:17 — MOTION DETECTED<br>21:39:19 — FRAME CAPTURED<br>21:40:00 — SIGNAL DETECTED<br>21:41:03 — CAMERA CONNECTION LOST<br><br><strong>RECOVERED FRAME:</strong><br>TIMESTAMP: 21:39:19<br>LOCATION: CONTROL ROOM<br>SUBJECT: UNIDENTIFIED<br>FRAME STATUS: PARTIALLY CORRUPTED' 
+        {
+          id: 'camera',
+          icon: '📹',
+          name: 'CAMERA',
+          state: 'OFFLINE',
+          header: 'CAMERA SYSTEM',
+          detail: 'CURRENT STATUS: OFFLINE<br><br><strong>RECOVERED CAMERA HISTORY:</strong><br>21:38:42 — CAMERA ACTIVE<br>21:39:17 — MOTION DETECTED<br>21:39:19 — FRAME CAPTURED<br>21:40:00 — SIGNAL DETECTED<br>21:41:03 — CAMERA CONNECTION LOST<br><br><strong>RECOVERED FRAME:</strong><br>TIMESTAMP: 21:39:19<br>LOCATION: CONTROL ROOM<br>SUBJECT: UNIDENTIFIED<br>FRAME STATUS: PARTIALLY CORRUPTED'
         },
-        { 
-          id: 'access_log', 
-          icon: '📜', 
-          name: 'ACCESS LOG', 
-          state: '21:39 USER', 
-          header: 'ACCESS RECORD', 
-          detail: '21:39:04 UNKNOWN USER AUTHENTICATED<br>METHOD: EXTERNAL NETWORK GATEWAY<br>PHYSICAL DOOR: NO ENTRY RECORDED<br><br><strong>STATUS: REMOTE ACCESS</strong>' 
+        {
+          id: 'access_log',
+          icon: '📜',
+          name: 'ACCESS LOG',
+          state: '21:39 USER',
+          header: 'ACCESS RECORD',
+          detail: '21:39:04 UNKNOWN USER AUTHENTICATED<br>METHOD: EXTERNAL NETWORK GATEWAY<br>PHYSICAL DOOR: NO ENTRY RECORDED<br><br><strong>STATUS: REMOTE ACCESS</strong>'
         },
-        { 
-          id: 'note', 
-          icon: '📝', 
-          name: 'NOTE', 
-          state: '"LEFT 21:30"', 
-          header: 'RECOVERED NOTE', 
-          detail: '"LEFT 21:30"<br><br>AUTHOR: UNKNOWN<br>VERIFICATION: NONE<br><br><strong>STATUS: UNVERIFIED RECORD</strong>' 
+        {
+          id: 'note',
+          icon: '📝',
+          name: 'NOTE',
+          state: '"LEFT 21:30"',
+          header: 'RECOVERED NOTE',
+          detail: '"LEFT 21:30"<br><br>AUTHOR: UNKNOWN<br>VERIFICATION: NONE<br><br><strong>STATUS: UNVERIFIED RECORD</strong>'
         },
-        { 
-          id: 'door', 
-          icon: '🚪', 
-          name: 'DOOR LOCK', 
-          state: 'LOCKED', 
-          header: 'DOOR SECURITY RECORD', 
-          detail: 'CURRENT STATE: LOCKED<br><br>21:38 — Physical entry recorded<br>21:39 — Door secured<br>21:42 — Door remains locked<br>No forced-entry damage detected.<br><br><strong>STATUS: LOCK SYSTEM OPERATIONAL</strong>' 
+        {
+          id: 'door',
+          icon: '🚪',
+          name: 'DOOR LOCK',
+          state: 'LOCKED',
+          header: 'DOOR SECURITY RECORD',
+          detail: 'CURRENT STATE: LOCKED<br><br>21:38 — Physical entry recorded<br>21:39 — Door secured<br>21:42 — Door remains locked<br>No forced-entry damage detected.<br><br><strong>STATUS: LOCK SYSTEM OPERATIONAL</strong>'
         }
       ];
 
@@ -1153,7 +1156,7 @@ const Round4CrypticQuest = (() => {
     else if (currentId === 5) {
       metaType = 'EVIDENCE SEQUENCING';
       chalTitle = 'THE CRYPTIC LOCK';
-      chalSubtitle = 'ROUND 04 // CHALLENGE 05 / 06';
+      chalSubtitle = 'ROUND 04 — CHALLENGE 05 / 06';
       customSubmitLabel = 'SUBMIT FINAL SEQUENCE →';
       inputPlaceholder = 'ENTER YOUR ANSWER';
 
@@ -1215,7 +1218,7 @@ const Round4CrypticQuest = (() => {
     else if (currentId === 6) {
       metaType = 'FINAL RECONSTRUCTION';
       chalTitle = 'FINAL RECONSTRUCTION';
-      chalSubtitle = 'ROUND 04 // CHALLENGE 06 / 06';
+      chalSubtitle = 'ROUND 04 — CHALLENGE 06 / 06';
       customSubmitLabel = 'SUBMIT FINAL VERDICT →';
       inputPlaceholder = 'ENTER YOUR ANSWER';
 
@@ -1626,6 +1629,15 @@ const Round4CrypticQuest = (() => {
           answer: trimmed,
           timestamp: Date.now()
         };
+
+        // Instant Database Score Transmission (Round 4)
+        const teamId = localStorage.getItem("current_team_id");
+        if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+          window.TournamentDB.saveRoundScore(teamId, 4, Math.max(0, state.score))
+            .then(res => console.log(`🏆 [Supabase DB] Instant Round 4 score updated: ${state.score}`, res))
+            .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
+        }
+
         showContinueBanner(successTitle, evidenceTitle, evidenceVal, successSubtitle, 1);
         updateHUD();
         saveState();
@@ -1722,12 +1734,12 @@ const Round4CrypticQuest = (() => {
     // ========================================================================
     else if (currentId === 6) {
       earnedPoints = CONFIG.POINTS_FINAL_CHALLENGE;
-      const isOptionC = state.selectedTheory === 'option_c' || 
-                        compact.includes('optionc') || 
-                        compact.includes('hypothesisc') || 
-                        compact.includes('communication') || 
-                        compact.includes('partofthecommunication') ||
-                        compact.includes('planhaschanged');
+      const isOptionC = state.selectedTheory === 'option_c' ||
+        compact.includes('optionc') ||
+        compact.includes('hypothesisc') ||
+        compact.includes('communication') ||
+        compact.includes('partofthecommunication') ||
+        compact.includes('planhaschanged');
 
       if (isOptionC) {
         isCorrect = true;
@@ -1751,6 +1763,14 @@ const Round4CrypticQuest = (() => {
       state.score += earnedPoints;
       if (!state.completedChallenges.includes(currentId)) {
         state.completedChallenges.push(currentId);
+      }
+
+      // Instant Database Score Transmission (Round 4)
+      const teamId = localStorage.getItem("current_team_id");
+      if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+        window.TournamentDB.saveRoundScore(teamId, 4, Math.max(0, state.score))
+          .then(res => console.log(`🏆 [Supabase DB] Instant Round 4 score updated: ${state.score}`, res))
+          .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
       }
 
       showContinueBanner(successTitle, evidenceTitle, evidenceVal, successSubtitle, currentId);
@@ -1908,14 +1928,14 @@ const Round4CrypticQuest = (() => {
 
     const chalId = pendingHintChallengeId;
     const currentLvl = state.hintLevel[chalId] || 0;
-    
+
     // Increment hint level and hints used
     state.hintLevel[chalId] = currentLvl + 1;
     state.hintsUsed += 1;
-    
+
     // Explicit -20 PTS deduction directly subtracted from score
     state.score -= CONFIG.PENALTY_HINT;
-    
+
     saveState();
     closeHintModal();
     updateHUD();
@@ -1941,8 +1961,8 @@ const Round4CrypticQuest = (() => {
   function triggerVictoryFlow() {
     if (timerInterval) clearInterval(timerInterval);
 
-    const elapsedSeconds = state.startTime && state.completionTime ? 
-      Math.floor((state.completionTime - state.startTime) / 1000) : 
+    const elapsedSeconds = state.startTime && state.completionTime ?
+      Math.floor((state.completionTime - state.startTime) / 1000) :
       (CONFIG.TOTAL_TIME_SECONDS - getRemainingSeconds());
 
     const mins = Math.floor(elapsedSeconds / 60);
@@ -1974,8 +1994,8 @@ const Round4CrypticQuest = (() => {
   // 15B. NEXT ROUND HANDOFF
   // --------------------------------------------------------------------------
   function handleNextRoundHandoff() {
-    const elapsedSeconds = state.startTime && state.completionTime ? 
-      Math.floor((state.completionTime - state.startTime) / 1000) : 
+    const elapsedSeconds = state.startTime && state.completionTime ?
+      Math.floor((state.completionTime - state.startTime) / 1000) :
       (CONFIG.TOTAL_TIME_SECONDS - getRemainingSeconds());
 
     const payload = {
@@ -2147,23 +2167,11 @@ const Round4CrypticQuest = (() => {
       return;
     }
 
-    // 3. If attempt is active
-    if (state.status === 'active') {
-      const remainingSeconds = getRemainingSeconds();
-      if (remainingSeconds <= 0) {
-        handleTimeUp();
-      } else {
-        setScreen('PLAYING');
-        startTimer();
-        updateHUD();
-        renderActiveChallenge();
-      }
-      return;
+    // 3. Default: Always present Page 1 Title screen first upon opening Round 4
+    if (state.status === 'not_started') {
+      state.status = 'not_started';
     }
-
-    // 4. Default: Briefing screen
-    state.status = 'not_started';
-    setScreen('BRIEFING');
+    setScreen('PAGE1');
     setBriefingStep(1);
   }
 
@@ -2179,6 +2187,55 @@ const Round4CrypticQuest = (() => {
 window.adminReset = Round4CrypticQuest.adminReset;
 window.resetRound4 = Round4CrypticQuest.adminReset;
 window.Round4Reset = Round4CrypticQuest.adminReset;
+
+window.showR4Page2 = function () {
+  const p1 = document.getElementById('r4-page1-title');
+  const p2 = document.getElementById('r4-briefing');
+  const game = document.getElementById('r4-game');
+  if (p1) p1.style.display = 'none';
+  if (game) game.style.display = 'none';
+  if (p2) {
+    p2.style.display = 'block';
+    p2.classList.add('r4-screen-active');
+  }
+};
+
+window.startRound4Countdown = function () {
+  const briefing = document.getElementById('r4-briefing');
+  const countOverlay = document.getElementById('r4-countdown-overlay');
+  const countNum = document.getElementById('r4-countdown-number');
+
+  if (briefing) briefing.style.display = 'none';
+  if (!countOverlay || !countNum) {
+    const btn = document.getElementById('r4-btn-begin-stage01');
+    if (btn) btn.click();
+    return;
+  }
+
+  countOverlay.style.display = 'flex';
+  let num = 3;
+  countNum.textContent = num;
+  countNum.style.color = '#00f0ff';
+
+  const timer = setInterval(() => {
+    num--;
+    if (num > 0) {
+      countNum.textContent = num;
+    } else if (num === 0) {
+      countNum.textContent = "GO!";
+      countNum.style.color = "#34d399";
+    } else {
+      clearInterval(timer);
+      countOverlay.style.display = 'none';
+      // Tab-switch monitoring temporarily disabled
+      // if (typeof window.startTabSwitchMonitoring === 'function') {
+      //   window.startTabSwitchMonitoring();
+      // }
+      const btn = document.getElementById('r4-btn-begin-stage01');
+      if (btn) btn.click();
+    }
+  }, 1000);
+};
 
 // Auto-run on DOM ready
 document.addEventListener('DOMContentLoaded', () => {

@@ -43,7 +43,7 @@
                     
                     <div class="intro-description">
                         <p>Observe each visual puzzle image carefully. The images represent clues pointing toward a single core computer science concept, tool, language, or system.</p>
-                        <p>Type your answer in the text box. You have <strong>unlimited attempts</strong> within the 20-second time limit per question!</p>
+                        <p>Type your answer in the text box. You have <strong>unlimited attempts</strong> within the 100-second time limit per question!</p>
                     </div>
 
                     <div class="intro-rules-grid">
@@ -52,7 +52,7 @@
                             <span class="rule-label">QUESTIONS</span>
                         </div>
                         <div class="rule-box">
-                            <span class="rule-value">20s</span>
+                            <span class="rule-value">100s</span>
                             <span class="rule-label">TIME / QUESTION</span>
                         </div>
                         <div class="rule-box">
@@ -98,12 +98,13 @@
                     <div class="hud-item timer-tracker">
                         <span class="hud-label">TIME REMAINING</span>
                         <div class="timer-display-wrapper">
-                            <span id="hud-timer" class="hud-val timer-val">20s</span>
+                            <span id="hud-timer" class="hud-val timer-val">100s</span>
                         </div>
                     </div>
 
                     <div class="hud-item difficulty-tracker">
                         <span id="hud-difficulty-badge" class="diff-tag diff-challenging">CHALLENGING</span>
+                        <button type="button" class="btn-next-chap-nav" onclick="window.location.href='../Round7/final-round/final-round.html'">MOVE TO NEXT CHAPTER 7 →</button>
                     </div>
                 </div>
 
@@ -118,9 +119,21 @@
                         <h2>Find the common technical connection.</h2>
                     </div>
 
-                    <!-- SINGLE IMAGE CONTAINER -->
-                    <div id="dynamic-image-grid" class="single-image-wrapper">
-                        <!-- Dynamically populated by JS -->
+                    <!-- IMAGE & STATIC SIDE FEEDBACK CONTAINER -->
+                    <div class="image-and-feedback-row" style="display: flex; gap: 1.5rem; align-items: center; justify-content: center; width: 100%; max-width: 850px; margin: 1rem auto; flex-wrap: wrap;">
+                        <!-- SINGLE IMAGE CONTAINER -->
+                        <div id="dynamic-image-grid" class="single-image-wrapper" style="flex: 1; min-width: 280px;">
+                            <!-- Dynamically populated by JS -->
+                        </div>
+
+                        <!-- STATIC FEEDBACK BANNER (PLACED BESIDE IMAGE) -->
+                        <div id="feedback-banner" class="feedback-banner hidden" style="flex: 0 0 280px; min-width: 260px;">
+                            <div class="feedback-content">
+                                <div id="feedback-status" class="feedback-status">CORRECT</div>
+                                <div id="feedback-points" class="feedback-points">+100 POINTS</div>
+                                <div id="feedback-correct-answer" class="feedback-correct-answer"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- ANSWER SUBMISSION FORM -->
@@ -139,17 +152,8 @@
                                 SUBMIT ANSWER
                             </button>
                         </div>
-                        <div class="input-hint">Unlimited attempts allowed within 20s! Exact spelling required.</div>
+                        <div class="input-hint">Unlimited attempts allowed within 100s! Exact spelling required.</div>
                     </form>
-                </div>
-
-                <!-- FEEDBACK OVERLAY BANNER -->
-                <div id="feedback-banner" class="feedback-banner hidden">
-                    <div class="feedback-content">
-                        <div id="feedback-status" class="feedback-status">CORRECT</div>
-                        <div id="feedback-points" class="feedback-points">+100 POINTS</div>
-                        <div id="feedback-correct-answer" class="feedback-correct-answer"></div>
-                    </div>
                 </div>
             </section>
 
@@ -159,12 +163,6 @@
                     <div class="result-header">
                         <span class="badge-completed">ROUND COMPLETE</span>
                         <h1 class="result-title">FINAL RESULTS</h1>
-                    </div>
-
-                    <!-- RANK BADGE -->
-                    <div class="rank-display-container">
-                        <div id="result-rank-badge" class="rank-badge rank-s">S</div>
-                        <div id="result-rank-title" class="rank-title">Exceptional Performance</div>
                     </div>
 
                     <!-- METRICS GRID -->
@@ -195,35 +193,8 @@
                         </div>
                     </div>
 
-                    <!-- DETAILED SUMMARY TABLE -->
-                    <div class="summary-section">
-                        <h3>Question Performance Breakdown</h3>
-                        <div class="summary-table-wrapper">
-                            <table class="summary-table">
-                                <thead>
-                                    <tr>
-                                        <th>Q#</th>
-                                        <th>Difficulty</th>
-                                        <th>Submitted Answer</th>
-                                        <th>Correct Answer</th>
-                                        <th>Status</th>
-                                        <th>Attempts</th>
-                                        <th>Time</th>
-                                        <th>Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="result-table-body">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- RESTART ACTION -->
-                    <div class="result-actions" style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-                        <button id="restart-game-btn" class="primary-btn">
-                            RESTART ROUND ↺
-                        </button>
+                    <!-- ACTION BUTTON -->
+                    <div class="result-actions" style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 2rem;">
                         <button id="btn-proceed-round-7" class="primary-btn pulse-glow" style="background: linear-gradient(135deg, #00f0ff, #7000ff); border-color: #00f0ff;" onclick="window.location.href='../Round7/index.html'">
                             PROCEED TO FINAL ROUND (ROUND 7) →
                         </button>
@@ -242,7 +213,8 @@
     <!-- Supabase Connection Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../supabase-config.js"></script>
-    <script src="../supabase.js"></script>
+    <!-- Tab Switch / Focus Loss Control Module -->
+    <script src="../tab-switch-control.js"></script>
 
     <!-- JavaScript Modules -->
     <script src="js/storage.js"></script>

@@ -153,3 +153,13 @@ ON CONFLICT (team_name) DO UPDATE SET password = EXCLUDED.password;
 INSERT INTO public.teams (team_name, password) 
 VALUES ('TEST2', 'test2') 
 ON CONFLICT (team_name) DO UPDATE SET password = EXCLUDED.password;
+
+-- Registered Team: pranavi (Password: pranavi@123)
+INSERT INTO public.teams (team_name, password) 
+VALUES ('pranavi', 'pranavi@123') 
+ON CONFLICT (team_name) DO UPDATE SET password = EXCLUDED.password;
+
+-- Registered Team: iniya (Password: iniya@123)
+INSERT INTO public.teams (team_name, password) 
+VALUES ('iniya', 'iniya@123') 
+ON CONFLICT (team_name) DO UPDATE SET password = EXCLUDED.password;

@@ -5,7 +5,7 @@
 
 const GAME_CONFIG = {
     totalQuestions: 10,
-    questionTime: 20,
+    questionTime: 90,
     maxAttempts: 3,
     baseScore: 100,
     speedBonusMultiplier: 10,
@@ -237,6 +237,14 @@ class PixelRecallGame {
             });
 
             this.sound.playCorrect();
+
+            // Instant Database Score Transmission & Realtime Leaderboard Update (Round 1)
+            const teamId = localStorage.getItem("current_team_id");
+            if (teamId && typeof window !== 'undefined' && window.TournamentDB && typeof window.TournamentDB.saveRoundScore === 'function') {
+                window.TournamentDB.saveRoundScore(teamId, 1, this.totalScore)
+                    .then(res => console.log(`🏆 [Supabase DB] Instant Round 1 score updated: ${this.totalScore}`, res))
+                    .catch(err => console.error("❌ [Supabase DB Error] Instant score update failed:", err));
+            }
 
             if (this.callbacks.onAnswerCorrect) {
                 this.callbacks.onAnswerCorrect(questionScore, this);

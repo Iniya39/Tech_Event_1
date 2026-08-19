@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const answerForm = document.getElementById('answer-form');
     const inputAnswer = document.getElementById('input-answer');
     const btnSubmitAnswer = document.getElementById('btn-submit-answer');
-    
+
     const btnReplay = document.getElementById('btn-replay');
     const btnClaimAchievement = document.getElementById('btn-claim-achievement');
     const btnAchievementContinue = document.getElementById('btn-achievement-continue');
@@ -125,6 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 screens[newState].classList.add('active');
             }
 
+            if (newState === 'QUESTION' || newState === 'GTL_QUESTION') {
+                // Tab-switch monitoring temporarily disabled
+                // if (typeof window.startTabSwitchMonitoring === 'function') {
+                //     window.startTabSwitchMonitoring();
+                // }
+            }
+
             if (newState === 'COUNTDOWN') {
                 countdownOverlay.classList.add('active');
             } else {
@@ -159,7 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             challengeStepTitle.textContent = `PIXEL RECALL — CHALLENGE ${String(gameInstance.currentQuestionIndex + 1).padStart(2, '0')} / ${String(gameInstance.config.totalQuestions).padStart(2, '0')}`;
 
+            timerBarFill.style.transition = 'none';
             timerBarFill.style.width = '100%';
+            void timerBarFill.offsetWidth;
+            timerBarFill.style.transition = 'width 0.1s linear';
             timerBarFill.classList.remove('warning');
             timerSecondsLabel.textContent = `TIME LEFT: ${gameInstance.config.questionTime.toFixed(1)}s`;
 
@@ -178,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onTimerUpdate: (remainingTime, timeRatio) => {
             const pct = Math.max(0, Math.min(100, timeRatio * 100)).toFixed(1);
             timerBarFill.style.width = `${pct}%`;
-            
+
             const timeStr = `${Math.max(0, remainingTime).toFixed(1)}s`;
             hudTimer.textContent = timeStr;
             timerSecondsLabel.textContent = `TIME LEFT: ${timeStr}`;
@@ -289,7 +299,10 @@ document.addEventListener('DOMContentLoaded', () => {
             gtlHudTimer.textContent = `${gameInstance.config.questionTime.toFixed(1)}s`;
             gtlTimerMetric.classList.remove('warning');
 
+            gtlProgressFill.style.transition = 'none';
             gtlProgressFill.style.width = '100%';
+            void gtlProgressFill.offsetWidth;
+            gtlProgressFill.style.transition = 'width 0.1s linear';
             gtlProgressFill.classList.remove('warning');
 
             gtlBadgeCategory.textContent = q.category;
@@ -310,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onTimerUpdate: (remainingTime, timeRatio) => {
             const timeStr = `${Math.max(0, remainingTime).toFixed(1)}s`;
             gtlHudTimer.textContent = timeStr;
-            
+
             const pct = Math.max(0, Math.min(100, timeRatio * 100)).toFixed(1);
             gtlProgressFill.style.width = `${pct}%`;
 
@@ -321,28 +334,38 @@ document.addEventListener('DOMContentLoaded', () => {
         },
 
         onFeedback: (feedback) => {
-            gtlInputAnswer.disabled = true;
-            btnGtlSubmit.disabled = true;
-
             gtlFeedbackCard.className = `gtl-feedback-card ${feedback.type.toLowerCase()}`;
 
             if (feedback.type === 'CORRECT') {
+                gtlInputAnswer.disabled = true;
+                btnGtlSubmit.disabled = true;
                 gtlFeedbackTitle.textContent = '✓ CORRECT';
                 gtlFeedbackSub.textContent = `+${feedback.scoreEarned} POINTS`;
                 gtlFeedbackReveal.style.display = 'none';
+                gtlFeedbackOverlay.classList.add('active');
             } else if (feedback.type === 'INCORRECT') {
                 gtlFeedbackTitle.textContent = '✕ INCORRECT';
-                gtlFeedbackSub.textContent = '0 POINTS';
-                gtlRevealText.textContent = feedback.correctAnswer;
-                gtlFeedbackReveal.style.display = 'block';
+                gtlFeedbackSub.textContent = 'TRY AGAIN ';
+                gtlFeedbackReveal.style.display = 'none';
+                gtlFeedbackOverlay.classList.add('active');
+
+                setTimeout(() => {
+                    gtlFeedbackOverlay.classList.remove('active');
+                    gtlInputAnswer.value = '';
+                    gtlInputAnswer.disabled = false;
+                    btnGtlSubmit.disabled = false;
+                    gtlInputAnswer.focus();
+                }, 800);
             } else {
+                gtlInputAnswer.disabled = true;
+                btnGtlSubmit.disabled = true;
                 gtlFeedbackTitle.textContent = "TIME'S UP!";
                 gtlFeedbackSub.textContent = '0 POINTS';
                 gtlRevealText.textContent = feedback.correctAnswer;
                 gtlFeedbackReveal.style.display = 'block';
+                gtlFeedbackOverlay.classList.add('active');
             }
 
-            gtlFeedbackOverlay.classList.add('active');
             gtlHudScore.textContent = String(feedback.gameInstance.totalScore).padStart(4, '0');
         },
 
@@ -467,6 +490,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             if (achievementOverlay) achievementOverlay.classList.remove('active');
             gtlGame.initGame();
+        }
+    };
+
+    window.triggerChapterTransition = function (targetChapter) {
+        if (targetChapter === 2) {
+            if (game && typeof game.stopTimerLoop === 'function') {
+                game.stopTimerLoop();
+            }
+            launchGTL();
+        } else if (targetChapter === 3) {
+            if (gtlGame && typeof gtlGame.stopTimer === 'function') {
+                gtlGame.stopTimer();
+            }
+            window.location.href = '../Round_3/index.html';
         }
     };
 

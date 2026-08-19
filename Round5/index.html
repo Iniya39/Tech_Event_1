@@ -20,6 +20,19 @@
 
 <body>
 
+    <!-- 3-2-1 Countdown Overlay for Round 5 -->
+    <div id="r5-countdown-overlay"
+        style="display: none; position: fixed; inset: 0; background: rgba(5, 7, 13, 0.95); z-index: 999999; backdrop-filter: blur(15px); align-items: center; justify-content: center; text-align: center;">
+        <div>
+            <div id="r5-countdown-number"
+                style="font-family: 'Rajdhani', 'Space Grotesk', sans-serif; font-size: 9rem; font-weight: 900; color: #00f0ff; text-shadow: 0 0 50px rgba(0, 240, 255, 0.8); line-height: 1;">
+                3</div>
+            <div
+                style="font-family: 'Share Tech Mono', monospace; font-size: 1.25rem; color: #94a3b8; letter-spacing: 4px; text-transform: uppercase; margin-top: 1.5rem; font-weight: 700;">
+                INITIALIZING DECISION ZERO MATRIX</div>
+        </div>
+    </div>
+
     <div class="app-container">
 
         <!-- Top HUD Header (Fixed & Persistent across all phases) -->
@@ -32,7 +45,7 @@
                     </svg>
                 </div>
                 <div class="brand-title-group">
-                    <h1 class="brand-title">AVENGERS // RESISTANCE GRID</h1>
+                    <h1 class="brand-title">ROUND 05 — DECISION ZERO</h1>
                     <span class="brand-subtitle">SECTOR-07 CRISIS RESPONSE TERMINAL</span>
                 </div>
             </div>
@@ -52,6 +65,8 @@
                     <div class="status-dot"></div>
                     <span id="team-badge-text">TERMINAL STANDBY</span>
                 </div>
+                <button type="button" class="btn-next-chap-nav"
+                    onclick="window.location.href='../Round6/index.html'">MOVE TO NEXT CHAPTER 6 →</button>
 
                 <!-- Audio & Fullscreen Controls -->
                 <div class="hud-controls">
@@ -130,9 +145,48 @@
         <main id="main-content">
 
             <!-- ====================================================================
-           SCREEN 1: MISSION BRIEFING & SQUAD TERMINAL
+           PAGE 1: ROUND NUMBER & ROUND NAME TITLE SCREEN
            ==================================================================== -->
-            <section class="screen active" id="screen-briefing" aria-labelledby="briefing-title">
+            <section class="screen active" id="screen-r5-title" aria-labelledby="r5-title-heading">
+                <div
+                    style="max-width: 950px; margin: 3rem auto; text-align: left; background: rgba(13, 20, 38, 0.9); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 3.5rem 3.5rem; backdrop-filter: blur(16px); box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+
+                    <!-- Top Navigation Row (Top Right) -->
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 2rem;">
+                        <button type="button" class="btn-next-chap-nav" style="padding: 10px 18px; font-size: 14px;"
+                            onclick="window.location.href='../Round6/index.html'">MOVE TO NEXT CHAPTER 6 →</button>
+                    </div>
+
+                    <!-- Left Column Title + 2-3 Lines Description -->
+                    <div style="max-width: 680px; margin-bottom: 3rem;">
+                        <div
+                            style="font-family: 'Rajdhani', sans-serif; font-size: 1.5rem; font-weight: 800; color: #00f0ff; letter-spacing: 4px; margin-bottom: 0.5rem; text-transform: uppercase;">
+                            ROUND 05
+                        </div>
+                        <h1 id="r5-title-heading"
+                            style="font-family: 'Rajdhani', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: 3px; margin-bottom: 1.25rem; text-shadow: 0 0 40px rgba(0, 240, 255, 0.6); color: #ffffff; line-height: 1.1;">
+                            DECISION ZERO
+                        </h1>
+                        <p style="font-family: 'Inter', sans-serif; font-size: 1.05rem; color: #cbd5e1; line-height: 1.6; margin: 0;">
+                            A 10-phase tactical crisis simulation testing high-stakes strategic deliberation, resource allocation, and threat response. Analyze risk versus reward to authorize directives and lead your sector through the invasion.
+                        </p>
+                    </div>
+
+                    <!-- Bottom Action Row: Centered NEXT Button -->
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn-primary"
+                            style="width: 100%; max-width: 480px; justify-content: center; padding: 1.15rem 2.5rem; font-size: 1.2rem; font-weight: 800; letter-spacing: 1px;"
+                            onclick="showR5Page2()">
+                            <span>NEXT: INSTRUCTIONS &amp; RULES &rarr;</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ====================================================================
+           PAGE 2: RULES OF ROUND 5
+           ==================================================================== -->
+            <section class="screen" id="screen-briefing" aria-labelledby="briefing-title">
                 <div class="briefing-layout">
 
                     <!-- Left: Tactical Briefing -->
@@ -140,51 +194,55 @@
                         <div class="crisis-alert-banner">
                             <span class="status-dot"
                                 style="background-color: var(--alert-red); box-shadow: 0 0 8px var(--alert-red);"></span>
-                            <span>LIVE INVASION DETECTED // 10-PHASE METROPOLITAN CRISIS</span>
+                            <span>ROUND 05 DECISION ZERO RULES &amp; GUIDELINES</span>
                         </div>
 
                         <h2 class="briefing-hero-title" id="briefing-title">
-                            RESISTANCE UNIT <span>TACTICAL DEPLOYMENT</span>
+                            ROUND 05 <span>RULES &amp; INSTRUCTIONS</span>
                         </h2>
 
                         <p class="briefing-teaser-text">
-                            A dimensional rift has destabilized the sector defense barrier. Doctor Victor von Doom's
-                            vanguard legions are penetrating metropolitan airspace. Your squad is the frontline tactical
-                            unit on station.
+                            Read the tactical directives and operational rules carefully before authorizing squad
+                            deployment.
                         </p>
 
                         <div class="ops-rules-list">
                             <div class="ops-rule-item">
-                                <span class="ops-rule-number">01 //</span>
-                                <span><strong>Strategic Deliberation Required:</strong> In this round, you must answer each question by thinking smartly and analyzing the tactical context deeply.</span>
+                                <span class="ops-rule-number">01 </span>
+                                <span><strong>Strategic Deliberation Required:</strong> In this round, you must answer
+                                    each question by thinking smartly and analyzing the tactical context deeply.</span>
                             </div>
                             <div class="ops-rule-item">
-                                <span class="ops-rule-number">02 //</span>
-                                <span><strong>Plausible Options &amp; Trap Signals:</strong> Every option presented might look like a correct answer at first glance, but you must evaluate each scenario and make the smartest move.</span>
+                                <span class="ops-rule-number">02 </span>
+                                <span><strong>Plausible Options &amp; Trap Signals:</strong> Every option presented
+                                    might look like a correct answer at first glance, but you must evaluate each
+                                    scenario and make the smartest move.</span>
                             </div>
                             <div class="ops-rule-item">
-                                <span class="ops-rule-number">03 //</span>
-                                <span><strong>Analytical Decision Making:</strong> Carefully weigh risk versus reward, structural stability, timing, and resource constraints before authorizing your directive.</span>
+                                <span class="ops-rule-number">03 </span>
+                                <span><strong>Analytical Decision Making:</strong> Carefully weigh risk versus reward,
+                                    structural stability, timing, and resource constraints before authorizing your
+                                    directive.</span>
                             </div>
                             <div class="ops-rule-item">
-                                <span class="ops-rule-number">04 //</span>
-                                <span><strong>10-Phase Crisis Execution:</strong> Execute your strategy with discipline across all 10 crisis phases to secure sector victory.</span>
+                                <span class="ops-rule-number">04 </span>
+                                <span><strong>10-Phase Crisis Execution:</strong> Execute your strategy with discipline
+                                    across all 10 crisis phases to secure sector victory.</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Right: Squad Authorization Panel -->
-                    <div class="briefing-side-card">
-                        <div>
-                            <h3 class="terminal-title">MISSION INITIALIZATION</h3>
-                            <p class="terminal-desc">Terminal linked to the Resistance Command Matrix. Ready to begin tactical crisis directives.</p>
+                    <div class="briefing-side-card" style="display: flex; flex-direction: column; justify-content: flex-start;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 class="terminal-title">DECISION ZERO AUTHORIZATION</h3>
+                            <p class="terminal-desc" style="margin-bottom: 0;">Terminal linked to Sector-07 Crisis Matrix. Click below to initiate
+                                tactical crisis deployment.</p>
                         </div>
 
-                        <button type="button" class="btn-primary" id="begin-mission-btn" style="width: 100%; justify-content: center;">
-                            <span>Begin Mission Directive</span>
-                            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:currentColor;">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
+                        <button type="button" class="btn-primary" id="begin-mission-btn"
+                            style="width: 100%; justify-content: center;" onclick="startRound5Countdown()">
+                            <span>START ROUND 5 &rarr;</span>
                         </button>
                     </div>
 
@@ -214,7 +272,8 @@
                     </div>
                     <p class="situation-text" id="situation-text">
                         A dimensional breach has opened above the city. Doom's forces are pouring through, and a
-                        civilian shelter's energy shield is failing. Multiple response teams are already requesting instructions.
+                        civilian shelter's energy shield is failing. Multiple response teams are already requesting
+                        instructions.
                     </p>
                 </div>
 
@@ -243,7 +302,8 @@
 
                         <div class="consequence-narrative-box">
                             <p class="consequence-text" id="consequence-text">
-                                The shield stabilizes and civilians are safe for now, but your team is left defenseless as Doom's scouts close in.
+                                The shield stabilizes and civilians are safe for now, but your team is left defenseless
+                                as Doom's scouts close in.
                             </p>
                         </div>
 
@@ -276,26 +336,20 @@
 
                         <!-- Hero Ending Summary Card -->
                         <div class="results-hero-card" id="results-hero-card">
-                            <span class="results-badge-pill" id="results-badge-pill">MISSION SUCCESS // 800-1000 PTS</span>
+                            <span class="results-badge-pill" id="results-badge-pill">MISSION SUCCESS // 800-1000
+                                PTS</span>
                             <h2 class="results-ending-title" id="results-ending-title">FULL SUCCESS</h2>
 
                             <div class="results-narration-box">
                                 <p class="results-narration-text" id="results-narration-text">
-                                    Mission successful. A hidden transmission has been decoded. One Avenger has answered the call.
+                                    Mission successful. A hidden transmission has been decoded. One Avenger has answered
+                                    the call.
                                 </p>
                             </div>
 
                             <p class="results-eval-text" id="results-eval-text">
                                 Your squad demonstrated extraordinary tactical coordination under extreme duress.
                             </p>
-                        </div>
-
-                        <!-- Phase-by-Phase Mission Log & Evaluation Recap -->
-                        <div class="mission-path-card">
-                            <div class="section-label">PHASE-BY-PHASE TACTICAL RECAP</div>
-                            <div class="path-timeline-nodes" id="path-nodes-container">
-                                <!-- Dynamically populated 8-phase recap with color-coded ratings -->
-                            </div>
                         </div>
 
                     </div>
@@ -308,23 +362,6 @@
                             <div class="score-title-small">CUMULATIVE PERFORMANCE SCORE</div>
                             <div class="score-giant-number" id="results-total-score">1100</div>
                             <div class="score-scale-denom">OUT OF 1100 MARKS</div>
-                            <div class="score-tier-label" id="results-tier-label">FULL SUCCESS</div>
-                        </div>
-
-                        <!-- Score Meter Progress Bar -->
-                        <div class="tracks-card">
-                            <div class="section-label">SCORE EFFICIENCY METER</div>
-                            <div class="track-row">
-                                <div class="track-header-line">
-                                    <span class="track-name-label">
-                                        🎯 MISSION READINESS INDEX
-                                    </span>
-                                    <span class="track-val-badge" id="score-meter-val">1100 / 1100</span>
-                                </div>
-                                <div class="track-meter-bar">
-                                    <div class="track-fill-bar fill-judgment" id="score-meter-fill"></div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Reset Button for Next Team -->
@@ -336,7 +373,9 @@
                             <span>Run Another Mission</span>
                         </button>
 
-                        <button type="button" class="btn-primary" id="btn-proceed-round-6" style="margin-top: 12px; width: 100%; justify-content: center; background: linear-gradient(135deg, #00f0ff, #7000ff);" onclick="window.location.href='../Round6/index.html'">
+                        <button type="button" class="btn-primary" id="btn-proceed-round-6"
+                            style="margin-top: 12px; width: 100%; justify-content: center; background: linear-gradient(135deg, #00f0ff, #7000ff);"
+                            onclick="window.location.href='../Round6/index.html'">
                             <span>PROCEED TO ROUND 6 →</span>
                         </button>
 
@@ -352,7 +391,8 @@
     <!-- Supabase Connection Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../supabase-config.js"></script>
-    <script src="../supabase.js"></script>
+    <!-- Tab Switch / Focus Loss Control Module -->
+    <script src="../tab-switch-control.js"></script>
 
     <!-- Scripts -->
     <script src="gameData.js"></script>

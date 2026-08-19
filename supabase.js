@@ -28,8 +28,8 @@ function getSupabaseClient() {
     }
 
     // Resolve Supabase SDK from global window object (loaded via CDN) or environment
-    const supabaseLib = (typeof window !== 'undefined' && window.supabase) 
-        ? window.supabase 
+    const supabaseLib = (typeof window !== 'undefined' && window.supabase)
+        ? window.supabase
         : (typeof supabase !== 'undefined' ? supabase : null);
 
     if (supabaseLib && typeof supabaseLib.createClient === 'function') {
@@ -195,17 +195,10 @@ async function getTeamByName(teamName) {
  * @param {number} score - Score achieved.
  * @returns {Promise<{data: object|null, error: object|null}>}
  */
-async function saveRoundScore(teamId, roundNumber, score) {
+async function saveRoundScore(teamIdentifier, roundNumber, score) {
     const client = getSupabaseClient();
     if (!client) {
         const err = new Error("Supabase client unavailable. Check supabase-config.js credentials.");
-        console.error("❌ [Supabase DB Error]", err);
-        return { data: null, error: err };
-    }
-
-    const parsedTeamId = parseInt(teamId, 10);
-    if (!parsedTeamId || isNaN(parsedTeamId)) {
-        const err = new Error("Missing or invalid teamId ('" + teamId + "'). Team must be registered/logged in.");
         console.error("❌ [Supabase DB Error]", err);
         return { data: null, error: err };
     }
@@ -220,13 +213,74 @@ async function saveRoundScore(teamId, roundNumber, score) {
     const parsedScore = parseInt(score, 10);
     const finalScoreVal = isNaN(parsedScore) ? 0 : parsedScore;
 
-    console.log(`[Supabase DB] Transmitting Score: Team ID #${parsedTeamId}, Round ${parsedRoundNum}, Score ${finalScoreVal}...`);
+    let targetTeamId = parseInt(teamIdentifier, 10);
+
+    // If teamIdentifier is a team name string or invalid, resolve team ID from DB
+    if (!targetTeamId || isNaN(targetTeamId)) {
+        let teamName = (typeof teamIdentifier === 'string' && isNaN(Number(teamIdentifier))) ? teamIdentifier.trim() : null;
+
+        if (!teamName && typeof localStorage !== 'undefined') {
+            teamName = localStorage.getItem("current_team_name") ||
+                localStorage.getItem("pixel_recall_team_name") ||
+                localStorage.getItem("team_name") ||
+                localStorage.getItem("r4_team_name");
+        }
+
+        if (teamName && teamName.trim()) {
+            const cleanName = teamName.trim();
+            // Lookup team by name in DB
+            const { data: teamData } = await client
+                .from('teams')
+                .select('id, team_name')
+                .eq('team_name', cleanName)
+                .maybeSingle();
+
+            if (teamData && teamData.id) {
+                targetTeamId = teamData.id;
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem("current_team_id", targetTeamId.toString());
+                    localStorage.setItem("current_team_name", teamData.team_name);
+                }
+            } else {
+                // Auto-create team if it doesn't exist in DB yet
+                const { data: newTeam } = await client
+                    .from('teams')
+                    .insert([{ team_name: cleanName, password: 'test' }])
+                    .select('id, team_name')
+                    .maybeSingle();
+
+                if (newTeam && newTeam.id) {
+                    targetTeamId = newTeam.id;
+                    if (typeof localStorage !== 'undefined') {
+                        localStorage.setItem("current_team_id", targetTeamId.toString());
+                        localStorage.setItem("current_team_name", newTeam.team_name);
+                    }
+                }
+            }
+        }
+    }
+
+    // Fallback if teamId is still missing, check localStorage current_team_id
+    if ((!targetTeamId || isNaN(targetTeamId)) && typeof localStorage !== 'undefined') {
+        const storedId = parseInt(localStorage.getItem("current_team_id"), 10);
+        if (storedId && !isNaN(storedId)) {
+            targetTeamId = storedId;
+        }
+    }
+
+    if (!targetTeamId || isNaN(targetTeamId)) {
+        const err = new Error("Missing or invalid teamId / teamName ('" + teamIdentifier + "'). Team must be registered or logged in.");
+        console.error("❌ [Supabase DB Error]", err);
+        return { data: null, error: err };
+    }
+
+    console.log(`[Supabase DB] Transmitting Score: Team ID #${targetTeamId}, Round ${parsedRoundNum}, Score ${finalScoreVal}...`);
 
     const { data, error } = await client
         .from('round_scores')
         .upsert(
             {
-                team_id: parsedTeamId,
+                team_id: targetTeamId,
                 round_number: parsedRoundNum,
                 score: finalScoreVal,
                 completed_at: new Date().toISOString()
@@ -237,9 +291,24 @@ async function saveRoundScore(teamId, roundNumber, score) {
         .single();
 
     if (error) {
-        console.error(`❌ [Supabase DB Error] Failed to save score for Team #${parsedTeamId}, Round ${parsedRoundNum}:`, error);
+        console.error(`❌ [Supabase DB Error] Failed to save score for Team #${targetTeamId}, Round ${parsedRoundNum}:`, error);
     } else {
-        console.log(`🏆 [Supabase DB Success] Saved score for Team #${parsedTeamId}, Round ${parsedRoundNum}:`, data);
+        console.log(`🏆 [Supabase DB Success] Saved score for Team #${targetTeamId}, Round ${parsedRoundNum}:`, data);
+
+        // Instant Inter-Tab Broadcast & Storage Triggers for automatic UI leaderboard update
+        if (typeof window !== 'undefined') {
+            try {
+                if (typeof BroadcastChannel !== 'undefined') {
+                    const bc = new BroadcastChannel('tournament_leaderboard_updates');
+                    bc.postMessage({ type: 'SCORE_UPDATED', teamId: targetTeamId, roundNumber: parsedRoundNum, score: finalScoreVal, timestamp: Date.now() });
+                    bc.close();
+                }
+            } catch (e) { }
+
+            try {
+                localStorage.setItem('last_score_update_ts', Date.now().toString());
+            } catch (e) { }
+        }
     }
 
     return { data, error };
@@ -279,6 +348,38 @@ async function getLeaderboard() {
     return { data, error };
 }
 
+/**
+ * Realtime Subscription Helper for Leaderboard Updates.
+ * Listens for INSERT/UPDATE/DELETE events on 'round_scores' and 'teams' tables.
+ * @param {Function} callback 
+ * @returns {object|null} Subscription channel
+ */
+function subscribeToLeaderboard(callback) {
+    const client = getSupabaseClient();
+    if (!client || typeof client.channel !== 'function') return null;
+
+    try {
+        const channel = client
+            .channel('leaderboard-realtime-channel')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'round_scores' },
+                () => { if (typeof callback === 'function') callback(); }
+            )
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'teams' },
+                () => { if (typeof callback === 'function') callback(); }
+            )
+            .subscribe();
+
+        return channel;
+    } catch (err) {
+        console.warn("Realtime subscription failed:", err);
+        return null;
+    }
+}
+
 // Expose globally on `window.TournamentDB` for standard browser script tags
 if (typeof window !== 'undefined') {
     window.TournamentDB = {
@@ -291,7 +392,8 @@ if (typeof window !== 'undefined') {
         getTeamByName,
         saveRoundScore,
         getTeamScores,
-        getLeaderboard
+        getLeaderboard,
+        subscribeToLeaderboard
     };
 }
 
@@ -307,6 +409,7 @@ if (typeof module !== 'undefined' && module.exports) {
         getTeamByName,
         saveRoundScore,
         getTeamScores,
-        getLeaderboard
+        getLeaderboard,
+        subscribeToLeaderboard
     };
 }

@@ -325,9 +325,40 @@
             font-family: var(--font-mono);
             color: var(--text-secondary);
         }
+
+        /* Rank & Score Movement Animations */
+        @keyframes rankUpGlow {
+            0% { background: rgba(16, 185, 129, 0.35); transform: translateY(-2px); }
+            100% { background: transparent; transform: translateY(0); }
+        }
+        @keyframes rankDownGlow {
+            0% { background: rgba(239, 68, 68, 0.35); }
+            100% { background: transparent; }
+        }
+        @keyframes scoreUpGlow {
+            0% { background: rgba(0, 229, 255, 0.3); }
+            100% { background: transparent; }
+        }
+        .rank-up-anim { animation: rankUpGlow 1.2s ease-out; }
+        .rank-down-anim { animation: rankDownGlow 1.2s ease-out; }
+        .score-up-anim { animation: scoreUpGlow 1.2s ease-out; }
     </style>
-</head>
 <body>
+
+    <!-- SECURITY LOCK OVERLAY (Requires Password: leader@123) -->
+    <div id="leaderboard-lock-overlay" style="position: fixed; inset: 0; background: rgba(5, 7, 13, 0.96); z-index: 99999; backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div style="background: rgba(13, 19, 33, 0.95); border: 1px solid var(--border-cyan); border-radius: 18px; padding: 2.5rem; max-width: 440px; width: 100%; text-align: center; box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🔐</div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cyan); letter-spacing: 0.15em; text-transform: uppercase;">SECURITY PROTOCOL</div>
+            <h2 style="font-family: var(--font-heading); font-size: 1.5rem; color: #ffffff; margin: 0.5rem 0 1rem 0;">LEADERBOARD LOCKED</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Enter authorization password to view live tournament standings.</p>
+            <form onsubmit="unlockLeaderboardDirect(event)">
+                <input type="password" id="leaderboard-pass-input" placeholder="Enter password..." autocomplete="off" style="width: 100%; background: rgba(5, 7, 13, 0.8); border: 1px solid var(--border-cyan); border-radius: 8px; padding: 0.75rem 1rem; color: #fff; font-family: var(--font-body); font-size: 1rem; margin-bottom: 1rem; outline: none; text-align: center;">
+                <div id="lock-error-msg" style="color: #ef4444; font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 1rem; display: none;">❌ Incorrect password!</div>
+                <button type="submit" style="width: 100%; background: linear-gradient(135deg, #00e5ff, #7000ff); border: none; color: #fff; padding: 0.8rem; border-radius: 8px; font-family: var(--font-heading); font-weight: 800; font-size: 0.95rem; cursor: pointer; box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);">UNLOCK LEADERBOARD</button>
+            </form>
+        </div>
+    </div>
 
     <div class="leaderboard-container">
         
@@ -336,7 +367,7 @@
             <a href="index.html" class="btn-back">
                 <span>← BACK TO EVENT PORTAL</span>
             </a>
-            <button class="btn-refresh" onclick="loadLeaderboardData()">
+            <button class="btn-refresh" onclick="loadLeaderboardData(false)">
                 <span>🔄 REFRESH SCORES</span>
             </button>
         </div>
@@ -406,35 +437,134 @@
 
     <script>
         let fullLeaderboardData = [];
+        let previousRanksMap = {}; // team_id -> rank
+        let previousScoresMap = {}; // team_id -> total_score
+        let autoRefreshTimer = null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            loadLeaderboardData();
+            // Security Lock Check (Requires Password: leader@123)
+            checkLeaderboardAuth();
+
+            // Initial Load
+            loadLeaderboardData(false);
+
+            // 1. Instant Inter-Tab BroadcastChannel Listener
+            if (typeof BroadcastChannel !== 'undefined') {
+                try {
+                    const bc = new BroadcastChannel('tournament_leaderboard_updates');
+                    bc.onmessage = (event) => {
+                        console.log("⚡ [BroadcastChannel] Instant score update event received:", event.data);
+                        loadLeaderboardData(true);
+                    };
+                } catch(e) {}
+            }
+
+            // 2. Instant Inter-Tab Storage Event Listener
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'last_score_update_ts') {
+                    console.log("⚡ [Storage Event] Instant score update event received");
+                    loadLeaderboardData(true);
+                }
+            });
+
+            // 3. Automatic Background Polling (Auto-refresh every 1.5s without flickering)
+            autoRefreshTimer = setInterval(() => {
+                loadLeaderboardData(true);
+            }, 1500);
+
+            // 4. Realtime Supabase Database Subscription
+            if (window.TournamentDB && typeof window.TournamentDB.subscribeToLeaderboard === 'function') {
+                window.TournamentDB.subscribeToLeaderboard(() => {
+                    console.log("⚡ [Supabase Realtime] Leaderboard change event received");
+                    loadLeaderboardData(true);
+                });
+            }
         });
 
-        async function loadLeaderboardData() {
+        function checkLeaderboardAuth() {
+            const lockOverlay = document.getElementById('leaderboard-lock-overlay');
+            if (sessionStorage.getItem('leaderboard_unlocked') === 'true') {
+                if (lockOverlay) lockOverlay.style.display = 'none';
+                return true;
+            } else {
+                if (lockOverlay) lockOverlay.style.display = 'flex';
+                return false;
+            }
+        }
+
+        function unlockLeaderboardDirect(event) {
+            if (event) event.preventDefault();
+            const passInput = document.getElementById('leaderboard-pass-input');
+            const errorMsg = document.getElementById('lock-error-msg');
+            const pass = passInput ? passInput.value.trim() : '';
+
+            if (pass === 'leader@123') {
+                sessionStorage.setItem('leaderboard_unlocked', 'true');
+                const lockOverlay = document.getElementById('leaderboard-lock-overlay');
+                if (lockOverlay) lockOverlay.style.display = 'none';
+                loadLeaderboardData(false);
+            } else {
+                if (errorMsg) {
+                    errorMsg.style.display = 'block';
+                    errorMsg.textContent = '❌ Incorrect password! Access Denied.';
+                }
+                if (passInput) passInput.select();
+            }
+        }
+
+        async function loadLeaderboardData(isAutoRefresh = false) {
             const tbody = document.getElementById('leaderboard-tbody');
-            tbody.innerHTML = `<tr><td colspan="10" class="status-message">Fetching latest scores...</td></tr>`;
+            if (!tbody) return;
+
+            // Only show loading message on initial explicit load if table is empty
+            if (!isAutoRefresh && fullLeaderboardData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="status-message">Fetching latest scores...</td></tr>`;
+            }
 
             const { data, error } = await window.TournamentDB.getLeaderboard();
 
             if (error) {
-                tbody.innerHTML = `<tr><td colspan="10" class="status-message" style="color: #ef4444;">Error loading leaderboard: ${error.message}</td></tr>`;
+                if (!isAutoRefresh || fullLeaderboardData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="10" class="status-message" style="color: #ef4444;">Error loading leaderboard: ${error.message}</td></tr>`;
+                }
                 return;
             }
 
-            fullLeaderboardData = data || [];
+            let sortedData = data || [];
+
+            // Preserve Tie-Breaking Logic (Score DESC, created_at ASC, id ASC)
+            sortedData.sort((a, b) => {
+                const scoreDiff = (b.total_score || 0) - (a.total_score || 0);
+                if (scoreDiff !== 0) return scoreDiff;
+                const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
+                const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
+                if (timeA !== timeB) return timeA - timeB;
+                return (a.team_id || 0) - (b.team_id || 0);
+            });
+
+            fullLeaderboardData = sortedData;
             updateMetrics(fullLeaderboardData);
-            renderTable(fullLeaderboardData);
+
+            const query = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase().trim() : '';
+            if (query) {
+                const filtered = fullLeaderboardData.filter(t => t.team_name && t.team_name.toLowerCase().includes(query));
+                renderTable(filtered, isAutoRefresh);
+            } else {
+                renderTable(fullLeaderboardData, isAutoRefresh);
+            }
 
             const now = new Date();
-            document.getElementById('last-updated-text').textContent = `Last updated: ${now.toLocaleTimeString()}`;
+            const timeEl = document.getElementById('last-updated-text');
+            if (timeEl) timeEl.textContent = `Live Auto-Refresh: ${now.toLocaleTimeString()}`;
         }
 
         function updateMetrics(teams) {
-            document.getElementById('metric-total-teams').textContent = teams.length;
+            const totalTeamsEl = document.getElementById('metric-total-teams');
+            if (totalTeamsEl) totalTeamsEl.textContent = teams.length;
             
             const maxScore = teams.length > 0 ? Math.max(...teams.map(t => t.total_score || 0)) : 0;
-            document.getElementById('metric-high-score').textContent = maxScore;
+            const highScoreEl = document.getElementById('metric-high-score');
+            if (highScoreEl) highScoreEl.textContent = maxScore;
 
             let submittedCount = 0;
             teams.forEach(t => {
@@ -444,19 +574,41 @@
                     }
                 }
             });
-            document.getElementById('metric-submitted-count').textContent = submittedCount;
+            const subCountEl = document.getElementById('metric-submitted-count');
+            if (subCountEl) subCountEl.textContent = submittedCount;
         }
 
-        function renderTable(teams) {
+        function renderTable(teams, isAutoRefresh = false) {
             const tbody = document.getElementById('leaderboard-tbody');
+            if (!tbody) return;
 
             if (teams.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="10" class="status-message">No teams or scores recorded yet.</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = teams.map((team, idx) => {
+            const nextRanksMap = {};
+            const nextScoresMap = {};
+
+            const rowsHtml = teams.map((team, idx) => {
                 const rankNum = idx + 1;
+                nextRanksMap[team.team_id] = rankNum;
+                nextScoresMap[team.team_id] = team.total_score || 0;
+
+                const prevRank = previousRanksMap[team.team_id];
+                const prevScore = previousScoresMap[team.team_id];
+
+                let animationClass = '';
+                if (isAutoRefresh && prevRank !== undefined) {
+                    if (rankNum < prevRank) {
+                        animationClass = 'rank-up-anim';
+                    } else if (rankNum > prevRank) {
+                        animationClass = 'rank-down-anim';
+                    } else if ((team.total_score || 0) > prevScore) {
+                        animationClass = 'score-up-anim';
+                    }
+                }
+
                 let rankClass = 'rank-other';
                 let rankDisplay = `#${rankNum}`;
                 if (rankNum === 1) { rankClass = 'rank-1'; rankDisplay = '🥇 1'; }
@@ -472,7 +624,7 @@
                 const r7 = formatScore(team.round_7_score);
 
                 return `
-                    <tr>
+                    <tr class="${animationClass}">
                         <td>
                             <span class="rank-badge ${rankClass}">${rankDisplay}</span>
                         </td>
@@ -491,6 +643,10 @@
                     </tr>
                 `;
             }).join('');
+
+            tbody.innerHTML = rowsHtml;
+            previousRanksMap = nextRanksMap;
+            previousScoresMap = nextScoresMap;
         }
 
         function formatScore(score) {
@@ -501,13 +657,13 @@
         }
 
         function filterTable() {
-            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const query = document.getElementById('search-input') ? document.getElementById('search-input').value.toLowerCase().trim() : '';
             if (!query) {
-                renderTable(fullLeaderboardData);
+                renderTable(fullLeaderboardData, false);
                 return;
             }
-            const filtered = fullLeaderboardData.filter(t => t.team_name.toLowerCase().includes(query));
-            renderTable(filtered);
+            const filtered = fullLeaderboardData.filter(t => t.team_name && t.team_name.toLowerCase().includes(query));
+            renderTable(filtered, false);
         }
 
         function escapeHtml(str) {

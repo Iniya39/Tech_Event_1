@@ -49,6 +49,7 @@
                 <button type="button" class="btn-options" id="btn-options" aria-haspopup="dialog">
                     ⚙ [ OPTIONS ]
                 </button>
+                <button type="button" class="btn-next-chap-nav" onclick="openLeaderboardWithPassword(event)">MOVE TO LEADERBOARD →</button>
             </div>
         </header>
 
@@ -87,6 +88,9 @@
                         <button type="button" id="btn-submit" class="btn-submit">
                             TRANSMIT
                         </button>
+                        <button type="button" id="btn-skip-question" class="btn-skip-question" title="Skip this question (One-time use only)">
+                            ⏭ SKIP (1 USE)
+                        </button>
                     </div>
                     <div class="feedback-message" id="feedback-msg" aria-live="assertive"></div>
                 </div>
@@ -117,6 +121,17 @@
                 <div class="rules-time-callout">
                     <span class="callout-icon">⏱</span>
                     <span>Total time allotted: <strong>30 minutes</strong>.</span>
+                </div>
+
+                <!-- Strategic Disclaimer Callout Box -->
+                <div class="rules-disclaimer-box">
+                    <div class="disclaimer-header">
+                        <span class="disclaimer-icon">⚠️</span>
+                        <span>IMPORTANT STRATEGIC DISCLAIMER</span>
+                    </div>
+                    <p class="disclaimer-text">
+                        During this final round, a <strong>SKIP QUESTION</strong> button will be available. You may use this skip button <strong>ONLY ONCE</strong> to bypass any challenging question during the entire round. Use it wisely!
+                    </p>
                 </div>
             </div>
             <div class="rules-modal-footer">
@@ -303,7 +318,8 @@
     <!-- Supabase Connection Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../supabase-config.js"></script>
-    <script src="../../supabase.js"></script>
+    <!-- Tab Switch / Focus Loss Control Module -->
+    <script src="../../tab-switch-control.js"></script>
 
     <!-- Core Game Controller -->
     <script src="final-round.js"></script>
