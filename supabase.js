@@ -55,8 +55,6 @@ function getSupabaseClient() {
  */
 async function loginTeam(teamName, password) {
     const client = getSupabaseClient();
-    if (!client) return { data: null, error: new Error("Supabase client unavailable") };
-
     const cleanName = teamName ? teamName.trim() : '';
     const cleanPassword = password ? password.trim() : '';
 
@@ -64,27 +62,41 @@ async function loginTeam(teamName, password) {
         return { data: null, error: new Error("Team Name and Password are required.") };
     }
 
-    const { data, error } = await client
-        .from('teams')
-        .select('id, team_name, password, created_at')
-        .eq('team_name', cleanName)
-        .single();
-
-    if (error) {
-        return { data: null, error: new Error("Team not found. Please register first or check team name.") };
+    if (!client) {
+        return { data: null, error: new Error("Database client unavailable. Please check network connection.") };
     }
 
-    if (data.password !== cleanPassword) {
-        return { data: null, error: new Error("Invalid password for team '" + cleanName + "'.") };
+    // Query teams table using ilike for case-insensitive team name match
+    const { data: teams, error } = await client
+        .from('teams')
+        .select('id, team_name, password, created_at')
+        .ilike('team_name', cleanName);
+
+    if (error || !teams || teams.length === 0) {
+        return { data: null, error: new Error("ACCESS DENIED: Team '" + cleanName + "' does not exist in the database! Only existing registered teams can log in.") };
+    }
+
+    // Find matching team
+    const team = teams.find(t => t.team_name.toLowerCase() === cleanName.toLowerCase());
+
+    if (!team) {
+        return { data: null, error: new Error("ACCESS DENIED: Team '" + cleanName + "' does not exist in the database! Only existing registered teams can log in.") };
+    }
+
+    if (team.password && team.password !== cleanPassword) {
+        return { data: null, error: new Error("ACCESS DENIED: Invalid password for team '" + team.team_name + "'.") };
     }
 
     // Store team info in localStorage for persistence across pages/rounds
     if (typeof localStorage !== 'undefined') {
-        localStorage.setItem("current_team_id", data.id);
-        localStorage.setItem("current_team_name", data.team_name);
+        localStorage.setItem("current_team_id", team.id.toString());
+        localStorage.setItem("current_team_name", team.team_name);
+        localStorage.setItem("team_name", team.team_name);
+        localStorage.setItem("pixel_recall_team_name", team.team_name);
+        localStorage.setItem("r4_team_name", team.team_name);
     }
 
-    return { data: { id: data.id, team_name: data.team_name, created_at: data.created_at }, error: null };
+    return { data: { id: team.id, team_name: team.team_name, created_at: team.created_at }, error: null };
 }
 
 /**

@@ -312,6 +312,14 @@
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid var(--accent-green);
             color: #6ee7b7;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .auth-status-msg.info {
+            display: block;
+            background: rgba(0, 229, 255, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
         }
 
         /* Logged In Team Status Bar */
@@ -492,12 +500,13 @@
                 </div>
             </div>
 
-            <div id="auth-status-msg" class="auth-status-msg"></div>
-
             <div class="auth-actions">
                 <button type="button" class="btn-auth-submit" id="btn-auth-action" onclick="handleAuthSubmit()">LOGIN &
                     ACCESS GAME</button>
             </div>
+
+            <!-- Authenticated Status Message Container Directly Below the Button -->
+            <div id="auth-status-msg" class="auth-status-msg" style="margin-top: 1.25rem;"></div>
         </div>
 
         <!-- LOGGED-IN STATUS BAR -->
@@ -581,65 +590,90 @@
         async function handleAuthSubmit() {
             const teamName = document.getElementById('auth-team-name').value.trim();
             const password = document.getElementById('auth-password').value.trim();
-            const msgBox = document.getElementById('auth-status-msg');
 
             if (!teamName || !password) {
-                showMsg('Please fill in both Team Name and Password.', 'error');
+                showMsg('⚠️ Please fill in both Team Name and Password.', 'error');
                 return;
             }
 
-            showMsg('Authenticating with database...', 'success');
+            showMsg('🔄 Verifying team in database...', 'info');
 
-            let result;
-            if (authMode === 'login') {
-                result = await window.TournamentDB.loginTeam(teamName, password);
-            } else {
-                result = await window.TournamentDB.createTeam(teamName, password);
-            }
+            const result = await window.TournamentDB.loginTeam(teamName, password);
 
-            if (result.error) {
-                showMsg(result.error.message, 'error');
+            if (result.error || !result.data) {
+                showMsg(result.error ? result.error.message : "❌ ACCESS DENIED: Team '" + teamName + "' does not exist in the database!", 'error');
+                updateUIAfterLogout(false);
             } else {
-                showMsg('Success! Team authenticated. Loading mission portal...', 'success');
-                setTimeout(() => {
-                    updateUIAfterLogin(result.data.id, result.data.team_name);
-                }, 400);
+                showMsg('✅ AUTHENTICATED: Team "' + result.data.team_name + '" authenticated successfully! Mission portal unlocked.', 'success');
+                updateUIAfterLogin(result.data.id, result.data.team_name);
             }
         }
 
         function checkExistingSession() {
-            const team = window.TournamentDB.getCurrentTeam();
-            if (team.id && team.team_name) {
-                updateUIAfterLogin(team.id, team.team_name);
-            } else {
-                updateUIAfterLogout();
-            }
+            // Hide status message box on initial page load until user clicks login button
+            const msgBox = document.getElementById('auth-status-msg');
+            if (msgBox) msgBox.style.display = 'none';
+
+            // Reset any old session so user must explicitly click login button
+            window.TournamentDB.logoutTeam();
+            updateUIAfterLogout(true);
         }
 
         function updateUIAfterLogin(teamId, teamName) {
-            document.getElementById('auth-card').style.display = 'none';
+            // Keep auth card visible so the user sees the AUTHENTICATED message directly below the button
             const loggedInBox = document.getElementById('logged-in-box');
-            loggedInBox.style.display = 'flex';
-            document.getElementById('display-team-name').textContent = teamName;
-            document.getElementById('display-team-id').textContent = teamId;
+            if (loggedInBox) loggedInBox.style.display = 'flex';
+            
+            const displayTeamName = document.getElementById('display-team-name');
+            if (displayTeamName) displayTeamName.textContent = teamName;
+
+            const submitBtn = document.getElementById('btn-auth-action');
+            if (submitBtn) {
+                submitBtn.textContent = '✅ AUTHENTICATED — ENTER GAME BELOW';
+                submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            }
 
             const startBtn = document.getElementById('btn-start-mission');
-            startBtn.classList.remove('locked');
+            if (startBtn) startBtn.classList.remove('locked');
+
+            const statusText = document.getElementById('mission-status-text');
+            if (statusText) {
+                statusText.innerHTML = '✅ <strong style="color:#10b981;">Team "' + teamName + '" Authenticated!</strong> Click BEGIN MISSION below to enter the game.';
+            }
         }
 
-        function updateUIAfterLogout() {
-            document.getElementById('auth-card').style.display = 'flex';
-            document.getElementById('logged-in-box').style.display = 'none';
+        function updateUIAfterLogout(resetMsg = true) {
+            const loggedInBox = document.getElementById('logged-in-box');
+            if (loggedInBox) loggedInBox.style.display = 'none';
+
+            const submitBtn = document.getElementById('btn-auth-action');
+            if (submitBtn) {
+                submitBtn.textContent = 'LOGIN & ACCESS GAME';
+                submitBtn.style.background = 'linear-gradient(135deg, #00e5ff, #3b82f6)';
+            }
 
             const startBtn = document.getElementById('btn-start-mission');
-            startBtn.classList.add('locked');
-            document.getElementById('mission-status-text').textContent = "Authenticate your team above to unlock mission entry and record scores.";
+            if (startBtn) startBtn.classList.add('locked');
+
+            const statusText = document.getElementById('mission-status-text');
+            if (statusText) {
+                statusText.textContent = "Authenticate your team above to unlock mission entry and record scores.";
+            }
+
+            if (resetMsg) {
+                const msgBox = document.getElementById('auth-status-msg');
+                if (msgBox) msgBox.style.display = 'none';
+            }
         }
 
         function handleLogout() {
             window.TournamentDB.logoutTeam();
-            updateUIAfterLogout();
-            showMsg('Logged out successfully. Please log in or register a team.', 'error');
+            updateUIAfterLogout(false);
+            showMsg('Logged out successfully. Only existing database teams can log in.', 'error');
+            const teamInput = document.getElementById('auth-team-name');
+            const passInput = document.getElementById('auth-password');
+            if (teamInput) teamInput.value = '';
+            if (passInput) passInput.value = '';
         }
 
         function openLeaderboardWithPassword(event) {
@@ -655,24 +689,30 @@
 
         function checkMissionAccess(event) {
             const team = window.TournamentDB.getCurrentTeam();
-            if (!team.id) {
+            if (!team.id || !team.team_name) {
                 event.preventDefault();
                 const authCard = document.getElementById('auth-card');
-                authCard.classList.add('highlight');
-                showMsg('ACCESS DENIED: Please login or register your team first to begin mission!', 'error');
-                authCard.scrollIntoView({ behavior: 'smooth' });
-                setTimeout(() => {
-                    authCard.classList.remove('highlight');
-                }, 2000);
+                if (authCard) {
+                    authCard.classList.add('highlight');
+                    showMsg('❌ ACCESS DENIED: Only existing database teams can enter the game. Please log in above!', 'error');
+                    authCard.scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                        authCard.classList.remove('highlight');
+                    }, 2000);
+                }
             }
         }
 
         function showMsg(message, type) {
             const msgBox = document.getElementById('auth-status-msg');
-            msgBox.textContent = message;
-            msgBox.className = 'auth-status-msg ' + type;
-            msgBox.style.display = 'block';
+            if (msgBox) {
+                msgBox.textContent = message;
+                msgBox.className = 'auth-status-msg ' + type;
+                msgBox.style.display = 'block';
+            }
         }
+    </script>
+
     <!-- Tab Switch / Focus Loss Control Module -->
     <script src="tab-switch-control.js"></script>
 </body>
